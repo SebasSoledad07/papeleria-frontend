@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', '.agents']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -17,6 +17,14 @@ export default defineConfig([
     ],
     languageOptions: {
       globals: globals.browser,
+    },
+  },
+  {
+    files: ['src/componentes/ui/**/*.tsx', 'src/rutas/**/*.tsx'],
+    rules: {
+      // Los componentes de shadcn exportan helpers junto al componente (buttonVariants);
+      // los archivos de rutas exportan el router como constante.
+      'react-refresh/only-export-components': 'off',
     },
   },
 ])
