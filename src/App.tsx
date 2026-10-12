@@ -5,7 +5,7 @@ import { useCerrarSesion } from "@/caracteristicas/autenticacion/hooks/useLogout
 import { SinConexion } from "@/componentes/comunes/SinConexion"
 import { Button } from "@/componentes/ui/button"
 import { cn } from "@/lib/utils"
-import { menu } from "@/rutas/navegacion"
+import { menuPorRol } from "@/rutas/navegacion"
 
 const etiquetasRol: Record<string, string> = {
   ADMIN: "Administrador",
@@ -19,6 +19,7 @@ function BarraLateral() {
   const cerrarSesion = useCerrarSesion()
   const usuario = sesion.data?.nombre ?? "Usuario"
   const rol = sesion.data?.rol
+  const elementos = menuPorRol(rol)
 
   function cerrar() {
     void cerrarSesion.mutateAsync().finally(() => navegar("/login"))
@@ -36,7 +37,7 @@ function BarraLateral() {
         className="flex flex-1 flex-col gap-1 overflow-auto px-2 py-2"
         aria-label="Menú principal"
       >
-        {menu.map((item) => (
+        {elementos.map((item) => (
           <NavLink
             key={item.ruta}
             to={item.ruta}

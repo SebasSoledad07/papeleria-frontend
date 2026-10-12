@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
@@ -7,7 +8,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(import.meta.dirname, "./src"),
     },
   },
   server: {
@@ -15,5 +16,9 @@ export default defineConfig({
       "/api": "http://localhost:8080",
     },
   },
+  test: {
+    environment: "jsdom",
+    setupFiles: ["./src/pruebas/preparacion.ts"],
+    css: false,
+  },
 })
-

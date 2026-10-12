@@ -23,10 +23,38 @@ export const router = createBrowserRouter([
         element: <App />,
         children: [
           { index: true, element: <Panel /> },
-          { path: "usuarios", element: <Usuarios /> },
-          { path: "categorias", element: <Categorias /> },
-          { path: "proveedores", element: <Proveedores /> },
-          { path: "configuracion", element: <Configuracion /> },
+          {
+            path: "usuarios",
+            element: (
+              <RutaProtegida roles={["ADMIN"]}>
+                <Usuarios />
+              </RutaProtegida>
+            ),
+          },
+          {
+            path: "categorias",
+            element: (
+              <RutaProtegida roles={["ADMIN"]}>
+                <Categorias />
+              </RutaProtegida>
+            ),
+          },
+          {
+            path: "proveedores",
+            element: (
+              <RutaProtegida roles={["ADMIN"]}>
+                <Proveedores />
+              </RutaProtegida>
+            ),
+          },
+          {
+            path: "configuracion",
+            element: (
+              <RutaProtegida roles={["ADMIN"]}>
+                <Configuracion />
+              </RutaProtegida>
+            ),
+          },
         ],
       },
     ],

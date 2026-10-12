@@ -11,14 +11,16 @@ npm install
 npm run dev      # http://localhost:5173
 npm run build    # tsc -b + vite build → dist/   (el typecheck corre aquí)
 npm run lint     # eslint (.agents ignorado)
+npm test         # vitest run (jsdom + MSW)
 npx tsc -b       # typecheck en modo estricto
 ```
 
-**No existen** `npm run test`, `test:e2e` ni `api:tipos`: `docs/dependencias-y-entorno.md` los da por hechos, pero faltan los scripts y los paquetes (vitest, MSW, Playwright, openapi-typescript, openapi-fetch). Node ≥ 22.12.
+**Faltan** `test:e2e` (Playwright, Fase 4) y `api:tipos` (openapi-typescript; bloqueado hasta que el backend exponga `/v3/api-docs`). El stack de pruebas ya está: vitest 5 + @testing-library + jsdom + MSW, con setup en `src/pruebas/` (`preparacion.ts` registra jest-dom, limpia y levanta el `servidor`; `mocks/handlers.ts` y `mocks/servidor.ts`). Node ≥ 22.12. `vite.config.ts` define el bloque `test` (usa `/// <reference types="vitest/config" />`).
 
 ## Estado verificado
 
-- **Base Fase 0 y pantallas Fase 1 listas.** `src/` tiene `api/` (`cliente.ts`, `errores.ts`, `tipos.ts`), `lib/formato.ts`, `rutas/` (`router.tsx`, `RutaProtegida.tsx`, `navegacion.ts`), `componentes/` (ui + comunes: ErrorBoundary, SinConexion, Campo, PaginaTitulo, AvisoError, PantallaCarga) y `caracteristicas/`: autenticación (login), usuarios, categorías, proveedores y configuración. `src/components/ui/` se renombró a `src/componentes/ui/` y el override de ESLint apunta ahí + `src/rutas/` (archivos que exportan constantes/hooks junto a componentes). `tsconfig.app.json` ganó `paths: { "@/*": ["./src/*"] }` (sin `baseUrl`, deprecado en TS 6). No hay pruebas (vitest no está instalado) ni permisos por rol: el menú se muestra completo y `RutaProtegida` solo exige autenticación (los roles se agregan después).
+- **Base Fase 0 y pantallas Fase 1 listas.** `src/` tiene `api/` (`cliente.ts`, `errores.ts`, `tipos.ts`), `lib/formato.ts`, `rutas/` (`router.tsx`, `RutaProtegida.tsx`, `navegacion.ts`), `componentes/` (ui + comunes: ErrorBoundary, SinConexion, Campo, PaginaTitulo, AvisoError, PantallaCarga) y `caracteristicas/`: autenticación (login), usuarios, categorías, proveedores, configuración, panel (`Panel.tsx`, solo tarjetas de acceso — **no** es el dashboard de reportes de Fase 5) y errores (`NoEncontrado.tsx`, `SinPermiso.tsx`). Rutas: `/login`, `/` (Panel), `/usuarios`, `/categorias`, `/proveedores`, `/configuracion`, `/404`. Las pantallas de administración exigen rol `ADMIN`. `src/components/ui/` se renombró a `src/componentes/ui/` y el override de ESLint apunta ahí + `src/rutas/`. `tsconfig.app.json` ganó `paths: { "@/*": ["./src/*"] }` (sin `baseUrl`, deprecado en TS 6). La sesión se lee con `useSesion()` → `GET /api/auth/sesion` (clave TanStack `["usuario"]`).
+- **Permisos por rol (comodidad, no seguridad).** `navegacion.ts` exporta `menu` (con `roles` por ítem) y `menuPorRol(rol)`; `App.tsx` filtra el menú con este; `RutaProtegida` acepta `roles?: Rol[]` y, si el rol no está, renderiza `SinPermiso` («No tienes permiso»). Un `403` del backend se sigue mostrando como «No tienes permiso», sin tratarlo como falla.
 - `npm run lint` y `npx tsc -b` **pasan**: ambos tsconfigs tienen `"strict": true`, ESLint ignora `.agents/` y `dist`, y `react-refresh/only-export-components` está desactivado en `src/componentes/ui/` (los componentes de shadcn exportan helpers como `buttonVariants`) y en `src/rutas/` (exportan el router/constantes).
 - `vite.config.ts` reenvía `/api` → `http://localhost:8080` (documentado en `docs/integracion-api.md`) y existe `public/_redirects` (`/*  /index.html  200`), que `npm run build` copia a `dist/`.
 - El tema Tailwind/shadcn (`@import "tailwindcss"` + `@theme inline` + `:root`/`.dark`) vive en **`src/App.css`**, importado por `App.tsx`. **Ojo:** el paquete `shadcn` en `dependencies` es un placeholder vacío; no vuelvas a poner `@import "shadcn/tailwind.css"` (rompe `npm run build`).
@@ -35,15 +37,15 @@ npx tsc -b       # typecheck en modo estricto
 - No hay springdoc: `/v3/api-docs` no existe, así que `api:tipos` no puede correr hasta que el backend lo añada.
 - `../inventario-papeleria/docs/08-decisiones-pendientes.md` tiene **solo D-1 a D-6**; los docs de este repo citan D-7, D-9 y D-10 que aún no están registradas.
 
-## Plan de arranque (en orden)
+## Fase actual (qué toca ahora)
 
-1. [x] Config: `"strict": true` en ambos tsconfigs; `.agents` en `globalIgnores` de `eslint.config.js`; `react-refresh` desactivado en `src/componentes/ui/` y `src/rutas/`; `npm run lint` y `npx tsc -b` en verde.
-2. [x] Proxy `/api → http://localhost:8080` en `vite.config.ts` y `public/_redirects` (`/*  /index.html  200`).
-3. [ ] Contrato: revisar y confirmar `docs/04-contrato-api.md` (borrador con decisiones D-C1 a D-C7; hasta entonces, lee los controllers).
-4. [ ] Scripts y pruebas de Fase 0: `test` (`vitest run`), `lint` (`eslint . && tsc --noEmit`), `api:tipos`; instalar vitest, @testing-library/\*, jsdom, msw, openapi-typescript, openapi-fetch.
-5. [x] Unificar carpetas: `src/components/ui` → `src/componentes/ui` (+ alias en `components.json`, `paths` en `tsconfig.app.json`, override de ESLint) y reemplazada la demo de Vite conservando el tema de `App.css` (`src/App.tsx` es el layout con barra lateral; `src/index.css` quedó como `@import "tailwindcss"`).
-6. [~] Base Fase 0 (`docs/plan-frontend.md`): hechas `api/cliente.ts` (credenciales `include`, errores), `api/errores.ts` (`ProblemaApi`, `ErrorSinConexion`, `mensajeDeError`), `lib/formato.ts` (sin pruebas aún), ErrorBoundary, aviso «Sin conexión»; falta el menú por rol + pruebas. Pantallas Fase 1 creadas (login, usuarios, categorías, proveedores, configuración) usando RHF + zod + TanStack Query; DTOs a mano en `api/tipos.ts` (springdoc no existe aún).
-7. [ ] Después, pantalla a la vez según `docs/plan-frontend.md`: escribe la prueba antes de conectar y prueba contra el backend real (`./mvnw spring-boot:run` en `../inventario-papeleria`, PostgreSQL en :5435 vía `docker-compose.yml`; la API queda en :8080). Pendiente: probar el login/CRUDs en vivo (requiere Docker Desktop iniciado y JDK 21; el java del sistema es 1.8).
+**Fase 0 y Fase 1 cerradas; lo siguiente es la Fase 2** de `docs/plan-frontend.md`.
+
+- **Fase 0 cerrada** salvo `api:tipos`. Pruebas instaladas y en verde (`npm test`): `lib/formato`, `api/errores`, `rutas/navegacion` y `rutas/RutaProtegida` (MSW simula la sesión). `api:tipos` no puede correr hasta que el backend añada springdoc (`/v3/api-docs` no existe).
+- **Fase 1 cerrada** salvo D-4. Login, usuarios, categorías, proveedores, configuración, menú por rol y permisos por pantalla, todo probado. **D-4 (cambio de clave obligatorio al primer inicio) queda bloqueado**: el backend no expone ningún flag (`SesionDto` es solo `{nombre, rol}`), así que no se implementa hasta que lo añada. Omitido a propósito; no inventarlo.
+- **Fase 2 (catálogo y escaneo) es lo siguiente:** productos, `CampoCodigo`, `CamaraEscaner`, etiquetas. Antes de empezar hace falta contrato de `/api/producto` (hoy solo tiene `GET`, `POST` y `PUT /{id}/precio`) y decidir D-7 (presentaciones por caja).
+
+Prueba contra el backend real: `./mvnw spring-boot:run` en `../inventario-papeleria`, PostgreSQL en :5435 vía su `docker-compose.yml`; la API queda en :8080. Requiere Docker Desktop iniciado y JDK 21 (el `java` del sistema es 1.8).
 
 ## Cómo trabajar (léelo antes de programar)
 
