@@ -5,6 +5,7 @@ import { Categorias } from "@/caracteristicas/categorias/paginas/Categorias"
 import { Configuracion } from "@/caracteristicas/configuracion/paginas/Configuracion"
 import { NoEncontrado } from "@/caracteristicas/errores/paginas/NoEncontrado"
 import { Panel } from "@/caracteristicas/panel/paginas/Panel"
+import { Productos } from "@/caracteristicas/productos/paginas/Productos"
 import { Proveedores } from "@/caracteristicas/proveedores/paginas/Proveedores"
 import { Usuarios } from "@/caracteristicas/usuarios/paginas/Usuarios"
 import { RutaProtegida } from "@/rutas/RutaProtegida"
@@ -23,6 +24,7 @@ export const router = createBrowserRouter([
         element: <App />,
         children: [
           { index: true, element: <Panel /> },
+          { path: "productos", element: <Productos /> },
           {
             path: "usuarios",
             element: (

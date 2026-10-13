@@ -13,13 +13,14 @@ export async function peticionApi<T>(
   opciones: OpcionesPeticion = {},
 ): Promise<T> {
   const { headers, ...rest } = opciones
+  const esFormData = rest.body instanceof FormData
   let respuesta: Response
   try {
     respuesta = await fetch(`${BASE}${ruta}`, {
       ...rest,
       credentials: "include",
       headers: {
-        "Content-Type": "application/json",
+        ...(esFormData ? {} : { "Content-Type": "application/json" }),
         ...headers,
       },
     })
@@ -45,4 +46,8 @@ export function apiPut<T>(ruta: string, cuerpo: unknown): Promise<T> {
 
 export function apiDelete(ruta: string): Promise<void> {
   return peticionApi<void>(ruta, { method: "DELETE" })
+}
+
+export function apiSubir<T>(ruta: string, datos: FormData): Promise<T> {
+  return peticionApi<T>(ruta, { method: "POST", body: datos })
 }

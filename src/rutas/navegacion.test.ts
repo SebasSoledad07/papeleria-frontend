@@ -6,14 +6,14 @@ describe("menuPorRol", () => {
     expect(menuPorRol("ADMIN")).toHaveLength(menu.length)
   })
 
-  it("el cajero solo ve el panel mientras no existan sus pantallas", () => {
+  it("el cajero ve el panel y productos", () => {
     const rutas = menuPorRol("CAJERO").map((item) => item.ruta)
-    expect(rutas).toEqual(["/"])
+    expect(rutas).toEqual(["/", "/productos"])
   })
 
-  it("el bodeguero solo ve el panel mientras no existan sus pantallas", () => {
+  it("el bodeguero ve el panel y productos", () => {
     const rutas = menuPorRol("BODEGUERO").map((item) => item.ruta)
-    expect(rutas).toEqual(["/"])
+    expect(rutas).toEqual(["/", "/productos"])
   })
 
   it("sin rol no muestra nada", () => {

@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react"
 import {
   LayoutDashboardIcon,
+  PackageIcon,
   SettingsIcon,
   TagsIcon,
   TruckIcon,
@@ -22,6 +23,12 @@ export const menu: ElementoMenu[] = [
     ruta: "/",
     etiqueta: "Panel",
     icono: LayoutDashboardIcon,
+    roles: ["ADMIN", "CAJERO", "BODEGUERO"],
+  },
+  {
+    ruta: "/productos",
+    etiqueta: "Productos",
+    icono: PackageIcon,
     roles: ["ADMIN", "CAJERO", "BODEGUERO"],
   },
   { ruta: "/usuarios", etiqueta: "Usuarios", icono: UsersIcon, roles: ["ADMIN"] },

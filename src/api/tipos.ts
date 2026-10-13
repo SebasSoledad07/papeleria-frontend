@@ -58,12 +58,48 @@ export interface EntradaProveedor {
   direccion?: string
 }
 
+// Unidad de venta (RN-18).
+export type Unidad =
+  | "UNIDAD"
+  | "PAQUETE"
+  | "RESMA"
+  | "CAJA"
+  | "PLIEGO"
+  | "METRO"
+  | "SERVICIO"
+
+// Tarifa de IVA (RN-09); precio de venta incluye IVA (RN-04).
+export type TarifaIva = "19" | "5" | "0" | "EXCLUIDO"
+
+// Espeja ProductoDto del backend (../inventario-papeleria/**/api/ProductoDto.java).
 export interface Producto {
   id: number
-  codigo: string
+  codigoBarras: string
   nombre: string
-  categoria: string
+  marca: string | null
+  categoriaId: number | null
+  categoriaNombre: string | null
+  proveedorId: number | null
+  proveedorNombre: string | null
+  unidad: Unidad
+  tarifaIva: TarifaIva
   precioVenta: number
+  costo: number
   stock: number
+  stockMinimo: number | null
   activo: boolean
+}
+
+// SugerenciaProducto del catálogo externo (RN-16). Sin datos: campos en null.
+export interface SugerenciaProducto {
+  codigo: string
+  nombre: string | null
+  marca: string | null
+  categoria: string | null
+}
+
+// Respuesta de POST /api/codigos/decodificar (RF-11/RF-12).
+export interface LecturaCodigo {
+  codigo: string
+  formato: string
 }
