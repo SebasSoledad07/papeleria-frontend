@@ -90,6 +90,22 @@ export interface Producto {
   activo: boolean
 }
 
+// Cuerpo de POST /api/producto y PUT /api/producto/{id} (ProductoRequest).
+// Si codigoBarras va vacío, el backend genera un código interno EAN-13 (RN-15).
+export interface EntradaProducto {
+  codigoBarras?: string
+  nombre: string
+  marca?: string
+  categoriaId: number
+  proveedorId?: number
+  unidad: Unidad
+  tarifaIva: TarifaIva
+  precioVenta: number
+  costo: number
+  stockInicial?: number
+  stockMinimo?: number
+}
+
 // SugerenciaProducto del catálogo externo (RN-16). Sin datos: campos en null.
 export interface SugerenciaProducto {
   codigo: string

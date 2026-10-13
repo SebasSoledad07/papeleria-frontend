@@ -1,5 +1,10 @@
 import { http, HttpResponse } from "msw"
-import type { Categoria, Producto, Proveedor } from "@/api/tipos"
+import type {
+  Categoria,
+  EntradaProducto,
+  Producto,
+  Proveedor,
+} from "@/api/tipos"
 
 export const productosEjemplo: Producto[] = [
   {
@@ -54,27 +59,122 @@ export const proveedoresEjemplo: Proveedor[] = [
   },
 ]
 
+// Almacén mutable que espeja la base de datos del backend. Los handlers de
+// producto leen y escriben aquí; reiniciarCatalogo() restaura los ejemplos
+// (se usa en beforeEach para no contaminar pruebas entre sí).
+const catalogoProductos: Producto[] = productosEjemplo.map((p) => ({ ...p }))
+let siguienteId = 3
+
+export function reiniciarCatalogo() {
+  catalogoProductos.length = 0
+  catalogoProductos.push(...productosEjemplo.map((p) => ({ ...p })))
+  siguienteId = 3
+}
+
+function aProducto(entrada: EntradaProducto, codigoBarras: string): Producto {
+  const categoria = categoriasEjemplo.find(
+    (c) => c.id === entrada.categoriaId,
+  )
+  const proveedor = proveedoresEjemplo.find(
+    (p) => p.id === entrada.proveedorId,
+  )
+  return {
+    id: siguienteId++,
+    codigoBarras,
+    nombre: entrada.nombre,
+    marca: entrada.marca ?? null,
+    categoriaId: entrada.categoriaId,
+    categoriaNombre: categoria?.nombre ?? null,
+    proveedorId: entrada.proveedorId ?? null,
+    proveedorNombre: proveedor?.razonSocial ?? null,
+    unidad: entrada.unidad,
+    tarifaIva: entrada.tarifaIva,
+    precioVenta: entrada.precioVenta,
+    costo: entrada.costo,
+    stock: entrada.stockInicial ?? 0,
+    stockMinimo: entrada.stockMinimo ?? null,
+    activo: true,
+  }
+}
+
 export const handlers = [
   http.get("/api/auth/sesion", () =>
     HttpResponse.json({ nombre: "Administrador", rol: "ADMIN" }),
   ),
   http.post("/api/auth/logout", () => new HttpResponse(null, { status: 204 })),
-  http.get("/api/producto", () => HttpResponse.json(productosEjemplo)),
+  http.get("/api/producto", () =>
+    HttpResponse.json(catalogoProductos.filter((p) => p.activo)),
+  ),
   http.get("/api/producto/buscar", ({ request }) => {
     const q = new URL(request.url).searchParams.get("q")?.toLowerCase() ?? ""
     return HttpResponse.json(
-      productosEjemplo.filter((producto) =>
-        producto.nombre.toLowerCase().includes(q),
+      catalogoProductos.filter(
+        (p) => p.activo && p.nombre.toLowerCase().includes(q),
       ),
     )
   }),
   http.get("/api/producto/codigo/:codigo", ({ params }) => {
-    const encontrado = productosEjemplo.find(
-      (producto) => producto.codigoBarras === params.codigo,
+    // Busca también inactivos, como el backend (RN-17): así se puede
+    // detectar «ya registrado» y reactivar desde /productos/nuevo.
+    const encontrado = catalogoProductos.find(
+      (p) => p.codigoBarras === params.codigo,
     )
     if (!encontrado) return new HttpResponse(null, { status: 404 })
     return HttpResponse.json(encontrado)
   }),
   http.get("/api/categoria", () => HttpResponse.json(categoriasEjemplo)),
   http.get("/api/proveedor", () => HttpResponse.json(proveedoresEjemplo)),
+  http.get("/api/catalogo/codigo/:codigo", ({ params }) => {
+    // Los códigos que empiezan por 880 simulan datos externos (RN-16);
+    // cualquier otro devuelve la sugerencia vacía.
+    const codigo = String(params.codigo)
+    if (codigo.startsWith("880")) {
+      return HttpResponse.json({
+        codigo,
+        nombre: "Borrador tinto",
+        marca: "Papelería Central",
+        categoria: "Útiles",
+      })
+    }
+    return HttpResponse.json({ codigo, nombre: null, marca: null, categoria: null })
+  }),
+  http.post("/api/producto", async ({ request }) => {
+    const entrada = (await request.json()) as EntradaProducto
+    const codigoBarras = entrada.codigoBarras || `2${Date.now().toString().slice(3, 13)}`
+    const creado = aProducto(entrada, codigoBarras)
+    catalogoProductos.push(creado)
+    return HttpResponse.json(creado)
+  }),
+  http.put("/api/producto/:id", async ({ params, request }) => {
+    const id = Number(params.id)
+    const entrada = (await request.json()) as EntradaProducto
+    const encontrado = catalogoProductos.find((p) => p.id === id)
+    if (!encontrado) return new HttpResponse(null, { status: 404 })
+    const actualizado = {
+      ...encontrado,
+      ...aProducto(entrada, entrada.codigoBarras || encontrado.codigoBarras),
+      id,
+      activo: encontrado.activo,
+    }
+    actualizado.costo = entrada.costo
+    const indice = catalogoProductos.indexOf(encontrado)
+    catalogoProductos[indice] = actualizado
+    return HttpResponse.json(actualizado)
+  }),
+  http.delete("/api/producto/:id", ({ params }) => {
+    const id = Number(params.id)
+    const encontrado = catalogoProductos.find((p) => p.id === id)
+    if (!encontrado) return new HttpResponse(null, { status: 404 })
+    const inactivo = { ...encontrado, activo: false }
+    catalogoProductos[catalogoProductos.indexOf(encontrado)] = inactivo
+    return HttpResponse.json(inactivo)
+  }),
+  http.put("/api/producto/:id/activar", ({ params }) => {
+    const id = Number(params.id)
+    const encontrado = catalogoProductos.find((p) => p.id === id)
+    if (!encontrado) return new HttpResponse(null, { status: 404 })
+    const activo = { ...encontrado, activo: true }
+    catalogoProductos[catalogoProductos.indexOf(encontrado)] = activo
+    return HttpResponse.json(activo)
+  }),
 ]

@@ -1,5 +1,5 @@
 export { CamaraEscaner } from "./CamaraEscaner"
 export { CampoCodigo } from "./CampoCodigo"
-export { esCodigoDeBarras } from "./codigos"
+export { esCodigoDeBarras, generarCodigoInterno } from "./codigos"
 export { FotoEscaner } from "./FotoEscaner"
 export { bipError, bipExito, prepararSonido } from "./bip"

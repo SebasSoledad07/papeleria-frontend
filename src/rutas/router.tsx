@@ -5,6 +5,7 @@ import { Categorias } from "@/caracteristicas/categorias/paginas/Categorias"
 import { Configuracion } from "@/caracteristicas/configuracion/paginas/Configuracion"
 import { NoEncontrado } from "@/caracteristicas/errores/paginas/NoEncontrado"
 import { Panel } from "@/caracteristicas/panel/paginas/Panel"
+import { NuevoProducto } from "@/caracteristicas/productos/paginas/NuevoProducto"
 import { Productos } from "@/caracteristicas/productos/paginas/Productos"
 import { Proveedores } from "@/caracteristicas/proveedores/paginas/Proveedores"
 import { Usuarios } from "@/caracteristicas/usuarios/paginas/Usuarios"
@@ -25,6 +26,14 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <Panel /> },
           { path: "productos", element: <Productos /> },
+          {
+            path: "productos/nuevo",
+            element: (
+              <RutaProtegida roles={["ADMIN", "BODEGUERO"]}>
+                <NuevoProducto />
+              </RutaProtegida>
+            ),
+          },
           {
             path: "usuarios",
             element: (

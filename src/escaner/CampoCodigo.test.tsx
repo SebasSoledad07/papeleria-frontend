@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 import { CampoCodigo } from "./CampoCodigo"
-import { esCodigoDeBarras } from "./codigos"
+import { esCodigoDeBarras, generarCodigoInterno } from "./codigos"
 
 describe("esCodigoDeBarras", () => {
   it("acepta de 8 a 14 dígitos", () => {
@@ -14,6 +14,33 @@ describe("esCodigoDeBarras", () => {
     expect(esCodigoDeBarras("lapiz")).toBe(false)
     expect(esCodigoDeBarras("1234567")).toBe(false)
     expect(esCodigoDeBarras("123456789012345")).toBe(false)
+  })
+})
+
+describe("generarCodigoInterno (RN-15)", () => {
+  it("devuelve 13 dígitos que empiezan por 2 y cumplen el dígito de control EAN-13", () => {
+    const codigo = generarCodigoInterno()
+    expect(codigo).toMatch(/^2\d{12}$/)
+
+    let suma = 0
+    for (let i = 0; i < 12; i++) {
+      const digito = Number(codigo[i])
+      suma += i % 2 === 0 ? digito : digito * 3
+    }
+    const control = (10 - (suma % 10)) % 10
+    expect(Number(codigo[12])).toBe(control)
+  })
+
+  it("depende del instante truncado a 12 dígitos (RN-15)", () => {
+    const reloj = vi.spyOn(Date, "now")
+    reloj.mockReturnValueOnce(1_700_000_000_001)
+    const a = generarCodigoInterno()
+    reloj.mockReturnValueOnce(1_600_000_000_001)
+    const b = generarCodigoInterno()
+    expect(a).not.toBe(b)
+    expect(a).toMatch(/^2\d{12}$/)
+    expect(b).toMatch(/^2\d{12}$/)
+    reloj.mockRestore()
   })
 })
 
