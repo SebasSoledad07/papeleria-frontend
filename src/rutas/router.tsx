@@ -154,10 +154,6 @@ export const router = createBrowserRouter([
             element: <Preferencias />,
           },
           {
-            path: "preferencias",
-            element: <Preferencias />,
-          },
-          {
             path: "configuracion",
             element: (
               <RutaProtegida roles={["ADMIN"]}>

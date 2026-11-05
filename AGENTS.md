@@ -31,6 +31,7 @@ No hay CI, Prettier, pre-commit, `test:e2e` ni `api:tipos`. Node ≥ 22.12. `.gi
 
 - `src/` → `api/` (`cliente.ts`, `errores.ts`, `tipos.ts`), `lib/formato.ts`, `escaner/`, `rutas/`, `componentes/` (`ui/` shadcn + `comunes/`), `caracteristicas/<feature>/` con `paginas/`, `componentes/`, `hooks/`.
 - Organización **por característica**, no por tipo. Varias exponen un `index.ts` de barril, pero el código actual suele importar por ruta directa (p. ej. `App.tsx` → `autenticacion/hooks/useSesion`); `productos` no tiene barril. Lo compartido vive en `componentes/` o `lib/`.
+- La landing comercial vive fuera de React: `public/landing.html`, un solo archivo con HTML, CSS y JS, servido como `/landing.html`. No hay ruta `/landing` en el router.
 - Estado del servidor con TanStack Query; formularios con RHF + Zod; estado de interfaz con `useState`. Todas las mutaciones con `retry: false`.
 - Código, archivos de pantalla y textos en **español**; `PascalCase` componentes, `camelCase` hooks/funciones. Un componente por archivo.
 - Commits pequeños citando la regla: `feat(caja): ... (RN-32)`.
