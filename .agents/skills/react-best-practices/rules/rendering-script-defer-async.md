@@ -19,7 +19,7 @@ Use `defer` for scripts that depend on DOM or other scripts. Use `async` for ind
 **Incorrect (blocks rendering):**
 
 ```tsx
-export default function Document() {
+export default function Document {
   return (
     <html>
       <head>
@@ -35,7 +35,7 @@ export default function Document() {
 **Correct (non-blocking):**
 
 ```tsx
-export default function Document() {
+export default function Document {
   return (
     <html>
       <head>
@@ -55,7 +55,7 @@ export default function Document() {
 ```tsx
 import Script from 'next/script'
 
-export default function Page() {
+export default function Page {
   return (
     <>
       <Script src="https://example.com/analytics.js" strategy="afterInteractive" />

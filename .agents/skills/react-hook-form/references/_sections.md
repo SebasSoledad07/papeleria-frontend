@@ -13,7 +13,7 @@ The section ID (in parentheses) is the filename prefix used to group rules.
 ## 2. Field Subscription (sub)
 
 **Impact:** CRITICAL
-**Description:** Isolating field subscriptions prevents cascade re-renders across the form tree. Using watch() at root vs useWatch() in children is the #1 performance differentiator.
+**Description:** Isolating field subscriptions prevents cascade re-renders across the form tree. Using watch at root vs useWatch in children is the #1 performance differentiator.
 
 ## 3. Controlled Components (ctrl)
 

@@ -15,9 +15,9 @@ Zod's default error messages are technical and confusing for end users. Provide 
 import { z } from 'zod'
 
 const signupSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-  age: z.number().min(18),
+  email: z.string.email,
+  password: z.string.min(8),
+  age: z.number.min(18),
 })
 
 signupSchema.parse({ email: 'bad', password: '123', age: 15 })

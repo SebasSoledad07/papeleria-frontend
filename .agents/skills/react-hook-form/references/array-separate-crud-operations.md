@@ -7,13 +7,13 @@ tags: array, useFieldArray, append, remove, sequential
 
 ## Separate Sequential Field Array Operations
 
-Chaining `append()` and `remove()` in the same handler can cause state corruption. Defer removals to a useEffect or separate user action to allow React to process renders between operations.
+Chaining `append` and `remove` in the same handler can cause state corruption. Defer removals to a useEffect or separate user action to allow React to process renders between operations.
 
 **Incorrect (stacked operations cause state issues):**
 
 ```typescript
-function ReplaceItemForm() {
-  const { control } = useForm()
+function ReplaceItemForm {
+  const { control } = useForm
   const { fields, append, remove } = useFieldArray({ control, name: 'items' })
 
   const replaceItem = (indexToReplace: number, newItem: Item) => {
@@ -38,8 +38,8 @@ function ReplaceItemForm() {
 **Correct (use update for replacements, or defer operations):**
 
 ```typescript
-function ReplaceItemForm() {
-  const { control } = useForm()
+function ReplaceItemForm {
+  const { control } = useForm
   const { fields, update } = useFieldArray({ control, name: 'items' })
 
   const replaceItem = (indexToReplace: number, newItem: Item) => {
@@ -65,7 +65,7 @@ function ReplaceItemForm() {
 ```typescript
 const [pendingRemoval, setPendingRemoval] = useState<number | null>(null)
 
-useEffect(() => {
+useEffect( => {
   if (pendingRemoval !== null) {
     remove(pendingRemoval)
     setPendingRemoval(null)

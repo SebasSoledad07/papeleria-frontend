@@ -16,7 +16,7 @@ Sigue las mismas fases que el backend ([`../../docs/06-plan-y-aceptacion.md`](..
 
 ## Fase 1. Base: acceso, usuarios y configuración
 
-**Backend necesario:** `auth`, `usuarios`, `configuracion`, `categorias`, `proveedores` (RF-08, RF-43 a RF-46).
+**Backend necesario:** `auth`, `usuarios`, `configuracion`, `categorias`, `proveedores` .
 
 **Entrega**
 - `/login`, cierre de sesión, `RutaProtegida`, menú por rol.
@@ -27,42 +27,42 @@ Sigue las mismas fases que el backend ([`../../docs/06-plan-y-aceptacion.md`](..
 
 ## Fase 2. Catálogo y escaneo
 
-**Backend necesario:** `productos`, `catalogo`, `codigos`, etiquetas, historial de precios (RF-01 a RF-13).
+**Backend necesario:** `productos`, `catalogo`, `codigos`, etiquetas, historial de precios .
 
 **Entrega**
-- `CampoCodigo` (lector USB), `CamaraEscaner`, `FotoEscaner`, bip (RF-09 a RF-13).
-- Listado y búsqueda (RF-06), alta con escaneo y catálogo externo (RF-01 a RF-03), edición con historial de precios (RF-05), activar e inactivar (RF-07).
-- Hoja de etiquetas (RF-04).
+- `CampoCodigo` (lector USB), `CamaraEscaner`, `FotoEscaner`, bip .
+- Listado y búsqueda , alta con escaneo y catálogo externo , edición con historial de precios , activar e inactivar .
+- Hoja de etiquetas .
 - Si se aprueba D-7: presentaciones por caja en el alta de productos.
 
 **Listo cuando:**
 - Al escanear un producto registrado, su nombre y precio aparecen en **menos de un segundo**.
-- Se leen los seis formatos de RF-12 con Chrome de Android y Safari de iPhone.
+- Se leen los seis formatos de  con Chrome de Android y Safari de iPhone.
 - Una etiqueta impresa se lee con el lector USB y encuentra el producto.
 - «lapiz» encuentra «Lápiz».
 
 ## Fase 3. Inventario
 
-**Backend necesario:** compras, ajustes, kárdex, conteo físico (RF-14 a RF-18).
+**Backend necesario:** compras, ajustes, kárdex, conteo físico .
 
 **Entrega**
-- Entrada de mercancía por escaneo (RF-14), ajustes con motivo obligatorio (RF-16), kárdex (RF-17), conteo físico con tabla de diferencias (RF-18).
+- Entrada de mercancía por escaneo , ajustes con motivo obligatorio , kárdex , conteo físico con tabla de diferencias .
 - Los campos de costo se ocultan según D-9.
 
 **Listo cuando:** después de una compra, el stock del producto muestra el valor correcto sin recargar la página; el conteo físico muestra las diferencias y las aplica una sola vez.
 
 ## Fase 4. Caja
 
-**Backend necesario:** `cajas`, `ventas`, `ventas/calcular`, `autorizaciones`, `clientes`, tirilla, anulación (RF-19 a RF-29). **Resueltas D-1, D-2, D-6 y D-10.**
+**Backend necesario:** `cajas`, `ventas`, `ventas/calcular`, `autorizaciones`, `clientes`, tirilla, anulación . **Resueltas D-1, D-2, D-6 y D-10.**
 
 **Entrega**
-- Apertura y cierre de caja (RF-19, RF-29).
-- Pantalla de venta con carrito, atajos de teclado y recuperación del borrador (RF-20, RF-21).
-- Descuentos y autorización de administrador (RF-22).
-- Cobro con pagos mixtos y cambio, con `Idempotency-Key` (RF-23, RF-25).
-- Cliente opcional (RF-24).
-- Tirilla de 58 y 80 mm, reimpresión (RF-26).
-- Consulta de ventas y anulación (RF-27, RF-28).
+- Apertura y cierre de caja .
+- Pantalla de venta con carrito, atajos de teclado y recuperación del borrador .
+- Descuentos y autorización de administrador .
+- Cobro con pagos mixtos y cambio, con `Idempotency-Key` .
+- Cliente opcional .
+- Tirilla de 58 y 80 mm, reimpresión .
+- Consulta de ventas y anulación .
 - Pruebas: reducer del carrito, componentes y **una prueba E2E con Playwright** del flujo completo solo con teclado.
 
 **Listo cuando:**
@@ -74,13 +74,13 @@ Sigue las mismas fases que el backend ([`../../docs/06-plan-y-aceptacion.md`](..
 
 ## Fase 5. Reportes y panel
 
-**Backend necesario:** `reportes/{nombre}` y `panel` (RF-30 a RF-42).
+**Backend necesario:** `reportes/{nombre}` y `panel` .
 
 **Entrega**
-- Panel con los indicadores del día y la alerta de stock (RF-42, RN-29).
+- Panel con los indicadores del día y la alerta de stock (RN-29).
 - `TablaReporte` genérica y la lista de reportes por rol.
-- Filtros de fechas, categoría y proveedor (RF-40).
-- Exportación a Excel y PDF (RF-41).
+- Filtros de fechas, categoría y proveedor .
+- Exportación a Excel y PDF .
 - Gráficas básicas en el panel (opcional).
 
 **Listo cuando:** los diez reportes se muestran con la misma tabla, el cajero no ve utilidad ni valor del inventario, y los archivos exportados traen los valores en formato COP.

@@ -15,10 +15,10 @@ Hook tests require proper context providers. Create a reusable wrapper function 
 import { renderHook } from '@testing-library/react'
 import { useForm } from 'react-hook-form'
 
-test('form submits correctly', () => {
-  const { result } = renderHook(() => useForm())  // May fail if form uses context
+test('form submits correctly',  => {
+  const { result } = renderHook( => useForm)  // May fail if form uses context
 
-  act(() => {
+  act( => {
     result.current.setValue('email', 'test@example.com')
   })
 
@@ -33,7 +33,7 @@ import { renderHook, act } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 
-const createWrapper = () => {
+const createWrapper =  => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   })
@@ -47,12 +47,12 @@ const createWrapper = () => {
   }
 }
 
-test('form submits correctly', () => {
-  const { result } = renderHook(() => useForm(), {
-    wrapper: createWrapper(),
+test('form submits correctly',  => {
+  const { result } = renderHook( => useForm, {
+    wrapper: createWrapper,
   })
 
-  act(() => {
+  act( => {
     result.current.setValue('email', 'test@example.com')
   })
 

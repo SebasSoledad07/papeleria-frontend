@@ -12,7 +12,7 @@ When using `mode: 'onSubmit'`, accessing `isValid` forces validation on every re
 **Incorrect (isValid triggers validation despite onSubmit mode):**
 
 ```typescript
-function RegistrationForm() {
+function RegistrationForm {
   const { register, handleSubmit, formState: { isValid } } = useForm({
     mode: 'onSubmit',  // Expects validation only on submit
   })
@@ -30,7 +30,7 @@ function RegistrationForm() {
 **Correct (use isSubmitting or allow submit attempt):**
 
 ```typescript
-function RegistrationForm() {
+function RegistrationForm {
   const { register, handleSubmit, formState: { isSubmitting } } = useForm({
     mode: 'onSubmit',
   })

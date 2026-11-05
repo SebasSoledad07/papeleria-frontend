@@ -7,14 +7,14 @@ tags: sub, watch, specific-fields, re-renders
 
 ## Watch Specific Fields Instead of Entire Form
 
-Calling `watch()` without arguments subscribes to ALL form fields, causing re-renders on any field change. Always specify the field names you need.
+Calling `watch` without arguments subscribes to ALL form fields, causing re-renders on any field change. Always specify the field names you need.
 
 **Incorrect (watches all fields, re-renders on any change):**
 
 ```typescript
-function OrderForm() {
-  const { register, watch, handleSubmit } = useForm()
-  const formValues = watch()  // Re-renders when ANY field changes
+function OrderForm {
+  const { register, watch, handleSubmit } = useForm
+  const formValues = watch  // Re-renders when ANY field changes
 
   const total = calculateTotal(formValues.quantity, formValues.price)
 
@@ -33,8 +33,8 @@ function OrderForm() {
 **Correct (watches only needed fields):**
 
 ```typescript
-function OrderForm() {
-  const { register, watch, handleSubmit } = useForm()
+function OrderForm {
+  const { register, watch, handleSubmit } = useForm
   const [quantity, price] = watch(['quantity', 'price'])  // Only re-renders when these change
 
   const total = calculateTotal(quantity, price)

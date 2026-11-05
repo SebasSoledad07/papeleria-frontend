@@ -15,9 +15,9 @@ Access latest values in callbacks without adding them to dependency arrays. Prev
 function SearchInput({ onSearch }: { onSearch: (q: string) => void }) {
   const [query, setQuery] = useState('')
 
-  useEffect(() => {
-    const timeout = setTimeout(() => onSearch(query), 300)
-    return () => clearTimeout(timeout)
+  useEffect( => {
+    const timeout = setTimeout( => onSearch(query), 300)
+    return  => clearTimeout(timeout)
   }, [query, onSearch])
 }
 ```
@@ -31,9 +31,9 @@ function SearchInput({ onSearch }: { onSearch: (q: string) => void }) {
   const [query, setQuery] = useState('')
   const onSearchEvent = useEffectEvent(onSearch)
 
-  useEffect(() => {
-    const timeout = setTimeout(() => onSearchEvent(query), 300)
-    return () => clearTimeout(timeout)
+  useEffect( => {
+    const timeout = setTimeout( => onSearchEvent(query), 300)
+    return  => clearTimeout(timeout)
   }, [query])
 }
 ```

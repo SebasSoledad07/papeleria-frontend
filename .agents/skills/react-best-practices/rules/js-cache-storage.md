@@ -12,7 +12,7 @@ tags: javascript, localStorage, storage, caching, performance
 **Incorrect (reads storage on every call):**
 
 ```typescript
-function getTheme() {
+function getTheme {
   return localStorage.getItem('theme') ?? 'light'
 }
 // Called 10 times = 10 storage reads
@@ -21,7 +21,7 @@ function getTheme() {
 **Correct (Map cache):**
 
 ```typescript
-const storageCache = new Map<string, string | null>()
+const storageCache = new Map<string, string | null>
 
 function getLocalStorage(key: string) {
   if (!storageCache.has(key)) {
@@ -62,9 +62,9 @@ window.addEventListener('storage', (e) => {
   if (e.key) storageCache.delete(e.key)
 })
 
-document.addEventListener('visibilitychange', () => {
+document.addEventListener('visibilitychange',  => {
   if (document.visibilityState === 'visible') {
-    storageCache.clear()
+    storageCache.clear
   }
 })
 ```

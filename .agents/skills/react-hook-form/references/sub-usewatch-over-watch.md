@@ -7,13 +7,13 @@ tags: sub, useWatch, watch, re-renders, subscription
 
 ## Use useWatch Instead of watch for Isolated Re-renders
 
-The `watch()` method triggers re-renders at the useForm hook level, affecting the entire form component. Use `useWatch()` in child components to isolate re-renders to only the components that need the watched value.
+The `watch` method triggers re-renders at the useForm hook level, affecting the entire form component. Use `useWatch` in child components to isolate re-renders to only the components that need the watched value.
 
 **Incorrect (watch at root causes entire form to re-render):**
 
 ```typescript
-function CheckoutForm() {
-  const { register, watch, handleSubmit } = useForm()
+function CheckoutForm {
+  const { register, watch, handleSubmit } = useForm
   const shippingMethod = watch('shippingMethod')  // Every change re-renders entire form
 
   return (
@@ -33,8 +33,8 @@ function CheckoutForm() {
 **Correct (useWatch isolates re-render to child component):**
 
 ```typescript
-function CheckoutForm() {
-  const { register, handleSubmit, control } = useForm()
+function CheckoutForm {
+  const { register, handleSubmit, control } = useForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

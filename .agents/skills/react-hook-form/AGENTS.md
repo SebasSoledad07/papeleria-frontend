@@ -20,14 +20,14 @@ Comprehensive performance optimization guide for React Hook Form applications, d
 ## Table of Contents
 
 1. [Form Configuration](references/_sections.md#1-form-configuration) — **CRITICAL**
-   - 1.1 [Always Provide defaultValues for Form Initialization](references/formcfg-default-values.md) — CRITICAL (prevents undefined state bugs and enables reset() functionality)
+   - 1.1 [Always Provide defaultValues for Form Initialization](references/formcfg-default-values.md) — CRITICAL (prevents undefined state bugs and enables reset functionality)
    - 1.2 [Avoid useForm Return Object in useEffect Dependencies](references/formcfg-useeffect-dependency.md) — CRITICAL (prevents infinite render loops)
    - 1.3 [Enable shouldUnregister for Dynamic Form Memory Efficiency](references/formcfg-should-unregister.md) — HIGH (reduces memory usage for forms with frequently mounted/unmounted fields)
    - 1.4 [Set reValidateMode to onBlur for Post-Submit Performance](references/formcfg-revalidate-mode.md) — CRITICAL (reduces re-renders after initial submission by 80%+)
    - 1.5 [Use Async defaultValues for Server Data](references/formcfg-async-default-values.md) — CRITICAL (eliminates manual useEffect reset patterns)
    - 1.6 [Use onSubmit Mode for Optimal Performance](references/formcfg-validation-mode.md) — CRITICAL (prevents re-renders on every keystroke)
 2. [Field Subscription](references/_sections.md#2-field-subscription) — **CRITICAL**
-   - 2.1 [Avoid Calling watch() in Render for One-Time Reads](references/sub-avoid-watch-in-render.md) — HIGH (prevents unnecessary subscriptions and re-renders)
+   - 2.1 [Avoid Calling watch in Render for One-Time Reads](references/sub-avoid-watch-in-render.md) — HIGH (prevents unnecessary subscriptions and re-renders)
    - 2.2 [Combine useWatch with getValues for Timing Safety](references/sub-usewatch-with-getvalues.md) — HIGH (prevents missed updates due to subscription timing)
    - 2.3 [Provide defaultValue to useWatch for Initial Render](references/sub-usewatch-default-value.md) — MEDIUM-HIGH (prevents undefined flash on initial render)
    - 2.4 [Subscribe Deep in Component Tree Where Data Is Needed](references/sub-deep-subscription.md) — CRITICAL (prevents parent re-renders from propagating to unrelated children)

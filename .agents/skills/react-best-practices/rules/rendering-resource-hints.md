@@ -23,7 +23,7 @@ React DOM provides APIs to hint the browser about resources it will need. These 
 ```tsx
 import { preconnect, prefetchDNS } from 'react-dom'
 
-export default function App() {
+export default function App {
   prefetchDNS('https://analytics.example.com')
   preconnect('https://api.example.com')
 
@@ -56,8 +56,8 @@ export default function RootLayout({ children }) {
 ```tsx
 import { preloadModule, preinitModule } from 'react-dom'
 
-function Navigation() {
-  const preloadDashboard = () => {
+function Navigation {
+  const preloadDashboard =  => {
     preloadModule('/dashboard.js', { as: 'script' })
   }
 

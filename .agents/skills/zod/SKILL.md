@@ -11,7 +11,7 @@ Comprehensive schema validation guide for Zod in TypeScript applications. Contai
 
 Reference these guidelines when:
 - Writing new Zod schemas
-- Choosing between parse() and safeParse()
+- Choosing between parse and safeParse
 - Implementing type inference with z.infer
 - Handling validation errors for user feedback
 - Composing complex object schemas
@@ -37,7 +37,7 @@ Reference these guidelines when:
 ### 1. Schema Definition (CRITICAL)
 
 - `schema-use-primitives-correctly` - Use correct primitive schemas for each type
-- `schema-use-unknown-not-any` - Use z.unknown() instead of z.any() for type safety
+- `schema-use-unknown-not-any` - Use z.unknown instead of z.any for type safety
 - `schema-avoid-optional-abuse` - Avoid overusing optional fields
 - `schema-string-validations` - Apply string validations at schema definition
 - `schema-use-enums` - Use enums for fixed string values
@@ -45,7 +45,7 @@ Reference these guidelines when:
 
 ### 2. Parsing & Validation (CRITICAL)
 
-- `parse-use-safeparse` - Use safeParse() for user input
+- `parse-use-safeparse` - Use safeParse for user input
 - `parse-async-for-async-refinements` - Use parseAsync for async refinements
 - `parse-handle-all-issues` - Handle all validation issues not just first
 - `parse-validate-early` - Validate at system boundaries
@@ -63,35 +63,35 @@ Reference these guidelines when:
 ### 4. Error Handling (HIGH)
 
 - `error-custom-messages` - Provide custom error messages
-- `error-use-flatten` - Use flatten() for form error display
+- `error-use-flatten` - Use flatten for form error display
 - `error-path-for-nested` - Use issue.path for nested error location
 - `error-i18n` - Implement internationalized error messages
 - `error-avoid-throwing-in-refine` - Return false instead of throwing in refine
 
 ### 5. Object Schemas (MEDIUM-HIGH)
 
-- `object-strict-vs-strip` - Choose strict() vs strip() for unknown keys
-- `object-partial-for-updates` - Use partial() for update schemas
-- `object-pick-omit` - Use pick() and omit() for schema variants
-- `object-extend-for-composition` - Use extend() for adding fields
-- `object-optional-vs-nullable` - Distinguish optional() from nullable()
+- `object-strict-vs-strip` - Choose strict vs strip for unknown keys
+- `object-partial-for-updates` - Use partial for update schemas
+- `object-pick-omit` - Use pick and omit for schema variants
+- `object-extend-for-composition` - Use extend for adding fields
+- `object-optional-vs-nullable` - Distinguish optional from nullable
 - `object-discriminated-unions` - Use discriminated unions for type narrowing
 
 ### 6. Schema Composition (MEDIUM)
 
 - `compose-shared-schemas` - Extract shared schemas into reusable modules
-- `compose-intersection` - Use intersection() for type combinations
-- `compose-lazy-recursive` - Use z.lazy() for recursive schemas
-- `compose-preprocess` - Use preprocess() for data normalization
-- `compose-pipe` - Use pipe() for multi-stage validation
+- `compose-intersection` - Use intersection for type combinations
+- `compose-lazy-recursive` - Use z.lazy for recursive schemas
+- `compose-preprocess` - Use preprocess for data normalization
+- `compose-pipe` - Use pipe for multi-stage validation
 
 ### 7. Refinements & Transforms (MEDIUM)
 
-- `refine-vs-superrefine` - Choose refine() vs superRefine() correctly
-- `refine-transform-coerce` - Distinguish transform() from refine() and coerce()
+- `refine-vs-superrefine` - Choose refine vs superRefine correctly
+- `refine-transform-coerce` - Distinguish transform from refine and coerce
 - `refine-add-path` - Add path to refinement errors
-- `refine-defaults` - Use default() for optional fields with defaults
-- `refine-catch` - Use catch() for fault-tolerant parsing
+- `refine-defaults` - Use default for optional fields with defaults
+- `refine-catch` - Use catch for fault-tolerant parsing
 
 ### 8. Performance & Bundle (LOW-MEDIUM)
 

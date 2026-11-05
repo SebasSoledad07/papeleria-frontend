@@ -19,19 +19,19 @@ function openModal(modal) {
   modal.addEventListener('keydown', (e) => {
     if (e.key === 'Tab') {
       if (e.shiftKey && document.activeElement === firstElement) {
-        e.preventDefault();
-        lastElement.focus();
+        e.preventDefault;
+        lastElement.focus;
       } else if (!e.shiftKey && document.activeElement === lastElement) {
-        e.preventDefault();
-        firstElement.focus();
+        e.preventDefault;
+        firstElement.focus;
       }
     }
     if (e.key === 'Escape') {
-      closeModal();
+      closeModal;
     }
   });
 
-  firstElement.focus();
+  firstElement.focus;
 }
 ```
 
@@ -93,13 +93,13 @@ Announce errors to screen readers and focus the first invalid field on submit.
 form.addEventListener('submit', (e) => {
   const firstError = form.querySelector('[aria-invalid="true"]');
   if (firstError) {
-    e.preventDefault();
-    firstError.focus();
+    e.preventDefault;
+    firstError.focus;
 
     const errorSummary = document.getElementById('error-summary');
     errorSummary.textContent =
       `${errors.length} errors found. Please fix them and try again.`;
-    errorSummary.focus();
+    errorSummary.focus;
   }
 });
 ```
@@ -209,7 +209,7 @@ Use `aria-live` to announce dynamic content changes to screen readers without mo
 function showNotification(message, type = 'polite') {
   const container = document.getElementById(`${type}-announcer`);
   container.textContent = '';
-  requestAnimationFrame(() => {
+  requestAnimationFrame( => {
     container.textContent = message;
   });
 }

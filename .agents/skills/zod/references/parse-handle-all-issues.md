@@ -15,10 +15,10 @@ Zod collects all validation failures, not just the first one. When displaying er
 import { z } from 'zod'
 
 const formSchema = z.object({
-  email: z.string().email('Invalid email'),
-  password: z.string().min(8, 'Password must be 8+ characters'),
-  confirmPassword: z.string(),
-  age: z.number().min(18, 'Must be 18 or older'),
+  email: z.string.email('Invalid email'),
+  password: z.string.min(8, 'Password must be 8+ characters'),
+  confirmPassword: z.string,
+  age: z.number.min(18, 'Must be 18 or older'),
 })
 
 function validateForm(data: unknown) {
@@ -47,10 +47,10 @@ validateForm({})
 import { z } from 'zod'
 
 const formSchema = z.object({
-  email: z.string().email('Invalid email'),
-  password: z.string().min(8, 'Password must be 8+ characters'),
-  confirmPassword: z.string(),
-  age: z.number().min(18, 'Must be 18 or older'),
+  email: z.string.email('Invalid email'),
+  password: z.string.min(8, 'Password must be 8+ characters'),
+  confirmPassword: z.string,
+  age: z.number.min(18, 'Must be 18 or older'),
 })
 
 function validateForm(data: unknown) {
@@ -87,13 +87,13 @@ validateForm({})
 // User sees ALL errors, fixes everything, submits once!
 ```
 
-**Using flatten() for simpler error structure:**
+**Using flatten for simpler error structure:**
 
 ```typescript
 const result = formSchema.safeParse(data)
 
 if (!result.success) {
-  const flattened = result.error.flatten()
+  const flattened = result.error.flatten
   // {
   //   formErrors: [],  // Top-level errors
   //   fieldErrors: {

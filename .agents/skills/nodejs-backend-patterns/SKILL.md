@@ -30,12 +30,12 @@ import helmet from "helmet";
 import cors from "cors";
 import compression from "compression";
 
-const app = express();
+const app = express;
 
 // Security middleware
-app.use(helmet());
+app.use(helmet);
 app.use(cors({ origin: process.env.ALLOWED_ORIGINS?.split(",") }));
-app.use(compression());
+app.use(compression);
 
 // Body parsing
 app.use(express.json({ limit: "10mb" }));
@@ -44,11 +44,11 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 // Request logging
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`${req.method} ${req.path}`);
-  next();
+  next;
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT,  => {
   console.log(`Server running on port ${PORT}`);
 });
 ```
@@ -99,8 +99,7 @@ fastify.post<{
   async (request, reply) => {
     const { name, email } = request.body;
     return { id: "123", name };
-  },
-);
+  });
 
 await fastify.listen({ port: 3000, host: "0.0.0.0" });
 ```
@@ -170,7 +169,7 @@ export class UserController {
     try {
       const { id } = req.params;
       await this.userService.deleteUser(id);
-      res.status(204).send();
+      res.status(204).send;
     } catch (error) {
       next(error);
     }
@@ -249,8 +248,7 @@ export class UserRepository {
   constructor(private db: Pool) {}
 
   async create(
-    userData: CreateUserDTO & { password: string },
-  ): Promise<UserEntity> {
+    userData: CreateUserDTO & { password: string }): Promise<UserEntity> {
     const query = `
       INSERT INTO users (name, email, password)
       VALUES ($1, $2, $3)
@@ -333,8 +331,7 @@ declare global {
 export const authenticate = async (
   req: Request,
   res: Response,
-  next: NextFunction,
-) => {
+  next: NextFunction) => {
   try {
     const token = req.headers.authorization?.replace("Bearer ", "");
 
@@ -345,7 +342,7 @@ export const authenticate = async (
     const payload = jwt.verify(token, process.env.JWT_SECRET!) as JWTPayload;
 
     req.user = payload;
-    next();
+    next;
   } catch (error) {
     next(new UnauthorizedError("Invalid token"));
   }
@@ -364,7 +361,7 @@ export const authorize = (...roles: string[]) => {
       return next(new UnauthorizedError("Insufficient permissions"));
     }
 
-    next();
+    next;
   };
 };
 ```
@@ -385,7 +382,7 @@ export const validate = (schema: AnyZodObject) => {
         query: req.query,
         params: req.params,
       });
-      next();
+      next;
     } catch (error) {
       if (error instanceof ZodError) {
         const errors = error.errors.map((err) => ({
@@ -405,9 +402,9 @@ import { z } from "zod";
 
 const createUserSchema = z.object({
   body: z.object({
-    name: z.string().min(1),
-    email: z.string().email(),
-    password: z.string().min(8),
+    name: z.string.min(1),
+    email: z.string.email,
+    password: z.string.min(8),
   }),
 });
 
@@ -468,13 +465,12 @@ const logger = pino({
 export const requestLogger = (
   req: Request,
   res: Response,
-  next: NextFunction,
-) => {
-  const start = Date.now();
+  next: NextFunction) => {
+  const start = Date.now;
 
   // Log response when finished
-  res.on("finish", () => {
-    const duration = Date.now() - start;
+  res.on("finish",  => {
+    const duration = Date.now - start;
     logger.info({
       method: req.method,
       url: req.url,
@@ -485,7 +481,7 @@ export const requestLogger = (
     });
   });
 
-  next();
+  next;
 };
 
 export { logger };
@@ -501,8 +497,7 @@ export class AppError extends Error {
   constructor(
     public message: string,
     public statusCode: number = 500,
-    public isOperational: boolean = true,
-  ) {
+    public isOperational: boolean = true) {
     super(message);
     Object.setPrototypeOf(this, AppError.prototype);
     Error.captureStackTrace(this, this.constructor);
@@ -512,8 +507,7 @@ export class AppError extends Error {
 export class ValidationError extends AppError {
   constructor(
     message: string,
-    public errors?: any[],
-  ) {
+    public errors?: any[]) {
     super(message, 400);
   }
 }
@@ -555,8 +549,7 @@ export const errorHandler = (
   err: Error,
   req: Request,
   res: Response,
-  next: NextFunction,
-) => {
+  next: NextFunction) => {
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({
       status: "error",
@@ -587,8 +580,7 @@ export const errorHandler = (
 
 // Async error wrapper
 export const asyncHandler = (
-  fn: (req: Request, res: Response, next: NextFunction) => Promise<any>,
-) => {
+  fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) => {
   return (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   };

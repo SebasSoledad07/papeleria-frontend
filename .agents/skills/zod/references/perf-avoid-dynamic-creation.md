@@ -20,8 +20,8 @@ async function validateBatch(items: unknown[]) {
   for (const item of items) {
     // Schema created for EACH item - slow!
     const schema = z.object({
-      id: z.string(),
-      value: z.number(),
+      id: z.string,
+      value: z.number,
     })
 
     results.push(schema.safeParse(item))
@@ -40,8 +40,8 @@ import { z } from 'zod'
 
 // Schema created ONCE
 const itemSchema = z.object({
-  id: z.string(),
-  value: z.number(),
+  id: z.string,
+  value: z.number,
 })
 
 async function validateBatch(items: unknown[]) {
@@ -58,7 +58,7 @@ async function validateBatch(items: unknown[]) {
 import { z } from 'zod'
 
 // Cache for dynamically-configured schemas
-const schemaCache = new WeakMap<object, z.ZodType>()
+const schemaCache = new WeakMap<object, z.ZodType>
 
 function getSchemaForConfig(config: { fields: string[] }) {
   // Check cache first
@@ -69,7 +69,7 @@ function getSchemaForConfig(config: { fields: string[] }) {
   // Create and cache
   const shape: Record<string, z.ZodString> = {}
   for (const field of config.fields) {
-    shape[field] = z.string()
+    shape[field] = z.string
   }
 
   const schema = z.object(shape)
@@ -88,14 +88,14 @@ import { z } from 'zod'
 // Schema created only when first used
 let _userSchema: z.ZodObject<any> | null = null
 
-function getUserSchema() {
+function getUserSchema {
   if (!_userSchema) {
     _userSchema = z.object({
-      id: z.string().uuid(),
-      email: z.string().email(),
+      id: z.string.uuid,
+      email: z.string.email,
       profile: z.object({
-        name: z.string(),
-        avatar: z.string().url().optional(),
+        name: z.string,
+        avatar: z.string.url.optional,
       }),
     })
   }
@@ -105,7 +105,7 @@ function getUserSchema() {
 // Or use a getter
 const schemas = {
   _user: null as z.ZodType | null,
-  get user() {
+  get user {
     if (!this._user) {
       this._user = z.object({ /* ... */ })
     }

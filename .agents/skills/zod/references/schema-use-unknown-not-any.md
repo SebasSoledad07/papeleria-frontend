@@ -1,13 +1,13 @@
 ---
-title: Use z.unknown() Instead of z.any()
+title: Use z.unknown Instead of z.any
 impact: CRITICAL
-impactDescription: z.any() bypasses TypeScript's type system entirely; z.unknown() forces type narrowing before use
+impactDescription: z.any bypasses TypeScript's type system entirely; z.unknown forces type narrowing before use
 tags: schema, unknown, any, type-safety
 ---
 
-## Use z.unknown() Instead of z.any()
+## Use z.unknown Instead of z.any
 
-`z.any()` infers to `any` type, disabling TypeScript's type checking for that value. `z.unknown()` infers to `unknown`, which forces you to narrow the type before using it. This preserves type safety while still allowing any input.
+`z.any` infers to `any` type, disabling TypeScript's type checking for that value. `z.unknown` infers to `unknown`, which forces you to narrow the type before using it. This preserves type safety while still allowing any input.
 
 **Incorrect (using z.any):**
 
@@ -15,8 +15,8 @@ tags: schema, unknown, any, type-safety
 import { z } from 'zod'
 
 const eventSchema = z.object({
-  type: z.string(),
-  payload: z.any(),  // Infers to 'any'
+  type: z.string,
+  payload: z.any,  // Infers to 'any'
 })
 
 type Event = z.infer<typeof eventSchema>
@@ -34,8 +34,8 @@ function handleEvent(event: Event) {
 import { z } from 'zod'
 
 const eventSchema = z.object({
-  type: z.string(),
-  payload: z.unknown(),  // Infers to 'unknown'
+  type: z.string,
+  payload: z.unknown,  // Infers to 'unknown'
 })
 
 type Event = z.infer<typeof eventSchema>
@@ -60,16 +60,16 @@ import { z } from 'zod'
 const userCreatedSchema = z.object({
   type: z.literal('user.created'),
   payload: z.object({
-    userId: z.string(),
-    email: z.string().email(),
+    userId: z.string,
+    email: z.string.email,
   }),
 })
 
 const orderPlacedSchema = z.object({
   type: z.literal('order.placed'),
   payload: z.object({
-    orderId: z.string(),
-    amount: z.number(),
+    orderId: z.string,
+    amount: z.number,
   }),
 })
 

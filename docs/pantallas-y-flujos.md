@@ -6,25 +6,25 @@ Roles: **A** administrador · **C** cajero · **B** bodeguero. Los requerimiento
 
 | Ruta | Pantalla | Roles | Requerimientos |
 |---|---|---|---|
-| `/login` | Iniciar sesión | público | RF-43 |
-| `/` | Panel | todos | RF-42, RN-29 |
-| `/caja` | Caja (punto de venta) | A, C | RF-19 a RF-26 |
-| `/caja/cierre` | Cierre de caja | A, C | RF-29 |
-| `/ventas` | Consulta de ventas | A, C | RF-27 |
-| `/ventas/:id` | Detalle, reimprimir tirilla, anular | A, C (anular: solo A) | RF-26, RF-28 |
-| `/productos` | Listado y búsqueda | todos | RF-06 |
-| `/productos/nuevo` | Nuevo producto (con escaneo) | A | RF-01 a RF-03 |
-| `/productos/:id` | Detalle y edición, historial de precios | A (los demás, solo lectura) | RF-05, RF-07 |
-| `/productos/:id/kardex` | Kárdex | A, B | RF-17 |
-| `/productos/etiquetas` | Imprimir etiquetas | A, B | RF-04 |
-| `/inventario/compras` | Entrada de mercancía | A, B | RF-14, RF-15 |
-| `/inventario/ajustes` | Ajuste de inventario | A, B | RF-16 |
-| `/inventario/conteo` | Conteo físico | A, B | RF-18 |
-| `/categorias`, `/proveedores` | Administración | A (proveedores también lectura B) | RF-08 |
-| `/reportes` | Lista de reportes | según rol | RF-30 a RF-41 |
-| `/reportes/:nombre` | Reporte con filtros y exportación | según rol | RF-40, RF-41 |
-| `/usuarios` | Usuarios | A | RF-44 |
-| `/configuracion` | Datos del negocio y parámetros | A | RF-45, RF-46 |
+| `/login` | Iniciar sesión | público |  |
+| `/` | Panel | todos | , RN-29 |
+| `/caja` | Caja (punto de venta) | A, C |  |
+| `/caja/cierre` | Cierre de caja | A, C |  |
+| `/ventas` | Consulta de ventas | A, C |  |
+| `/ventas/:id` | Detalle, reimprimir tirilla, anular | A, C (anular: solo A) | ,  |
+| `/productos` | Listado y búsqueda | todos |  |
+| `/productos/nuevo` | Nuevo producto (con escaneo) | A |  |
+| `/productos/:id` | Detalle y edición, historial de precios | A (los demás, solo lectura) | ,  |
+| `/productos/:id/kardex` | Kárdex | A, B |  |
+| `/productos/etiquetas` | Imprimir etiquetas | A, B |  |
+| `/inventario/compras` | Entrada de mercancía | A, B | ,  |
+| `/inventario/ajustes` | Ajuste de inventario | A, B |  |
+| `/inventario/conteo` | Conteo físico | A, B |  |
+| `/categorias`, `/proveedores` | Administración | A (proveedores también lectura B) |  |
+| `/reportes` | Lista de reportes | según rol |  |
+| `/reportes/:nombre` | Reporte con filtros y exportación | según rol | ,  |
+| `/usuarios` | Usuarios | A |  |
+| `/configuracion` | Datos del negocio y parámetros | A |  |
 | `/preferencias` | Preferencias de este equipo | todos | D-5 |
 
 ## Menú por rol
@@ -35,7 +35,7 @@ Roles: **A** administrador · **C** cajero · **B** bodeguero. Los requerimiento
 
 ## Panel (`/`)
 
-- **Tarjetas del día** (RF-42): ventas del día (A, C), número de ventas, y productos **agotados**, con **stock bajo** y **por agotarse** (A, B). Cada tarjeta de stock lleva al reporte correspondiente.
+- **Tarjetas del día** : ventas del día (A, C), número de ventas, y productos **agotados**, con **stock bajo** y **por agotarse** (A, B). Cada tarjeta de stock lleva al reporte correspondiente.
 - **Alerta al iniciar sesión** (RN-29): para A y B, un aviso con los tres conteos de stock.
 - Se recarga al volver a la pestaña y después de cada venta o movimiento de inventario.
 
@@ -45,7 +45,7 @@ La pantalla más importante. Debe poder operarse **completa con teclado y lector
 
 ### Estados
 
-1. **Sin caja abierta:** solo se muestra el formulario de apertura con la base inicial en efectivo (RF-19). Hasta abrirla no se puede vender (RN-30).
+1. **Sin caja abierta:** solo se muestra el formulario de apertura con la base inicial en efectivo . Hasta abrirla no se puede vender (RN-30).
 2. **Caja abierta:** pantalla de venta.
 3. **Cobrando:** ventana modal de pago.
 4. **Venta confirmada:** resumen con el consecutivo, impresión de la tirilla y regreso inmediato a una venta nueva.
@@ -70,7 +70,7 @@ Números grandes y legibles. En celular o tablet, la columna derecha pasa debajo
 ### Escaneo y búsqueda
 
 - El **campo de escaneo siempre tiene el foco.** Después de cada acción, de cerrar una ventana o de hacer clic fuera, el foco vuelve a él.
-- El lector USB «escribe» el código y envía Enter (RF-09). Regla del campo (`CampoCodigo`):
+- El lector USB «escribe» el código y envía Enter . Regla del campo (`CampoCodigo`):
   - Texto de **8 a 14 dígitos** → búsqueda exacta por código (`GET /api/productos/codigo/{codigo}`).
   - Cualquier otro texto → búsqueda por nombre, marca o categoría (`GET /api/productos?q=`), con lista de sugerencias que se recorre con ↑ ↓ y se elige con Enter.
 - Si el código no existe: aviso «Producto no registrado» con sonido de error; el foco se queda en el campo. No se abre ningún formulario (cada rol hace lo suyo: A puede registrarlo desde Productos).
@@ -81,23 +81,23 @@ Números grandes y legibles. En celular o tablet, la columna derecha pasa debajo
 
 ### Carrito
 
-- Cambiar cantidad (RF-21): `+` / `-` sobre la línea seleccionada, o escribir el número. La cantidad mínima es 1; para quitar la línea se usa `Supr`.
+- Cambiar cantidad : `+` / `-` sobre la línea seleccionada, o escribir el número. La cantidad mínima es 1; para quitar la línea se usa `Supr`.
 - Línea seleccionada con ↑ ↓. Doble Enter sobre una línea abre su descuento.
 - **Subtotal** del carrito = suma de `precioVenta × cantidad`, calculado en local. Todo lo demás lo da el servidor (ver abajo).
 - Con el carrito vacío no se puede cobrar.
 - El borrador del carrito se guarda en `sessionStorage` (ids y cantidades) y se recupera si se recarga la página por accidente.
 
-### Descuentos (RF-22, RN-33)
+### Descuentos (RN-33)
 
 - Por línea o sobre el total, en porcentaje o en valor.
 - Al aplicar un descuento, el frontend llama a `POST /api/ventas/calcular` y muestra lo que devuelve el servidor (incluido el prorrateo, D-1).
 - Si el descuento supera el límite de la configuración (`GET /api/configuracion/publica`), se abre la ventana **«Autorización de administrador»** (usuario y clave). El frontend llama a `POST /api/autorizaciones/descuento`, guarda solo el `autorizacionId` y descarta la clave de inmediato (D-6). Si la autorización vence o es inválida, se vuelve a pedir.
 
-### Cliente (RF-24, RN-36)
+### Cliente (RN-36)
 
 Opcional. Se busca por número de documento; si no existe, se crea con tipo de documento, número y nombre.
 
-### Cobro (RF-23, RN-34, RN-35)
+### Cobro (RN-34, RN-35)
 
 Ventana modal que se abre con **F9** o el botón. Antes de mostrarse llama a `/api/ventas/calcular` para presentar el **total oficial**.
 
@@ -135,7 +135,7 @@ Ventana modal que se abre con **F9** o el botón. Antes de mostrarse llama a `/a
 
 No se usan `F1`, `F5`, `F11` ni `F12` (el navegador los toma).
 
-## Cierre de caja (`/caja/cierre`, RF-29, RN-41)
+## Cierre de caja (`/caja/cierre`, RN-41)
 
 1. El cajero escribe el **efectivo contado** y confirma.
 2. La pantalla muestra lo que devuelve el servidor: efectivo esperado, **diferencia** (sobrante o faltante) y resumen por medio de pago.
@@ -143,7 +143,7 @@ No se usan `F1`, `F5`, `F11` ni `F12` (el navegador los toma).
 
 ## Ventas (`/ventas`)
 
-- Filtros: fecha, consecutivo, cajero, cliente (RF-27). El cajero solo ve las de su caja.
+- Filtros: fecha, consecutivo, cajero, cliente . El cajero solo ve las de su caja.
 - Detalle: líneas, IVA discriminado por tarifa (RN-12), pagos, estado. Botón **Reimprimir tirilla**.
 - **Anular** (solo A): pide motivo obligatorio y confirmación. La anulación devuelve las unidades al inventario (RN-38). Si la caja ya cerró, el servidor responde `ANULACION_NO_PERMITIDA` (D-2).
 
@@ -151,58 +151,58 @@ No se usan `F1`, `F5`, `F11` ni `F12` (el navegador los toma).
 
 ### Listado (`/productos`)
 
-Búsqueda por código, nombre, marca o categoría, tolerante a mayúsculas, tildes y errores (RF-06): la búsqueda la hace el servidor; el frontend solo envía `q` con una pequeña espera (~300 ms) al escribir. Filtros por categoría, proveedor, estado de stock y activo. Cada fila muestra el **estado de stock** con color y texto (no solo color). Las columnas de costo solo existen para A.
+Búsqueda por código, nombre, marca o categoría, tolerante a mayúsculas, tildes y errores : la búsqueda la hace el servidor; el frontend solo envía `q` con una pequeña espera (~300 ms) al escribir. Filtros por categoría, proveedor, estado de stock y activo. Cada fila muestra el **estado de stock** con color y texto (no solo color). Las columnas de costo solo existen para A.
 
-### Nuevo producto (`/productos/nuevo`, RF-01 a RF-03)
+### Nuevo producto (`/productos/nuevo`)
 
 1. Campo de escaneo (lector o cámara).
 2. Si el código **ya existe** (`GET /api/productos/codigo/...?incluirInactivos=true` responde 200; también cuenta si está inactivo) → se abre la edición de ese producto, con aviso «Este código ya está registrado» (RN-13).
 3. Si **no existe** → se consulta `GET /api/catalogo/{codigo}`. Si hay datos, se **prellena** el formulario con un aviso «Datos sugeridos: revísalos y completa el precio» (RN-16). Si falla (`CATALOGO_NO_DISPONIBLE`) o no hay datos, se sigue con el formulario vacío, sin bloquear.
 4. Formulario: nombre, marca, categoría, proveedor, unidad, precio de venta (con IVA incluido), costo, tarifa de IVA, stock inicial, stock mínimo.
-5. Producto **sin código de fábrica**: botón «Generar código interno» (RF-03, RN-15) y, al guardar, ofrecer imprimir la etiqueta.
+5. Producto **sin código de fábrica**: botón «Generar código interno» (RN-15) y, al guardar, ofrecer imprimir la etiqueta.
 6. **Advertencias sin bloquear:** precio de venta ≤ costo (RN-06). **Errores que sí bloquean:** precio ≤ 0 (RN-05).
 7. La tarifa de IVA muestra una nota: «Valídala con el contador» (RN-10).
 
-### Edición y precios (RF-05, RN-07)
+### Edición y precios (RN-07)
 
-Al cambiar el precio se pide confirmación mostrando «antes → después». La pestaña **Historial de precios** lista cambios con usuario y fecha. **Inactivar** (RF-07) en lugar de eliminar (RN-17).
+Al cambiar el precio se pide confirmación mostrando «antes → después». La pestaña **Historial de precios** lista cambios con usuario y fecha. **Inactivar**  en lugar de eliminar (RN-17).
 
-### Etiquetas (RF-04)
+### Etiquetas 
 
 Seleccionar productos y número de copias → vista previa → imprimir. Ver [`escaner-e-impresion.md`](escaner-e-impresion.md).
 
 ## Inventario
 
-### Entrada de mercancía (`/inventario/compras`, RF-14)
+### Entrada de mercancía (`/inventario/compras`)
 
 Proveedor, número de factura del proveedor y líneas. Cada producto se agrega **escaneando**; por línea se indican cantidad y costo unitario. Se muestra el total de la factura. Al guardar, el servidor actualiza stock y costo promedio (RN-23). Si se aprueba D-7, la cantidad se indica por presentación (cajas) y la pantalla muestra la conversión a unidades.
 
-### Ajustes (`/inventario/ajustes`, RF-16, RN-22)
+### Ajustes (`/inventario/ajustes`, RN-22)
 
 Escanear el producto, indicar cantidad positiva o negativa y **motivo obligatorio**: conteo físico, producto dañado, pérdida, vencimiento u otro (con descripción). Confirmación antes de enviar.
 
-### Conteo físico (`/inventario/conteo`, RF-18, D-3)
+### Conteo físico (`/inventario/conteo`, D-3)
 
 1. Se escanean los productos y se registra la cantidad contada (cada lectura suma una unidad; también se puede escribir el número).
 2. Al terminar, la pantalla muestra una **tabla de diferencias** (sistema vs. contado) y pide confirmación.
 3. Al confirmar, se envía `POST /api/conteos` y el servidor genera los ajustes. El conteo vive en el navegador hasta ese momento; si se cierra la pestaña se pierde (conteo de una sola sesión).
 
-### Kárdex (`/productos/:id/kardex`, RF-17)
+### Kárdex (`/productos/:id/kardex`)
 
 Tabla paginada: fecha, tipo de movimiento, cantidad (con signo), stock resultante, usuario, referencia.
 
 ## Reportes (`/reportes`)
 
 - La lista muestra solo los reportes que el rol puede ver, agrupados: **Stock** (stock bajo, agotados, por agotarse, pedido por proveedor), **Ventas** (ventas por periodo, más vendidos, sin movimiento), **Dinero** (utilidad, valor del inventario, cierres de caja; solo A).
-- La pantalla de un reporte tiene los **filtros comunes** (fechas, categoría, proveedor, RF-40) y una **tabla genérica** que se construye con `columnas` y `filas` de la respuesta. Una sola tabla sirve para todos los reportes.
+- La pantalla de un reporte tiene los **filtros comunes** (fechas, categoría, proveedor) y una **tabla genérica** que se construye con `columnas` y `filas` de la respuesta. Una sola tabla sirve para todos los reportes.
 - `DINERO` se formatea con `formato.ts`; `ESTADO_STOCK` se muestra con su insignia.
-- Botones **Excel** y **PDF** (RF-41): piden el mismo reporte con `formato=xlsx|pdf` y descargan el archivo.
-- «Pedido por proveedor» (RF-33): agrupado por proveedor, con total por proveedor, listo para imprimir o exportar.
+- Botones **Excel** y **PDF** : piden el mismo reporte con `formato=xlsx|pdf` y descargan el archivo.
+- «Pedido por proveedor» : agrupado por proveedor, con total por proveedor, listo para imprimir o exportar.
 
 ## Usuarios y configuración
 
-- **Usuarios** (RF-44): lista, crear, editar rol, inactivar. La clave se escribe solo al crear o cambiarla y nunca se muestra.
-- **Configuración** (RF-45, RF-46): datos del negocio (razón social, NIT, dirección, teléfono, mensaje de la tirilla) y parámetros (stock mínimo por defecto, días de «por agotarse», días de promedio, días de cobertura, descuento máximo sin autorización).
+- **Usuarios** : lista, crear, editar rol, inactivar. La clave se escribe solo al crear o cambiarla y nunca se muestra.
+- **Configuración** : datos del negocio (razón social, NIT, dirección, teléfono, mensaje de la tirilla) y parámetros (stock mínimo por defecto, días de «por agotarse», días de promedio, días de cobertura, descuento máximo sin autorización).
 
 ## Preferencias de este equipo (`/preferencias`)
 

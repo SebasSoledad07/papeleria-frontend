@@ -12,11 +12,11 @@ Extract static JSX outside components to avoid re-creation.
 **Incorrect (recreates element every render):**
 
 ```tsx
-function LoadingSkeleton() {
+function LoadingSkeleton {
   return <div className="animate-pulse h-20 bg-gray-200" />
 }
 
-function Container() {
+function Container {
   return (
     <div>
       {loading && <LoadingSkeleton />}
@@ -32,7 +32,7 @@ const loadingSkeleton = (
   <div className="animate-pulse h-20 bg-gray-200" />
 )
 
-function Container() {
+function Container {
   return (
     <div>
       {loading && loadingSkeleton}

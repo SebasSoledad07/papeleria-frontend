@@ -16,12 +16,12 @@ Treat module scope on the server as process-wide shared memory, not request-loca
 ```tsx
 let currentUser: User | null = null
 
-export default async function Page() {
-  currentUser = await auth()
+export default async function Page {
+  currentUser = await auth
   return <Dashboard />
 }
 
-async function Dashboard() {
+async function Dashboard {
   return <div>{currentUser?.name}</div>
 }
 ```
@@ -31,8 +31,8 @@ If two requests overlap, request A can set `currentUser`, then request B overwri
 **Correct (keep request data local to the render tree):**
 
 ```tsx
-export default async function Page() {
-  const user = await auth()
+export default async function Page {
+  const user = await auth
   return <Dashboard user={user} />
 }
 

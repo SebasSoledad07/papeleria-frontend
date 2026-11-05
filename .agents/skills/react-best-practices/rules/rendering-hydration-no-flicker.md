@@ -32,7 +32,7 @@ Server-side rendering will fail because `localStorage` is undefined.
 function ThemeWrapper({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState('light')
   
-  useEffect(() => {
+  useEffect( => {
     // Runs after hydration - causes visible flash
     const stored = localStorage.getItem('theme')
     if (stored) {
@@ -62,13 +62,13 @@ function ThemeWrapper({ children }: { children: ReactNode }) {
       <script
         dangerouslySetInnerHTML={{
           __html: `
-            (function() {
+            (function {
               try {
                 var theme = localStorage.getItem('theme') || 'light';
                 var el = document.getElementById('theme-wrapper');
                 if (el) el.className = theme;
               } catch (e) {}
-            })();
+            });
           `,
         }}
       />

@@ -16,7 +16,7 @@ const { register, handleSubmit, formState: { errors } } = useForm({
   mode: 'onChange',  // Triggers validation + re-render on EVERY input change
 })
 
-function RegistrationForm() {
+function RegistrationForm {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input {...register('email', { required: true, pattern: /^\S+@\S+$/i })} />
@@ -33,7 +33,7 @@ const { register, handleSubmit, formState: { errors } } = useForm({
   mode: 'onSubmit',  // Default: validates only when form is submitted
 })
 
-function RegistrationForm() {
+function RegistrationForm {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input {...register('email', { required: true, pattern: /^\S+@\S+$/i })} />

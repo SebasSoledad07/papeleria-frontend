@@ -13,7 +13,7 @@ The section ID (in parentheses) is the filename prefix used to group rules.
 ## 2. Parsing & Validation (parse)
 
 **Impact:** CRITICAL
-**Description:** Parsing is the core Zod operation; using `parse()` vs `safeParse()` incorrectly causes either unhandled exceptions crashing your app or silent failures that let invalid data through.
+**Description:** Parsing is the core Zod operation; using `parse` vs `safeParse` incorrectly causes either unhandled exceptions crashing your app or silent failures that let invalid data through.
 
 ## 3. Type Inference (type)
 

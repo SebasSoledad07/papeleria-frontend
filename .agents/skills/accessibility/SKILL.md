@@ -166,8 +166,8 @@ element.addEventListener('click', handleAction);
 element.addEventListener('click', handleAction);
 element.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    handleAction();
+    e.preventDefault;
+    handleAction;
   }
 });
 ```
@@ -249,7 +249,7 @@ Any action that requires dragging must have a single-pointer alternative (e.g., 
 
 ```javascript
 // Allow users to extend time limits
-function showSessionWarning() {
+function showSessionWarning {
   const modal = createModal({
     title: 'Session Expiring',
     content: 'Your session will expire in 2 minutes.',
@@ -377,7 +377,7 @@ Login flows must not rely on cognitive function tests (e.g., remembering a passw
 
 ### Live regions (4.1.3)
 
-Use `aria-live` regions to announce dynamic content changes without moving focus. See the [live regions pattern](references/A11Y-PATTERNS.md#live-regions-and-notifications) for markup and a `showNotification()` helper.
+Use `aria-live` regions to announce dynamic content changes without moving focus. See the [live regions pattern](references/A11Y-PATTERNS.md#live-regions-and-notifications) for markup and a `showNotification` helper.
 
 ---
 

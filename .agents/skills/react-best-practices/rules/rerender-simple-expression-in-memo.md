@@ -14,7 +14,7 @@ Calling `useMemo` and comparing hook dependencies may consume more resources tha
 
 ```tsx
 function Header({ user, notifications }: Props) {
-  const isLoading = useMemo(() => {
+  const isLoading = useMemo( => {
     return user.isLoading || notifications.isLoading
   }, [user.isLoading, notifications.isLoading])
 

@@ -20,11 +20,12 @@ No hay CI, Prettier, pre-commit, `test:e2e` ni `api:tipos`. Node ≥ 22.12. `.gi
 
 ## Estado actual (verificado)
 
-- Frontend: fases 0, 1 y 2 **completas**; la 3 es la siguiente. `npm test` = 9 archivos / 46 pruebas; `npm run lint` y `npx tsc -b` pasan. Hecho: login/logout/sesión, menú y permisos por rol, usuarios, categorías, proveedores, configuración, panel, escáner (`src/escaner/`), productos (listado/búsqueda/filtros + CRUD con escaneo, sugerencia de catálogo y reactivación). **No hay aún pantallas de inventario, caja/ventas, clientes ni reportes.**
-- Backend (`../inventario-papeleria`): fases 1 a 5 **completas** (inventario, caja/ventas, clientes, reportes y panel). No hay bloqueo para empezar Fase 3; los endpoints ya existen (ver «El contrato hoy»). Fase 6 (DIAN) fuera de v1.
+- Frontend: fases 0 a 5 **completas**; la 6 (despliegue) es la siguiente. `npm test` = 9 archivos / 46 pruebas; `npm run lint` y `npx tsc -b` pasan. Hecho: login/logout/sesión, menú y permisos por rol, usuarios, categorías, proveedores, configuración, panel con indicadores, escáner, productos, inventario (compras, ajustes, conteo, kárdex), caja/ventas (apertura, cobro, cierre, consulta, anulación, tirilla), reportes y preferencias.
+- Backend (`../inventario-papeleria`): fases 1 a 5 **completas** (inventario, caja/ventas, clientes, reportes y panel). Fase 6 (DIAN) fuera de v1. Frontend ya cubre fases 0-5.
 - **D-4 sigue bloqueada**: `SesionDto` es solo `{nombre, rol}`, sin flag de primer inicio; no lo inventes. **D-7** (presentaciones por caja) se omite en v1. **D-9**: ocultar costos/campos por rol en inventario.
 - Decisiones pendientes en backend: D-1, D-2, D-4, D-5, D-6 (D-3 resuelta → RN-46). D-7, D-9, D-10 son del frontend y **no están registradas** en `../inventario-papeleria/docs/08-decisiones-pendientes.md`.
 - Backend de prueba: `./mvnw spring-boot:run` en `../inventario-papeleria`; PostgreSQL en :5435 vía su `docker-compose.yml`; API en :8080. Requiere Docker Desktop y JDK 21 (el `java` del sistema es 1.8).
+- Despliegue: artefactos en `deploy/` (Dockerfile + nginx.conf).
 
 ## Arquitectura y convenciones
 

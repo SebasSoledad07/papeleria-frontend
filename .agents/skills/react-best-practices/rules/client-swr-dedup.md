@@ -12,11 +12,11 @@ SWR enables request deduplication, caching, and revalidation across component in
 **Incorrect (no deduplication, each instance fetches):**
 
 ```tsx
-function UserList() {
+function UserList {
   const [users, setUsers] = useState([])
-  useEffect(() => {
+  useEffect( => {
     fetch('/api/users')
-      .then(r => r.json())
+      .then(r => r.json)
       .then(setUsers)
   }, [])
 }
@@ -27,7 +27,7 @@ function UserList() {
 ```tsx
 import useSWR from 'swr'
 
-function UserList() {
+function UserList {
   const { data: users } = useSWR('/api/users', fetcher)
 }
 ```
@@ -37,7 +37,7 @@ function UserList() {
 ```tsx
 import { useImmutableSWR } from '@/lib/swr'
 
-function StaticContent() {
+function StaticContent {
   const { data } = useImmutableSWR('/api/config', fetcher)
 }
 ```
@@ -47,9 +47,9 @@ function StaticContent() {
 ```tsx
 import { useSWRMutation } from 'swr/mutation'
 
-function UpdateButton() {
+function UpdateButton {
   const { trigger } = useSWRMutation('/api/user', updateUser)
-  return <button onClick={() => trigger()}>Update</button>
+  return <button onClick={ => trigger}>Update</button>
 }
 ```
 

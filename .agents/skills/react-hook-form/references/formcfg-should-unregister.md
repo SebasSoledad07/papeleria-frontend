@@ -16,7 +16,7 @@ const { register, handleSubmit } = useForm({
   shouldUnregister: false,  // Default: unmounted fields stay in form state
 })
 
-function MultiStepForm() {
+function MultiStepForm {
   const [step, setStep] = useState(1)
 
   return (
@@ -39,7 +39,7 @@ const { register, handleSubmit } = useForm({
   shouldUnregister: true,  // Unmounted fields removed from form state
 })
 
-function MultiStepForm() {
+function MultiStepForm {
   const [step, setStep] = useState(1)
 
   return (

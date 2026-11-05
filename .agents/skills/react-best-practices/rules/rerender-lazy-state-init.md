@@ -13,7 +13,7 @@ Pass a function to `useState` for expensive initial values. Without the function
 
 ```tsx
 function FilteredList({ items }: { items: Item[] }) {
-  // buildSearchIndex() runs on EVERY render, even after initialization
+  // buildSearchIndex runs on EVERY render, even after initialization
   const [searchIndex, setSearchIndex] = useState(buildSearchIndex(items))
   const [query, setQuery] = useState('')
   
@@ -21,7 +21,7 @@ function FilteredList({ items }: { items: Item[] }) {
   return <SearchResults index={searchIndex} query={query} />
 }
 
-function UserProfile() {
+function UserProfile {
   // JSON.parse runs on every render
   const [settings, setSettings] = useState(
     JSON.parse(localStorage.getItem('settings') || '{}')
@@ -35,16 +35,16 @@ function UserProfile() {
 
 ```tsx
 function FilteredList({ items }: { items: Item[] }) {
-  // buildSearchIndex() runs ONLY on initial render
-  const [searchIndex, setSearchIndex] = useState(() => buildSearchIndex(items))
+  // buildSearchIndex runs ONLY on initial render
+  const [searchIndex, setSearchIndex] = useState( => buildSearchIndex(items))
   const [query, setQuery] = useState('')
   
   return <SearchResults index={searchIndex} query={query} />
 }
 
-function UserProfile() {
+function UserProfile {
   // JSON.parse runs only on initial render
-  const [settings, setSettings] = useState(() => {
+  const [settings, setSettings] = useState( => {
     const stored = localStorage.getItem('settings')
     return stored ? JSON.parse(stored) : {}
   })

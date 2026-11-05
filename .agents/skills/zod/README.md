@@ -6,8 +6,8 @@ A comprehensive guide for using Zod effectively in TypeScript applications. This
 
 Zod is a TypeScript-first schema declaration and validation library. This skill covers best practices for:
 
-- **Schema Definition**: Choosing correct types, avoiding `z.any()`, proper string validations
-- **Parsing & Validation**: Using `safeParse()`, async validation, error handling
+- **Schema Definition**: Choosing correct types, avoiding `z.any`, proper string validations
+- **Parsing & Validation**: Using `safeParse`, async validation, error handling
 - **Type Inference**: Leveraging `z.infer`, distinguishing input/output types
 - **Error Handling**: Custom messages, internationalization, form error display
 - **Object Schemas**: strict/strip modes, partial updates, discriminated unions

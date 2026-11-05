@@ -1,13 +1,13 @@
 ---
-title: Use safeParse() for User Input
+title: Use safeParse for User Input
 impact: CRITICAL
-impactDescription: parse() throws exceptions on invalid data; unhandled exceptions crash servers and expose stack traces to users
+impactDescription: parse throws exceptions on invalid data; unhandled exceptions crash servers and expose stack traces to users
 tags: parse, safeParse, error-handling, validation
 ---
 
-## Use safeParse() for User Input
+## Use safeParse for User Input
 
-`parse()` throws a `ZodError` when validation fails, which crashes your application if not caught. `safeParse()` returns a result object that you can inspect without try/catch. Use `safeParse()` for any user-provided or external data.
+`parse` throws a `ZodError` when validation fails, which crashes your application if not caught. `safeParse` returns a result object that you can inspect without try/catch. Use `safeParse` for any user-provided or external data.
 
 **Incorrect (parse without error handling):**
 
@@ -16,12 +16,12 @@ import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 
 const createUserSchema = z.object({
-  email: z.string().email(),
-  name: z.string().min(1),
+  email: z.string.email,
+  name: z.string.min(1),
 })
 
 export async function POST(req: NextRequest) {
-  const body = await req.json()
+  const body = await req.json
 
   // If validation fails, this throws and crashes the handler
   const user = createUserSchema.parse(body)
@@ -40,12 +40,12 @@ import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 
 const createUserSchema = z.object({
-  email: z.string().email(),
-  name: z.string().min(1),
+  email: z.string.email,
+  name: z.string.min(1),
 })
 
 export async function POST(req: NextRequest) {
-  const body = await req.json()
+  const body = await req.json
 
   const result = createUserSchema.safeParse(body)
 
@@ -81,14 +81,14 @@ if (result.success) {
 }
 ```
 
-**When parse() is acceptable:**
+**When parse is acceptable:**
 
 ```typescript
 // Internal data you control - parse is fine
 const config = configSchema.parse(JSON.parse(process.env.CONFIG))
 
 // Test assertions - parse throws helpful errors
-expect(() => schema.parse(invalidData)).toThrow()
+expect( => schema.parse(invalidData)).toThrow
 
 // Schema development - see errors immediately
 schema.parse(testData)  // See what fails during development

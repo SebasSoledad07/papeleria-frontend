@@ -25,7 +25,7 @@ function ChannelComposer({ channelId }: { channelId: string }) {
         value={state.input}
         onChange={(text) => sync.updateInput(text)}
       />
-      <Composer.Submit onPress={() => sync.submit()} />
+      <Composer.Submit onPress={ => sync.submit} />
     </Composer.Frame>
   )
 }
@@ -57,7 +57,7 @@ function ChannelProvider({
 }
 
 // UI component only knows about the context interface
-function ChannelComposer() {
+function ChannelComposer {
   return (
     <Composer.Frame>
       <Composer.Header />
@@ -85,7 +85,7 @@ function Channel({ channelId }: { channelId: string }) {
 // Local state for ephemeral forms
 function ForwardMessageProvider({ children }) {
   const [state, setState] = useState(initialState)
-  const forwardMessage = useForwardMessage()
+  const forwardMessage = useForwardMessage
 
   return (
     <Composer.Provider

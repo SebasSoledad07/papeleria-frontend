@@ -15,8 +15,8 @@ React Hook Form exports its own `<Form>` component. When using shadcn/ui, ensure
 import { useForm, Form } from 'react-hook-form'  // Wrong Form!
 import { FormField, FormItem, FormLabel } from '@/components/ui/form'
 
-function LoginForm() {
-  const form = useForm()
+function LoginForm {
+  const form = useForm
 
   return (
     <Form {...form}>  {/* RHF Form doesn't work with shadcn FormField */}
@@ -41,8 +41,8 @@ function LoginForm() {
 import { useForm } from 'react-hook-form'
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form'
 
-function LoginForm() {
-  const form = useForm()
+function LoginForm {
+  const form = useForm
 
   return (
     <Form {...form}>  {/* shadcn Form wraps FormProvider correctly */}

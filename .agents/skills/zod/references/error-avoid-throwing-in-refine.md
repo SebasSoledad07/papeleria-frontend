@@ -7,7 +7,7 @@ tags: error, refine, validation, best-practices
 
 ## Return False Instead of Throwing in Refine
 
-When using `.refine()` for custom validation, return `false` for invalid data instead of throwing an error. Throwing stops validation immediately, preventing Zod from collecting other validation errors. This results in poor UX where users fix one error only to discover another.
+When using `.refine` for custom validation, return `false` for invalid data instead of throwing an error. Throwing stops validation immediately, preventing Zod from collecting other validation errors. This results in poor UX where users fix one error only to discover another.
 
 **Incorrect (throwing in refine):**
 
@@ -15,8 +15,8 @@ When using `.refine()` for custom validation, return `false` for invalid data in
 import { z } from 'zod'
 
 const passwordSchema = z.object({
-  password: z.string().min(8),
-  confirmPassword: z.string(),
+  password: z.string.min(8),
+  confirmPassword: z.string,
 }).refine((data) => {
   if (data.password !== data.confirmPassword) {
     // Throwing stops all further validation
@@ -26,9 +26,9 @@ const passwordSchema = z.object({
 })
 
 const formSchema = z.object({
-  email: z.string().email(),
+  email: z.string.email,
   passwords: passwordSchema,
-  terms: z.boolean().refine((v) => v === true, 'Must accept terms'),
+  terms: z.boolean.refine((v) => v === true, 'Must accept terms'),
 })
 
 // If passwords don't match, user never learns about other errors
@@ -47,17 +47,17 @@ formSchema.safeParse({
 import { z } from 'zod'
 
 const passwordSchema = z.object({
-  password: z.string().min(8),
-  confirmPassword: z.string(),
+  password: z.string.min(8),
+  confirmPassword: z.string,
 }).refine(
   (data) => data.password === data.confirmPassword,
   { message: 'Passwords do not match', path: ['confirmPassword'] }
 )
 
 const formSchema = z.object({
-  email: z.string().email(),
+  email: z.string.email,
   passwords: passwordSchema,
-  terms: z.boolean().refine((v) => v === true, 'Must accept terms'),
+  terms: z.boolean.refine((v) => v === true, 'Must accept terms'),
 })
 
 // All errors are collected
@@ -75,7 +75,7 @@ formSchema.safeParse({
 **For multiple validation rules, use superRefine:**
 
 ```typescript
-const passwordSchema = z.string().superRefine((password, ctx) => {
+const passwordSchema = z.string.superRefine((password, ctx) => {
   // Check multiple rules, report all failures
   if (password.length < 8) {
     ctx.addIssue({
@@ -109,7 +109,7 @@ passwordSchema.safeParse('weak')
 
 ```typescript
 const schema = z.object({
-  email: z.string().email(),
+  email: z.string.email,
 }).refine(
   async (data) => {
     // Return boolean, don't throw

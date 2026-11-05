@@ -1,13 +1,13 @@
 ---
-title: Use catch() for Fault-Tolerant Parsing
+title: Use catch for Fault-Tolerant Parsing
 impact: MEDIUM
-impactDescription: parse() fails on first invalid field; catch() provides fallback values, enabling partial success with degraded data
+impactDescription: parse fails on first invalid field; catch provides fallback values, enabling partial success with degraded data
 tags: refine, catch, fallback, resilience
 ---
 
-## Use catch() for Fault-Tolerant Parsing
+## Use catch for Fault-Tolerant Parsing
 
-When parsing data that might have some invalid fields but you want to accept what's valid, use `.catch()` to provide fallback values instead of failing entirely. This enables graceful degradation for partially corrupted data.
+When parsing data that might have some invalid fields but you want to accept what's valid, use `.catch` to provide fallback values instead of failing entirely. This enables graceful degradation for partially corrupted data.
 
 **Incorrect (all-or-nothing parsing):**
 
@@ -16,9 +16,9 @@ import { z } from 'zod'
 
 const userPrefsSchema = z.object({
   theme: z.enum(['light', 'dark']),
-  fontSize: z.number().min(8).max(32),
-  language: z.string(),
-  notifications: z.boolean(),
+  fontSize: z.number.min(8).max(32),
+  language: z.string,
+  notifications: z.boolean,
 })
 
 // Corrupted localStorage data
@@ -41,9 +41,9 @@ import { z } from 'zod'
 
 const userPrefsSchema = z.object({
   theme: z.enum(['light', 'dark']).catch('light'),
-  fontSize: z.number().min(8).max(32).catch(16),
-  language: z.string().catch('en'),
-  notifications: z.boolean().catch(true),
+  fontSize: z.number.min(8).max(32).catch(16),
+  language: z.string.catch('en'),
+  notifications: z.boolean.catch(true),
 })
 
 // Corrupted data
@@ -69,7 +69,7 @@ const prefs = userPrefsSchema.parse(stored)
 ```typescript
 // Factory function receives the caught error
 const schema = z.object({
-  data: z.array(z.number()).catch((ctx) => {
+  data: z.array(z.number).catch((ctx) => {
     console.warn('Invalid data array:', ctx.error)
     return []  // Return empty array as fallback
   }),
@@ -80,13 +80,13 @@ const schema = z.object({
 
 ```typescript
 const productSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  price: z.number().positive(),
+  id: z.string,
+  name: z.string,
+  price: z.number.positive,
   // Legacy field that might be missing or wrong format
-  legacyCode: z.string().catch('UNKNOWN'),
+  legacyCode: z.string.catch('UNKNOWN'),
   // External data that might be malformed
-  metadata: z.record(z.string()).catch({}),
+  metadata: z.record(z.string).catch({}),
 })
 
 // API returns partial data
@@ -102,17 +102,17 @@ const product = productSchema.parse(apiResponse)
 // Works! Returns product with fallbacks for bad fields
 ```
 
-**Difference between catch() and default():**
+**Difference between catch and default:**
 
 ```typescript
-// .default() - only fills in undefined
-z.string().default('fallback')
+// .default - only fills in undefined
+z.string.default('fallback')
 // undefined -> 'fallback'
 // null -> ZodError
 // '' -> '' (empty string is valid)
 
-// .catch() - fallback for ANY parse failure
-z.string().catch('fallback')
+// .catch - fallback for ANY parse failure
+z.string.catch('fallback')
 // undefined -> 'fallback'
 // null -> 'fallback'
 // 123 -> 'fallback'
@@ -123,13 +123,13 @@ z.string().catch('fallback')
 
 ```typescript
 // Catch only specific validation failures
-const schema = z.string()
-  .email()
+const schema = z.string
+  .email
   .catch('invalid@example.com')  // Fallback if not valid email
 
 // Chain for complex defaults
-const ageSchema = z.coerce.number()
-  .int()
+const ageSchema = z.coerce.number
+  .int
   .min(0)
   .max(120)
   .catch(0)  // Invalid ages become 0

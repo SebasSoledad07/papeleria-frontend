@@ -1,22 +1,22 @@
 ---
 title: Always Provide defaultValues for Form Initialization
 impact: CRITICAL
-impactDescription: prevents undefined state bugs and enables reset() functionality
+impactDescription: prevents undefined state bugs and enables reset functionality
 tags: formcfg, default-values, initialization, useForm
 ---
 
 ## Always Provide defaultValues for Form Initialization
 
-Omitting `defaultValues` causes undefined state conflicts with controlled components and breaks `reset()` functionality. Always provide explicit defaults, using empty strings instead of undefined.
+Omitting `defaultValues` causes undefined state conflicts with controlled components and breaks `reset` functionality. Always provide explicit defaults, using empty strings instead of undefined.
 
 **Incorrect (no defaultValues, breaks reset and controlled components):**
 
 ```typescript
-const { register, reset, handleSubmit } = useForm()
+const { register, reset, handleSubmit } = useForm
 
 function ProfileForm({ user }: { user: User }) {
-  useEffect(() => {
-    reset(user)  // reset() won't restore to "initial" state without defaultValues
+  useEffect( => {
+    reset(user)  // reset won't restore to "initial" state without defaultValues
   }, [user, reset])
 
   return (
@@ -39,8 +39,8 @@ const { register, reset, handleSubmit } = useForm({
 })
 
 function ProfileForm({ user }: { user: User }) {
-  useEffect(() => {
-    reset(user)  // reset() properly restores to defaultValues when called without args
+  useEffect( => {
+    reset(user)  // reset properly restores to defaultValues when called without args
   }, [user, reset])
 
   return (

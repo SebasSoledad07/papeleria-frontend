@@ -21,11 +21,11 @@ export async function GET(request: Request) {
   // Runs on EVERY request - expensive!
   const fontData = await fetch(
     new URL('./fonts/Inter.ttf', import.meta.url)
-  ).then(res => res.arrayBuffer())
+  ).then(res => res.arrayBuffer)
 
   const logoData = await fetch(
     new URL('./images/logo.png', import.meta.url)
-  ).then(res => res.arrayBuffer())
+  ).then(res => res.arrayBuffer)
 
   return new ImageResponse(
     <div style={{ fontFamily: 'Inter' }}>
@@ -46,11 +46,11 @@ import { ImageResponse } from 'next/og'
 // Module-level: runs ONCE when module is first imported
 const fontData = fetch(
   new URL('./fonts/Inter.ttf', import.meta.url)
-).then(res => res.arrayBuffer())
+).then(res => res.arrayBuffer)
 
 const logoData = fetch(
   new URL('./images/logo.png', import.meta.url)
-).then(res => res.arrayBuffer())
+).then(res => res.arrayBuffer)
 
 export async function GET(request: Request) {
   // Await the already-started promises
@@ -76,11 +76,11 @@ import { join } from 'path'
 
 // Synchronous read at module level - blocks only during module init
 const fontData = readFileSync(
-  join(process.cwd(), 'public/fonts/Inter.ttf')
+  join(process.cwd, 'public/fonts/Inter.ttf')
 )
 
 const logoData = readFileSync(
-  join(process.cwd(), 'public/images/logo.png')
+  join(process.cwd, 'public/images/logo.png')
 )
 
 export async function GET(request: Request) {

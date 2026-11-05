@@ -17,7 +17,7 @@ const { register, handleSubmit } = useForm({
   reValidateMode: 'onChange',  // Default: after first submit, validates on EVERY keystroke
 })
 
-function PaymentForm() {
+function PaymentForm {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input {...register('cardNumber', { required: true })} />
@@ -35,7 +35,7 @@ const { register, handleSubmit } = useForm({
   reValidateMode: 'onBlur',  // After first submit, validates only on blur
 })
 
-function PaymentForm() {
+function PaymentForm {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input {...register('cardNumber', { required: true })} />

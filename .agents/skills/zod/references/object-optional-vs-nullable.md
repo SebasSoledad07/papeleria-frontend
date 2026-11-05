@@ -1,13 +1,13 @@
 ---
-title: Distinguish optional() from nullable()
+title: Distinguish optional from nullable
 impact: MEDIUM-HIGH
 impactDescription: Confusing undefined and null semantics causes "property does not exist" vs "property is null" bugs; choose deliberately
 tags: object, optional, nullable, undefined
 ---
 
-## Distinguish optional() from nullable()
+## Distinguish optional from nullable
 
-`.optional()` allows `undefined` (field can be missing), while `.nullable()` allows `null` (field must be present but can be null). Choosing the wrong one causes subtle bugs in database operations, JSON serialization, and API contracts.
+`.optional` allows `undefined` (field can be missing), while `.nullable` allows `null` (field must be present but can be null). Choosing the wrong one causes subtle bugs in database operations, JSON serialization, and API contracts.
 
 **Incorrect (confusing optional and nullable):**
 
@@ -15,11 +15,11 @@ tags: object, optional, nullable, undefined
 import { z } from 'zod'
 
 const userSchema = z.object({
-  name: z.string(),
+  name: z.string,
   // Intended: field might not exist
-  nickname: z.string().nullable(),  // Wrong! Requires field to be present
+  nickname: z.string.nullable,  // Wrong! Requires field to be present
   // Intended: field exists but might be null
-  deletedAt: z.date().optional(),  // Wrong! Allows field to be missing
+  deletedAt: z.date.optional,  // Wrong! Allows field to be missing
 })
 
 // This fails - nickname is required
@@ -37,14 +37,14 @@ userSchema.parse({ name: 'John', nickname: null, deletedAt: undefined })
 import { z } from 'zod'
 
 const userSchema = z.object({
-  name: z.string(),
+  name: z.string,
 
-  // optional() - field might not exist in the object
-  nickname: z.string().optional(),
+  // optional - field might not exist in the object
+  nickname: z.string.optional,
   // Type: string | undefined
 
-  // nullable() - field must exist, but value can be null
-  deletedAt: z.date().nullable(),
+  // nullable - field must exist, but value can be null
+  deletedAt: z.date.nullable,
   // Type: Date | null
 })
 
@@ -66,25 +66,25 @@ userSchema.parse({
 **When to use each:**
 
 ```typescript
-// optional() - field may not exist
+// optional - field may not exist
 // Use for: Optional form fields, sparse updates, optional config
 z.object({
-  bio: z.string().optional(),  // User might not have filled this
-  middleName: z.string().optional(),  // Not everyone has one
+  bio: z.string.optional,  // User might not have filled this
+  middleName: z.string.optional,  // Not everyone has one
 })
 
-// nullable() - field exists but value can be null
+// nullable - field exists but value can be null
 // Use for: Database nullable columns, "cleared" values, explicit absence
 z.object({
-  deletedAt: z.date().nullable(),  // null = not deleted, Date = when deleted
-  parentId: z.string().nullable(),  // null = root node, string = has parent
-  approvedBy: z.string().nullable(),  // null = pending, string = approver
+  deletedAt: z.date.nullable,  // null = not deleted, Date = when deleted
+  parentId: z.string.nullable,  // null = root node, string = has parent
+  approvedBy: z.string.nullable,  // null = pending, string = approver
 })
 
-// nullish() - either undefined or null
+// nullish - either undefined or null
 // Use for: Lenient APIs, legacy data, optional nullable DB columns
 z.object({
-  legacyField: z.string().nullish(),  // string | null | undefined
+  legacyField: z.string.nullish,  // string | null | undefined
 })
 ```
 
@@ -95,9 +95,9 @@ z.object({
 const apiResponseSchema = z.object({
   data: z.object({
     user: z.object({
-      name: z.string(),
-      avatar: z.string().nullable(),  // null = no avatar set
-    }).nullable(),  // null = user not found
+      name: z.string,
+      avatar: z.string.nullable,  // null = no avatar set
+    }).nullable,  // null = user not found
   }),
 })
 
@@ -105,13 +105,13 @@ const apiResponseSchema = z.object({
 
 // Partial updates send only changed fields
 const updateSchema = z.object({
-  name: z.string().optional(),  // Omitted = don't change
-  avatar: z.string().nullable().optional(),  // null = clear avatar
+  name: z.string.optional,  // Omitted = don't change
+  avatar: z.string.nullable.optional,  // null = clear avatar
 })
 ```
 
 **When NOT to use this pattern:**
 - When interacting with systems that treat null and undefined as equivalent
-- When using nullish() for maximum flexibility is acceptable
+- When using nullish for maximum flexibility is acceptable
 
 Reference: [Zod API - optional/nullable](https://zod.dev/api#optional)

@@ -15,9 +15,9 @@ Hardcoded error messages in English exclude users who speak other languages. Use
 import { z } from 'zod'
 
 const userSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  email: z.string().email('Invalid email address'),
-  age: z.number().min(18, 'You must be at least 18 years old'),
+  name: z.string.min(1, 'Name is required'),
+  email: z.string.email('Invalid email address'),
+  age: z.number.min(18, 'You must be at least 18 years old'),
 })
 
 // French users see English errors - poor UX
@@ -88,9 +88,9 @@ const userLocale: Locale = 'fr'
 const errorMap = createErrorMap(userLocale)
 
 const userSchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  age: z.number().min(18),
+  name: z.string.min(1),
+  email: z.string.email,
+  age: z.number.min(18),
 })
 
 const result = userSchema.safeParse(
@@ -108,7 +108,7 @@ const result = userSchema.safeParse(
 
 ```typescript
 // At application startup
-const userLocale = getUserLocale()  // From cookie, header, etc.
+const userLocale = getUserLocale  // From cookie, header, etc.
 z.setErrorMap(createErrorMap(userLocale))
 
 // All schemas now use localized messages
@@ -119,8 +119,8 @@ z.setErrorMap(createErrorMap(userLocale))
 ```typescript
 import { useIntl } from 'react-intl'
 
-function useZodErrorMap() {
-  const intl = useIntl()
+function useZodErrorMap {
+  const intl = useIntl
 
   return (issue: z.ZodIssue, ctx: z.ErrorMapCtx) => {
     switch (issue.code) {

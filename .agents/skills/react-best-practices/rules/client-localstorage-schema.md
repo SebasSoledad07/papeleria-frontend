@@ -30,7 +30,7 @@ function saveConfig(config: { theme: string; language: string }) {
   }
 }
 
-function loadConfig() {
+function loadConfig {
   try {
     const data = localStorage.getItem(`userConfig:${VERSION}`)
     return data ? JSON.parse(data) : null
@@ -40,7 +40,7 @@ function loadConfig() {
 }
 
 // Migration from v1 to v2
-function migrate() {
+function migrate {
   try {
     const v1 = localStorage.getItem('userConfig:v1')
     if (v1) {
@@ -66,6 +66,6 @@ function cachePrefs(user: FullUser) {
 }
 ```
 
-**Always wrap in try-catch:** `getItem()` and `setItem()` throw in incognito/private browsing (Safari, Firefox), when quota exceeded, or when disabled.
+**Always wrap in try-catch:** `getItem` and `setItem` throw in incognito/private browsing (Safari, Firefox), when quota exceeded, or when disabled.
 
 **Benefits:** Schema evolution via versioning, reduced storage size, prevents storing tokens/PII/internal flags.

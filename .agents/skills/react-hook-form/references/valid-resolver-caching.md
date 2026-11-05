@@ -12,10 +12,10 @@ Define validation schemas outside the component to enable resolver caching. Sche
 **Incorrect (schema recreated on every render):**
 
 ```typescript
-function RegistrationForm() {
+function RegistrationForm {
   const schema = z.object({  // Created fresh on every render
-    email: z.string().email(),
-    password: z.string().min(8),
+    email: z.string.email,
+    password: z.string.min(8),
   })
 
   const { register, handleSubmit } = useForm({
@@ -35,13 +35,13 @@ function RegistrationForm() {
 
 ```typescript
 const registrationSchema = z.object({  // Created once at module load
-  email: z.string().email(),
-  password: z.string().min(8),
+  email: z.string.email,
+  password: z.string.min(8),
 })
 
 type RegistrationFormData = z.infer<typeof registrationSchema>
 
-function RegistrationForm() {
+function RegistrationForm {
   const { register, handleSubmit } = useForm<RegistrationFormData>({
     resolver: zodResolver(registrationSchema),  // Stable resolver reference
   })

@@ -15,7 +15,7 @@ type ThemeProviderState = {
 
 const initialState: ThemeProviderState = {
   theme: 'system',
-  setTheme: () => null,
+  setTheme:  => null,
 }
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
@@ -26,7 +26,7 @@ export function ThemeProvider({
   storageKey = 'vite-ui-theme',
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(() => {
+  const [theme, setTheme] = useState<Theme>( => {
     // Try localStorage first, fall back to sessionStorage, then default
     try {
       return (localStorage.getItem(storageKey) as Theme) ||
@@ -38,7 +38,7 @@ export function ThemeProvider({
     }
   })
 
-  useEffect(() => {
+  useEffect( => {
     const root = window.document.documentElement
 
     root.classList.remove('light', 'dark')
@@ -82,7 +82,7 @@ export function ThemeProvider({
   )
 }
 
-export const useTheme = () => {
+export const useTheme =  => {
   const context = useContext(ThemeProviderContext)
 
   if (context === undefined)

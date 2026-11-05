@@ -15,11 +15,11 @@ Load large data or modules only when a feature is activated.
 function AnimationPlayer({ enabled, setEnabled }: { enabled: boolean; setEnabled: React.Dispatch<React.SetStateAction<boolean>> }) {
   const [frames, setFrames] = useState<Frame[] | null>(null)
 
-  useEffect(() => {
+  useEffect( => {
     if (enabled && !frames && typeof window !== 'undefined') {
       import('./animation-frames.js')
         .then(mod => setFrames(mod.frames))
-        .catch(() => setEnabled(false))
+        .catch( => setEnabled(false))
     }
   }, [enabled, frames, setEnabled])
 

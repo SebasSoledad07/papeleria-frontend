@@ -90,7 +90,7 @@ function Composer({
 
 ```tsx
 // Channel composer
-function ChannelComposer() {
+function ChannelComposer {
   return (
     <Composer.Frame>
       <Composer.Header />
@@ -122,7 +122,7 @@ function ThreadComposer({ channelId }: { channelId: string }) {
 }
 
 // Edit composer - different footer actions
-function EditComposer() {
+function EditComposer {
   return (
     <Composer.Frame>
       <Composer.Input />
@@ -164,16 +164,16 @@ function Composer({
 }: Props) {
   return (
     <form>
-      {renderHeader?.()}
+      {renderHeader?.}
       <Input />
       {showAttachments && <Attachments />}
       {renderFooter ? (
-        renderFooter()
+        renderFooter
       ) : (
         <Footer>
           {showFormatting && <Formatting />}
           {showEmojis && <Emojis />}
-          {renderActions?.()}
+          {renderActions?.}
         </Footer>
       )}
     </form>
@@ -198,7 +198,7 @@ function ComposerFrame({ children }: { children: React.ReactNode }) {
   return <form>{children}</form>
 }
 
-function ComposerInput() {
+function ComposerInput {
   const {
     state,
     actions: { update },
@@ -213,7 +213,7 @@ function ComposerInput() {
   )
 }
 
-function ComposerSubmit() {
+function ComposerSubmit {
   const {
     actions: { submit },
   } = use(ComposerContext)
@@ -284,7 +284,7 @@ function ChannelComposer({ channelId }: { channelId: string }) {
         value={state.input}
         onChange={(text) => sync.updateInput(text)}
       />
-      <Composer.Submit onPress={() => sync.submit()} />
+      <Composer.Submit onPress={ => sync.submit} />
     </Composer.Frame>
   )
 }
@@ -316,7 +316,7 @@ function ChannelProvider({
 }
 
 // UI component only knows about the context interface
-function ChannelComposer() {
+function ChannelComposer {
   return (
     <Composer.Frame>
       <Composer.Header />
@@ -344,7 +344,7 @@ function Channel({ channelId }: { channelId: string }) {
 // Local state for ephemeral forms
 function ForwardMessageProvider({ children }) {
   const [state, setState] = useState(initialState)
-  const forwardMessage = useForwardMessage()
+  const forwardMessage = useForwardMessage
 
   return (
     <Composer.Provider
@@ -391,9 +391,9 @@ dependency-injectable.
 **Incorrect: UI coupled to specific state implementation**
 
 ```tsx
-function ComposerInput() {
+function ComposerInput {
   // Tightly coupled to a specific hook
-  const { input, setInput } = useChannelComposerState()
+  const { input, setInput } = useChannelComposerState
   return <TextInput value={input} onChangeText={setInput} />
 }
 ```
@@ -410,7 +410,7 @@ interface ComposerState {
 
 interface ComposerActions {
   update: (updater: (state: ComposerState) => ComposerState) => void
-  submit: () => void
+  submit:  => void
 }
 
 interface ComposerMeta {
@@ -429,7 +429,7 @@ const ComposerContext = createContext<ComposerContextValue | null>(null)
 **UI components consume the interface, not the implementation:**
 
 ```tsx
-function ComposerInput() {
+function ComposerInput {
   const {
     state,
     actions: { update },
@@ -454,7 +454,7 @@ function ComposerInput() {
 function ForwardMessageProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState(initialState)
   const inputRef = useRef(null)
-  const submit = useForwardMessage()
+  const submit = useForwardMessage
 
   return (
     <ComposerContext
@@ -511,7 +511,7 @@ function ChannelProvider({ channelId, children }: Props) {
 **Custom UI outside the component can access state and actions:**
 
 ```tsx
-function ForwardMessageDialog() {
+function ForwardMessageDialog {
   return (
     <ForwardMessageProvider>
       <Dialog>
@@ -538,7 +538,7 @@ function ForwardMessageDialog() {
 }
 
 // This button lives OUTSIDE Composer.Frame but can still submit based on its context!
-function ForwardButton() {
+function ForwardButton {
   const {
     actions: { submit },
   } = use(ComposerContext)
@@ -546,7 +546,7 @@ function ForwardButton() {
 }
 
 // This preview lives OUTSIDE Composer.Frame but can read composer's state!
-function MessagePreview() {
+function MessagePreview {
   const { state } = use(ComposerContext)
   return <Preview message={state.input} attachments={state.attachments} />
 }
@@ -581,9 +581,9 @@ or awkward refs.
 **Incorrect: state trapped inside component**
 
 ```tsx
-function ForwardMessageComposer() {
+function ForwardMessageComposer {
   const [state, setState] = useState(initialState)
-  const forwardMessage = useForwardMessage()
+  const forwardMessage = useForwardMessage
 
   return (
     <Composer.Frame>
@@ -594,7 +594,7 @@ function ForwardMessageComposer() {
 }
 
 // Problem: How does this button access composer state?
-function ForwardMessageDialog() {
+function ForwardMessageDialog {
   return (
     <Dialog>
       <ForwardMessageComposer />
@@ -611,7 +611,7 @@ function ForwardMessageDialog() {
 **Incorrect: useEffect to sync state up**
 
 ```tsx
-function ForwardMessageDialog() {
+function ForwardMessageDialog {
   const [input, setInput] = useState('')
   return (
     <Dialog>
@@ -623,7 +623,7 @@ function ForwardMessageDialog() {
 
 function ForwardMessageComposer({ onInputChange }) {
   const [state, setState] = useState(initialState)
-  useEffect(() => {
+  useEffect( => {
     onInputChange(state.input) // Sync on every change 😬
   }, [state.input])
 }
@@ -632,12 +632,12 @@ function ForwardMessageComposer({ onInputChange }) {
 **Incorrect: reading state from ref on submit**
 
 ```tsx
-function ForwardMessageDialog() {
+function ForwardMessageDialog {
   const stateRef = useRef(null)
   return (
     <Dialog>
       <ForwardMessageComposer stateRef={stateRef} />
-      <ForwardButton onPress={() => submit(stateRef.current)} />
+      <ForwardButton onPress={ => submit(stateRef.current)} />
     </Dialog>
   )
 }
@@ -648,7 +648,7 @@ function ForwardMessageDialog() {
 ```tsx
 function ForwardMessageProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState(initialState)
-  const forwardMessage = useForwardMessage()
+  const forwardMessage = useForwardMessage
   const inputRef = useRef(null)
 
   return (
@@ -662,7 +662,7 @@ function ForwardMessageProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
-function ForwardMessageDialog() {
+function ForwardMessageDialog {
   return (
     <ForwardMessageProvider>
       <Dialog>
@@ -677,7 +677,7 @@ function ForwardMessageDialog() {
   )
 }
 
-function ForwardButton() {
+function ForwardButton {
   const { actions } = use(Composer.Context)
   return <Button onPress={actions.submit}>Forward</Button>
 }
@@ -823,16 +823,16 @@ function Composer({
   renderFooter,
   renderActions,
 }: {
-  renderHeader?: () => React.ReactNode
-  renderFooter?: () => React.ReactNode
-  renderActions?: () => React.ReactNode
+  renderHeader?:  => React.ReactNode
+  renderFooter?:  => React.ReactNode
+  renderActions?:  => React.ReactNode
 }) {
   return (
     <form>
-      {renderHeader?.()}
+      {renderHeader?.}
       <Input />
-      {renderFooter ? renderFooter() : <DefaultFooter />}
-      {renderActions?.()}
+      {renderFooter ? renderFooter : <DefaultFooter />}
+      {renderActions?.}
     </form>
   )
 }
@@ -840,14 +840,14 @@ function Composer({
 // Usage is awkward and inflexible
 return (
   <Composer
-    renderHeader={() => <CustomHeader />}
-    renderFooter={() => (
+    renderHeader={ => <CustomHeader />}
+    renderFooter={ => (
       <>
         <Formatting />
         <Emojis />
       </>
     )}
-    renderActions={() => <SubmitButton />}
+    renderActions={ => <SubmitButton />}
   />
 )
 ```
@@ -897,7 +897,7 @@ Use children when composing static structure.
 
 **Impact: MEDIUM**
 
-React 19+ only. Don't use `forwardRef`; use `use()` instead of `useContext()`.
+React 19+ only. Don't use `forwardRef`; use `use` instead of `useContext`.
 
 ### 4.1 React 19 API Changes
 
@@ -905,7 +905,7 @@ React 19+ only. Don't use `forwardRef`; use `use()` instead of `useContext()`.
 
 > **⚠️ React 19+ only.** Skip this if you're on React 18 or earlier.
 
-In React 19, `ref` is now a regular prop (no `forwardRef` wrapper needed), and `use()` replaces `useContext()`.
+In React 19, `ref` is now a regular prop (no `forwardRef` wrapper needed), and `use` replaces `useContext`.
 
 **Incorrect: forwardRef in React 19**
 
@@ -935,7 +935,7 @@ const value = useContext(MyContext)
 const value = use(MyContext)
 ```
 
-`use()` can also be called conditionally, unlike `useContext()`.
+`use` can also be called conditionally, unlike `useContext`.
 
 ---
 

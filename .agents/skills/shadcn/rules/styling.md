@@ -11,7 +11,7 @@ See [customization.md](../customization.md) for theming, CSS variables, and addi
 - Prefer size-* over w-* h-* when equal
 - Prefer truncate shorthand
 - No manual dark: color overrides
-- Use cn() for conditional classes
+- Use cn for conditional classes
 - No manual z-index on overlay components
 
 ---
@@ -137,9 +137,9 @@ Use semantic tokens — they handle light/dark via CSS variables. `bg-background
 
 ---
 
-## Use cn() for conditional classes
+## Use cn for conditional classes
 
-Use the `cn()` utility from the project for conditional or merged class names. Don't write manual ternaries in className strings.
+Use the `cn` utility from the project for conditional or merged class names. Don't write manual ternaries in className strings.
 
 **Incorrect:**
 

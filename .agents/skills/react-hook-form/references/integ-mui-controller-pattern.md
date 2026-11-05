@@ -14,8 +14,8 @@ Material-UI components are controlled by design. Use Controller to wrap them, ha
 ```typescript
 import { TextField } from '@mui/material'
 
-function MuiForm() {
-  const { register, handleSubmit } = useForm()
+function MuiForm {
+  const { register, handleSubmit } = useForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -34,8 +34,8 @@ function MuiForm() {
 import { TextField } from '@mui/material'
 import { Controller } from 'react-hook-form'
 
-function MuiForm() {
-  const { control, handleSubmit } = useForm()
+function MuiForm {
+  const { control, handleSubmit } = useForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

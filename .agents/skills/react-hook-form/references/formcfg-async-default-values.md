@@ -7,7 +7,7 @@ tags: formcfg, async, default-values, data-fetching
 
 ## Use Async defaultValues for Server Data
 
-React Hook Form supports async functions for `defaultValues`, eliminating the need for manual useEffect + reset() patterns when loading initial data from an API.
+React Hook Form supports async functions for `defaultValues`, eliminating the need for manual useEffect + reset patterns when loading initial data from an API.
 
 **Incorrect (manual useEffect reset pattern):**
 
@@ -20,12 +20,12 @@ function EditUserForm({ userId }: { userId: string }) {
     },
   })
 
-  useEffect(() => {
-    async function loadUser() {
+  useEffect( => {
+    async function loadUser {
       const user = await fetchUser(userId)
       reset(user)  // Manual reset required
     }
-    loadUser()
+    loadUser
   }, [userId, reset])
 
   if (isLoading) return <Spinner />
@@ -44,7 +44,7 @@ function EditUserForm({ userId }: { userId: string }) {
 ```typescript
 function EditUserForm({ userId }: { userId: string }) {
   const { register, handleSubmit, formState: { isLoading } } = useForm({
-    defaultValues: async () => {
+    defaultValues: async  => {
       const user = await fetchUser(userId)
       return {
         email: user.email,
@@ -64,6 +64,6 @@ function EditUserForm({ userId }: { userId: string }) {
 }
 ```
 
-**Note:** defaultValues are cached after initial load. Use `reset()` with new values if you need to refresh data.
+**Note:** defaultValues are cached after initial load. Use `reset` with new values if you need to refresh data.
 
 Reference: [useForm - defaultValues](https://react-hook-form.com/docs/useform)

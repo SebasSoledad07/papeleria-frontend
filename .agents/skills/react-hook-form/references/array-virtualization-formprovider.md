@@ -12,8 +12,8 @@ When using virtualization libraries (react-window, react-virtuoso) with field ar
 **Incorrect (direct props break with virtualization):**
 
 ```typescript
-function VirtualizedList() {
-  const { control, register } = useForm()
+function VirtualizedList {
+  const { control, register } = useForm
   const { fields } = useFieldArray({ control, name: 'rows' })
 
   return (
@@ -31,8 +31,8 @@ function VirtualizedList() {
 **Correct (FormProvider preserves context across virtualization):**
 
 ```typescript
-function VirtualizedList() {
-  const methods = useForm()
+function VirtualizedList {
+  const methods = useForm
   const { fields } = useFieldArray({ control: methods.control, name: 'rows' })
 
   return (
@@ -49,7 +49,7 @@ function VirtualizedList() {
 }
 
 function VirtualizedRow({ index, fieldId }: { index: number; fieldId: string }) {
-  const { register, getValues } = useFormContext()
+  const { register, getValues } = useFormContext
 
   return (
     <input

@@ -49,7 +49,7 @@ function Composer({
 
 ```tsx
 // Channel composer
-function ChannelComposer() {
+function ChannelComposer {
   return (
     <Composer.Frame>
       <Composer.Header />
@@ -81,7 +81,7 @@ function ThreadComposer({ channelId }: { channelId: string }) {
 }
 
 // Edit composer - different footer actions
-function EditComposer() {
+function EditComposer {
   return (
     <Composer.Frame>
       <Composer.Input />

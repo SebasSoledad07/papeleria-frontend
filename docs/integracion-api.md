@@ -134,7 +134,7 @@ Confirmar (Enter) ─► POST /api/ventas   (Idempotency-Key: <uuid del intento>
 
 - El cuerpo de `calcular` y de `ventas` lleva **solo** ids de producto, cantidades, descuentos, `autorizacionId`, `clienteId` y pagos. **Nunca precios ni totales.**
 - `useVentaCotizada` lanza `calcular` cuando cambian los descuentos o se abre el cobro. Mientras no haya descuentos, no hace falta llamarlo para mostrar el subtotal.
-- El `Idempotency-Key` es un UUID (`crypto.randomUUID()`) **generado una vez por ventana de cobro** y reutilizado si el cajero vuelve a pulsar «confirmar» sobre el mismo intento. Si el cajero cambia el carrito o los pagos, se genera uno nuevo. (Depende de D-10.)
+- El `Idempotency-Key` es un UUID (`crypto.randomUUID`) **generado una vez por ventana de cobro** y reutilizado si el cajero vuelve a pulsar «confirmar» sobre el mismo intento. Si el cajero cambia el carrito o los pagos, se genera uno nuevo. (Depende de D-10.)
 
 ## Descargas (reportes Excel y PDF)
 

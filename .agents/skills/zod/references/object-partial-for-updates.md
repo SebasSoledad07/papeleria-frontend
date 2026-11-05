@@ -1,13 +1,13 @@
 ---
-title: Use partial() for Update Schemas
+title: Use partial for Update Schemas
 impact: MEDIUM-HIGH
-impactDescription: Creating separate update schemas duplicates definitions; partial() derives update schema from base, staying in sync
+impactDescription: Creating separate update schemas duplicates definitions; partial derives update schema from base, staying in sync
 tags: object, partial, update, patch
 ---
 
-## Use partial() for Update Schemas
+## Use partial for Update Schemas
 
-When handling PATCH/PUT updates, you need a schema where all fields are optional. Instead of duplicating the schema with optional fields, use `.partial()` to derive it from your base schema. This keeps both schemas in sync automatically.
+When handling PATCH/PUT updates, you need a schema where all fields are optional. Instead of duplicating the schema with optional fields, use `.partial` to derive it from your base schema. This keeps both schemas in sync automatically.
 
 **Incorrect (duplicating schemas):**
 
@@ -16,17 +16,17 @@ import { z } from 'zod'
 
 // Base schema
 const userSchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  age: z.number().int().positive(),
+  name: z.string.min(1),
+  email: z.string.email,
+  age: z.number.int.positive,
   role: z.enum(['admin', 'user']),
 })
 
 // Manually duplicated for updates - will drift!
 const updateUserSchema = z.object({
-  name: z.string().min(1).optional(),
-  email: z.string().email().optional(),
-  age: z.number().int().positive().optional(),
+  name: z.string.min(1).optional,
+  email: z.string.email.optional,
+  age: z.number.int.positive.optional,
   // Forgot to add role - schemas out of sync!
 })
 
@@ -41,14 +41,14 @@ import { z } from 'zod'
 
 // Base schema - single source of truth
 const userSchema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-  age: z.number().int().positive(),
+  name: z.string.min(1),
+  email: z.string.email,
+  age: z.number.int.positive,
   role: z.enum(['admin', 'user']),
 })
 
 // All fields optional for updates
-const updateUserSchema = userSchema.partial()
+const updateUserSchema = userSchema.partial
 
 type User = z.infer<typeof userSchema>
 // { name: string; email: string; age: number; role: 'admin' | 'user' }
@@ -79,41 +79,41 @@ type UpdateUser = z.infer<typeof updateUserSchema>
 
 ```typescript
 const addressSchema = z.object({
-  street: z.string(),
-  city: z.string(),
-  country: z.string(),
+  street: z.string,
+  city: z.string,
+  country: z.string,
 })
 
 const userSchema = z.object({
-  name: z.string(),
+  name: z.string,
   address: addressSchema,
 })
 
-// .partial() only makes top-level fields optional
-const shallowPartial = userSchema.partial()
+// .partial only makes top-level fields optional
+const shallowPartial = userSchema.partial
 // { name?: string; address?: { street: string; city: string; country: string } }
 // If address is provided, all its fields are still required!
 
 // Use deepPartial for nested optionality
-const deepPartialSchema = userSchema.deepPartial()
+const deepPartialSchema = userSchema.deepPartial
 // { name?: string; address?: { street?: string; city?: string; country?: string } }
 ```
 
-**Combining with required() for create vs update:**
+**Combining with required for create vs update:**
 
 ```typescript
 const baseSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string(),
-  email: z.string().email(),
-  createdAt: z.date(),
+  id: z.string.uuid,
+  name: z.string,
+  email: z.string.email,
+  createdAt: z.date,
 })
 
 // Create: id and createdAt are generated, rest required
 const createSchema = baseSchema.omit({ id: true, createdAt: true })
 
 // Update: all user-editable fields optional
-const updateSchema = baseSchema.partial().omit({ id: true, createdAt: true })
+const updateSchema = baseSchema.partial.omit({ id: true, createdAt: true })
 ```
 
 **When NOT to use this pattern:**

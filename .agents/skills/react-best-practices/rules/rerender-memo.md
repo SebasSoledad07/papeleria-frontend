@@ -13,7 +13,7 @@ Extract expensive work into memoized components to enable early returns before c
 
 ```tsx
 function Profile({ user, loading }: Props) {
-  const avatar = useMemo(() => {
+  const avatar = useMemo( => {
     const id = computeAvatarId(user)
     return <Avatar id={id} />
   }, [user])
@@ -27,7 +27,7 @@ function Profile({ user, loading }: Props) {
 
 ```tsx
 const UserAvatar = memo(function UserAvatar({ user }: { user: User }) {
-  const id = useMemo(() => computeAvatarId(user), [user])
+  const id = useMemo( => computeAvatarId(user), [user])
   return <Avatar id={id} />
 })
 
@@ -41,4 +41,4 @@ function Profile({ user, loading }: Props) {
 }
 ```
 
-**Note:** If your project has [React Compiler](https://react.dev/learn/react-compiler) enabled, manual memoization with `memo()` and `useMemo()` is not necessary. The compiler automatically optimizes re-renders.
+**Note:** If your project has [React Compiler](https://react.dev/learn/react-compiler) enabled, manual memoization with `memo` and `useMemo` is not necessary. The compiler automatically optimizes re-renders.

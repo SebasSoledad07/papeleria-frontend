@@ -1,13 +1,13 @@
 ---
-title: Use flatten() for Form Error Display
+title: Use flatten for Form Error Display
 impact: HIGH
-impactDescription: Raw ZodError.issues requires manual path parsing; flatten() provides field-keyed errors ready for form display
+impactDescription: Raw ZodError.issues requires manual path parsing; flatten provides field-keyed errors ready for form display
 tags: error, flatten, forms, user-experience
 ---
 
-## Use flatten() for Form Error Display
+## Use flatten for Form Error Display
 
-`ZodError.issues` is an array that requires manual processing to map errors to form fields. `ZodError.flatten()` returns an object with `fieldErrors` keyed by field name, ready for form libraries and UI display.
+`ZodError.issues` is an array that requires manual processing to map errors to form fields. `ZodError.flatten` returns an object with `fieldErrors` keyed by field name, ready for form libraries and UI display.
 
 **Incorrect (manual issue processing):**
 
@@ -15,10 +15,10 @@ tags: error, flatten, forms, user-experience
 import { z } from 'zod'
 
 const formSchema = z.object({
-  email: z.string().email('Invalid email'),
-  password: z.string().min(8, 'Password too short'),
+  email: z.string.email('Invalid email'),
+  password: z.string.min(8, 'Password too short'),
   profile: z.object({
-    name: z.string().min(1, 'Name required'),
+    name: z.string.min(1, 'Name required'),
   }),
 })
 
@@ -49,17 +49,17 @@ if (!result.success) {
 import { z } from 'zod'
 
 const formSchema = z.object({
-  email: z.string().email('Invalid email'),
-  password: z.string().min(8, 'Password too short'),
+  email: z.string.email('Invalid email'),
+  password: z.string.min(8, 'Password too short'),
   profile: z.object({
-    name: z.string().min(1, 'Name required'),
+    name: z.string.min(1, 'Name required'),
   }),
 })
 
 const result = formSchema.safeParse(data)
 
 if (!result.success) {
-  const { formErrors, fieldErrors } = result.error.flatten()
+  const { formErrors, fieldErrors } = result.error.flatten
 
   // formErrors: string[] - top-level errors (from .refine on the object)
   // fieldErrors: { [key]: string[] } - errors by field
@@ -103,13 +103,13 @@ const flattened = result.error.flatten((issue) => ({
 // }
 ```
 
-**For deeply nested objects, use format():**
+**For deeply nested objects, use format:**
 
 ```typescript
 const result = formSchema.safeParse(data)
 
 if (!result.success) {
-  const formatted = result.error.format()
+  const formatted = result.error.format
   // {
   //   _errors: [],
   //   email: { _errors: ['Invalid email'] },

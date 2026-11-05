@@ -12,7 +12,7 @@ When using `onChange` mode, errors appear and disappear rapidly as users type. U
 **Incorrect (errors flash rapidly during typing):**
 
 ```typescript
-function SearchForm() {
+function SearchForm {
   const { register, formState: { errors } } = useForm({
     mode: 'onChange',
   })
@@ -29,7 +29,7 @@ function SearchForm() {
 **Correct (error display debounced):**
 
 ```typescript
-function SearchForm() {
+function SearchForm {
   const { register, formState: { errors } } = useForm({
     mode: 'onChange',
     delayError: 300,  // 300ms delay before showing errors

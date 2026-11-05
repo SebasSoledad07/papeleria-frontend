@@ -7,7 +7,7 @@ tags: javascript, map, indexing, optimization, performance
 
 ## Build Index Maps for Repeated Lookups
 
-Multiple `.find()` calls by the same key should use a Map.
+Multiple `.find` calls by the same key should use a Map.
 
 **Incorrect (O(n) per lookup):**
 

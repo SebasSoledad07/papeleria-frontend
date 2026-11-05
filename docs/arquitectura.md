@@ -33,7 +33,7 @@ frontend/
     ├── api/
     │   ├── esquema.d.ts           # GENERADO desde OpenAPI. No se edita.
     │   ├── cliente.ts             # openapi-fetch: credenciales, CSRF, errores, Idempotency-Key
-    │   ├── errores.ts             # ProblemaApi, mensajePorCodigo()
+    │   ├── errores.ts             # ProblemaApi, mensajePorCodigo
     │   └── csrf.ts                # token en memoria
     ├── lib/
     │   ├── formato.ts             # ÚNICO lugar que formatea dinero, fechas y números
@@ -50,7 +50,7 @@ frontend/
     ├── impresion/
     │   ├── Tirilla.tsx            # comprobante 58/80 mm
     │   ├── HojaEtiquetas.tsx
-    │   ├── imprimir.ts            # window.print() con la zona de impresión
+    │   ├── imprimir.ts            # window.print con la zona de impresión
     │   └── impresion.css          # @media print, @page
     ├── caracteristicas/
     │   ├── autenticacion/         # login, sesión actual, cierre de sesión

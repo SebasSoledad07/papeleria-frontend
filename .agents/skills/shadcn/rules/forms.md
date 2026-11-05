@@ -114,7 +114,7 @@ const [selected, setSelected] = useState("daily")
     <Button
       key={option}
       variant={selected === option ? "default" : "outline"}
-      onClick={() => setSelected(option)}
+      onClick={ => setSelected(option)}
     >
       {option}
     </Button>

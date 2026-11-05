@@ -17,7 +17,7 @@ function ContactForm({ defaultEmail }: { defaultEmail: string }) {
     defaultValues: { email: '' },
   })
 
-  useEffect(() => {
+  useEffect( => {
     form.reset({ email: defaultEmail })
   }, [form, defaultEmail])  // form reference changes on every render = infinite loop
 
@@ -37,7 +37,7 @@ function ContactForm({ defaultEmail }: { defaultEmail: string }) {
     defaultValues: { email: '' },
   })
 
-  useEffect(() => {
+  useEffect( => {
     reset({ email: defaultEmail })
   }, [reset, defaultEmail])  // reset is stable, no infinite loop
 

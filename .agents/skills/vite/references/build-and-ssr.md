@@ -113,8 +113,8 @@ const server = await createServer({
   server: { port: 1337 },
 })
 
-await server.listen()
-server.printUrls()
+await server.listen
+server.printUrls
 ```
 
 ### build
@@ -136,7 +136,7 @@ import { preview } from 'vite'
 const previewServer = await preview({
   preview: { port: 8080, open: true },
 })
-previewServer.printUrls()
+previewServer.printUrls
 ```
 
 ### resolveConfig
@@ -152,7 +152,7 @@ const config = await resolveConfig({}, 'build')
 ```ts
 import { loadEnv } from 'vite'
 
-const env = loadEnv('development', process.cwd(), '')
+const env = loadEnv('development', process.cwd, '')
 // Loads all env vars (empty prefix = no filtering)
 ```
 

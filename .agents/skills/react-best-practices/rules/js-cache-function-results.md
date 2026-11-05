@@ -16,7 +16,7 @@ function ProjectList({ projects }: { projects: Project[] }) {
   return (
     <div>
       {projects.map(project => {
-        // slugify() called 100+ times for same project names
+        // slugify called 100+ times for same project names
         const slug = slugify(project.name)
         
         return <ProjectCard key={project.id} slug={slug} />
@@ -30,7 +30,7 @@ function ProjectList({ projects }: { projects: Project[] }) {
 
 ```typescript
 // Module-level cache
-const slugifyCache = new Map<string, string>()
+const slugifyCache = new Map<string, string>
 
 function cachedSlugify(text: string): string {
   if (slugifyCache.has(text)) {
@@ -60,7 +60,7 @@ function ProjectList({ projects }: { projects: Project[] }) {
 ```typescript
 let isLoggedInCache: boolean | null = null
 
-function isLoggedIn(): boolean {
+function isLoggedIn: boolean {
   if (isLoggedInCache !== null) {
     return isLoggedInCache
   }
@@ -70,7 +70,7 @@ function isLoggedIn(): boolean {
 }
 
 // Clear cache when auth changes
-function onAuthChange() {
+function onAuthChange {
   isLoggedInCache = null
 }
 ```

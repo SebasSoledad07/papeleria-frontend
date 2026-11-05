@@ -1,13 +1,13 @@
 ---
 title: Use parseAsync for Async Refinements
 impact: CRITICAL
-impactDescription: Using parse() with async refinements throws an error; async validation silently fails or crashes the application
+impactDescription: Using parse with async refinements throws an error; async validation silently fails or crashes the application
 tags: parse, async, parseAsync, refinement
 ---
 
 ## Use parseAsync for Async Refinements
 
-If your schema uses `refine()` or `superRefine()` with async validation (like database lookups), you must use `parseAsync()` or `safeParseAsync()`. Using synchronous `parse()` with async refinements throws an error.
+If your schema uses `refine` or `superRefine` with async validation (like database lookups), you must use `parseAsync` or `safeParseAsync`. Using synchronous `parse` with async refinements throws an error.
 
 **Incorrect (sync parse with async refinement):**
 
@@ -15,8 +15,8 @@ If your schema uses `refine()` or `superRefine()` with async validation (like da
 import { z } from 'zod'
 
 const userSchema = z.object({
-  email: z.string().email(),
-  username: z.string().min(3),
+  email: z.string.email,
+  username: z.string.min(3),
 }).refine(
   async (data) => {
     // Async database check
@@ -38,8 +38,8 @@ const user = userSchema.parse(formData)
 import { z } from 'zod'
 
 const userSchema = z.object({
-  email: z.string().email(),
-  username: z.string().min(3),
+  email: z.string.email,
+  username: z.string.min(3),
 }).refine(
   async (data) => {
     const exists = await db.users.findByEmail(data.email)
@@ -62,7 +62,7 @@ if (!result.success) {
 
 ```typescript
 const enrichedUserSchema = z.object({
-  userId: z.string().uuid(),
+  userId: z.string.uuid,
 }).transform(async (data) => {
   // Async data enrichment
   const user = await db.users.findById(data.userId)
@@ -84,8 +84,8 @@ import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 
 const registerSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
+  email: z.string.email,
+  password: z.string.min(8),
 }).superRefine(async (data, ctx) => {
   const existingUser = await db.users.findByEmail(data.email)
   if (existingUser) {
@@ -98,7 +98,7 @@ const registerSchema = z.object({
 })
 
 export async function POST(req: NextRequest) {
-  const body = await req.json()
+  const body = await req.json
 
   // Always use safeParseAsync with async schemas
   const result = await registerSchema.safeParseAsync(body)

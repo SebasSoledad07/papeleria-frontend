@@ -12,8 +12,8 @@ formState is wrapped in a Proxy that tracks which properties you access. Destruc
 **Incorrect (entire object assignment disables Proxy):**
 
 ```typescript
-function SubmitButton() {
-  const { handleSubmit, formState } = useForm()
+function SubmitButton {
+  const { handleSubmit, formState } = useForm
 
   return (
     <button
@@ -29,8 +29,8 @@ function SubmitButton() {
 **Correct (destructure enables selective subscription):**
 
 ```typescript
-function SubmitButton() {
-  const { handleSubmit, formState: { isValid, isSubmitting } } = useForm()
+function SubmitButton {
+  const { handleSubmit, formState: { isValid, isSubmitting } } = useForm
 
   return (
     <button

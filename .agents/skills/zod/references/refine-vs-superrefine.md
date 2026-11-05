@@ -1,13 +1,13 @@
 ---
-title: Choose refine() vs superRefine() Correctly
+title: Choose refine vs superRefine Correctly
 impact: MEDIUM
-impactDescription: refine() only reports one error; superRefine() enables multiple issues and custom error codes
+impactDescription: refine only reports one error; superRefine enables multiple issues and custom error codes
 tags: refine, superRefine, validation, custom
 ---
 
-## Choose refine() vs superRefine() Correctly
+## Choose refine vs superRefine Correctly
 
-`.refine()` is for simple single-condition validation returning boolean. `.superRefine()` gives you a context object to add multiple issues with custom error codes and paths. Choose based on your error reporting needs.
+`.refine` is for simple single-condition validation returning boolean. `.superRefine` gives you a context object to add multiple issues with custom error codes and paths. Choose based on your error reporting needs.
 
 **Incorrect (using refine for multiple checks):**
 
@@ -15,7 +15,7 @@ tags: refine, superRefine, validation, custom
 import { z } from 'zod'
 
 // refine can only report one error at a time
-const passwordSchema = z.string().refine(
+const passwordSchema = z.string.refine(
   (password) => {
     // Checks all conditions but only reports first failure
     if (password.length < 8) return false  // Only this error shown
@@ -36,7 +36,7 @@ passwordSchema.parse('weak')
 ```typescript
 import { z } from 'zod'
 
-const passwordSchema = z.string().superRefine((password, ctx) => {
+const passwordSchema = z.string.superRefine((password, ctx) => {
   if (password.length < 8) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
@@ -74,26 +74,26 @@ passwordSchema.safeParse('weak')
 // - "Password must contain a special character"
 ```
 
-**When to use refine():**
+**When to use refine:**
 
 ```typescript
 // Simple boolean condition with one error message
-const adultSchema = z.number().refine(
+const adultSchema = z.number.refine(
   (age) => age >= 18,
   { message: 'Must be 18 or older' }
 )
 
 // Cross-field validation with single outcome
 const formSchema = z.object({
-  password: z.string(),
-  confirmPassword: z.string(),
+  password: z.string,
+  confirmPassword: z.string,
 }).refine(
   (data) => data.password === data.confirmPassword,
   { message: 'Passwords must match', path: ['confirmPassword'] }
 )
 
 // Async validation
-const emailSchema = z.string().email().refine(
+const emailSchema = z.string.email.refine(
   async (email) => {
     const exists = await checkEmailExists(email)
     return !exists
@@ -102,7 +102,7 @@ const emailSchema = z.string().email().refine(
 )
 ```
 
-**When to use superRefine():**
+**When to use superRefine:**
 
 ```typescript
 // Multiple independent checks on same value
@@ -112,10 +112,10 @@ const emailSchema = z.string().email().refine(
 
 const orderSchema = z.object({
   items: z.array(z.object({
-    productId: z.string(),
-    quantity: z.number(),
+    productId: z.string,
+    quantity: z.number,
   })),
-  promoCode: z.string().optional(),
+  promoCode: z.string.optional,
 }).superRefine(async (order, ctx) => {
   // Check each item's availability
   for (let i = 0; i < order.items.length; i++) {

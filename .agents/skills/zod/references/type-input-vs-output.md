@@ -7,14 +7,14 @@ tags: type, input, output, transform
 
 ## Distinguish z.input from z.infer for Transforms
 
-When schemas use `.transform()`, the input and output types differ. `z.infer` (same as `z.output`) gives the post-transform type, while `z.input` gives the pre-transform type. Using the wrong one causes confusing TypeScript errors.
+When schemas use `.transform`, the input and output types differ. `z.infer` (same as `z.output`) gives the post-transform type, while `z.input` gives the pre-transform type. Using the wrong one causes confusing TypeScript errors.
 
 **Incorrect (using infer for input type):**
 
 ```typescript
 import { z } from 'zod'
 
-const dateSchema = z.string().transform(s => new Date(s))
+const dateSchema = z.string.transform(s => new Date(s))
 
 type DateOutput = z.infer<typeof dateSchema>
 // Date (post-transform)
@@ -33,13 +33,13 @@ handleDate('2024-01-15')  // TypeScript error
 ```typescript
 import { z } from 'zod'
 
-const dateSchema = z.string().transform(s => new Date(s))
+const dateSchema = z.string.transform(s => new Date(s))
 
-// Input type = what parse() accepts
+// Input type = what parse accepts
 type DateInput = z.input<typeof dateSchema>
 // string (pre-transform)
 
-// Output type = what parse() returns
+// Output type = what parse returns
 type DateOutput = z.output<typeof dateSchema>
 // Date (post-transform)
 
@@ -56,10 +56,10 @@ handleDate('2024-01-15')  // Works - string input
 
 ```typescript
 const apiUserSchema = z.object({
-  id: z.string(),
-  created_at: z.string().transform(s => new Date(s)),
-  tags: z.string().transform(s => s.split(',')),
-  is_active: z.union([z.boolean(), z.literal(1), z.literal(0)])
+  id: z.string,
+  created_at: z.string.transform(s => new Date(s)),
+  tags: z.string.transform(s => s.split(',')),
+  is_active: z.union([z.boolean, z.literal(1), z.literal(0)])
     .transform(v => Boolean(v)),
 })
 
@@ -95,8 +95,8 @@ function handleApiResponse(rawData: ApiUserInput) {
 
 ```typescript
 const formSchema = z.object({
-  amount: z.string().transform(s => parseFloat(s)),
-  quantity: z.string().transform(s => parseInt(s, 10)),
+  amount: z.string.transform(s => parseFloat(s)),
+  quantity: z.string.transform(s => parseInt(s, 10)),
 })
 
 type FormInput = z.input<typeof formSchema>

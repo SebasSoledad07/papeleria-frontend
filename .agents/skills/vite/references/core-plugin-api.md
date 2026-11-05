@@ -10,7 +10,7 @@ Vite plugins extend Rolldown's plugin interface with Vite-specific hooks.
 ## Basic Structure
 
 ```ts
-function myPlugin(): Plugin {
+function myPlugin: Plugin {
   return {
     name: 'my-plugin',
     // hooks...
@@ -25,9 +25,9 @@ function myPlugin(): Plugin {
 Modify config before resolution:
 
 ```ts
-const plugin = () => ({
+const plugin =  => ({
   name: 'add-alias',
-  config: () => ({
+  config:  => ({
     resolve: {
       alias: { foo: 'bar' },
     },
@@ -40,7 +40,7 @@ const plugin = () => ({
 Access final resolved config:
 
 ```ts
-const plugin = () => {
+const plugin =  => {
   let config: ResolvedConfig
   return {
     name: 'read-config',
@@ -59,12 +59,12 @@ const plugin = () => {
 Add custom middleware to dev server:
 
 ```ts
-const plugin = () => ({
+const plugin =  => ({
   name: 'custom-middleware',
   configureServer(server) {
     server.middlewares.use((req, res, next) => {
       // handle request
-      next()
+      next
     })
   },
 })
@@ -74,7 +74,7 @@ Return function to run **after** internal middlewares:
 
 ```ts
 configureServer(server) {
-  return () => {
+  return  => {
     server.middlewares.use((req, res, next) => {
       // runs after Vite's middlewares
     })
@@ -87,7 +87,7 @@ configureServer(server) {
 Transform HTML entry files:
 
 ```ts
-const plugin = () => ({
+const plugin =  => ({
   name: 'html-transform',
   transformIndexHtml(html) {
     return html.replace(/<title>(.*?)<\/title>/, '<title>New Title</title>')
@@ -98,7 +98,7 @@ const plugin = () => ({
 Inject tags:
 
 ```ts
-transformIndexHtml() {
+transformIndexHtml {
   return [
     { tag: 'script', attrs: { src: '/inject.js' }, injectTo: 'body' },
   ]
@@ -121,7 +121,7 @@ handleHotUpdate({ server, modules, timestamp }) {
 Serve virtual content without files on disk:
 
 ```ts
-const plugin = () => {
+const plugin =  => {
   const virtualModuleId = 'virtual:my-module'
   const resolvedId = '\0' + virtualModuleId
 

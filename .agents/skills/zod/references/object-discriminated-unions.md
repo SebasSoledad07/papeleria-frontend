@@ -7,7 +7,7 @@ tags: object, discriminatedUnion, narrowing, typescript
 
 ## Use Discriminated Unions for Type Narrowing
 
-When a field's type depends on another field's value (e.g., `type: 'success'` means `data` exists, `type: 'error'` means `error` exists), use `z.discriminatedUnion()`. This enables TypeScript's automatic type narrowing and Zod's optimized O(1) parsing instead of trying each variant.
+When a field's type depends on another field's value (e.g., `type: 'success'` means `data` exists, `type: 'error'` means `error` exists), use `z.discriminatedUnion`. This enables TypeScript's automatic type narrowing and Zod's optimized O(1) parsing instead of trying each variant.
 
 **Incorrect (regular union - no automatic narrowing):**
 
@@ -16,12 +16,12 @@ import { z } from 'zod'
 
 const successSchema = z.object({
   type: z.literal('success'),
-  data: z.object({ id: z.string() }),
+  data: z.object({ id: z.string }),
 })
 
 const errorSchema = z.object({
   type: z.literal('error'),
-  message: z.string(),
+  message: z.string,
 })
 
 // Regular union - Zod tries each option in order
@@ -45,12 +45,12 @@ import { z } from 'zod'
 
 const successSchema = z.object({
   type: z.literal('success'),
-  data: z.object({ id: z.string() }),
+  data: z.object({ id: z.string }),
 })
 
 const errorSchema = z.object({
   type: z.literal('error'),
-  message: z.string(),
+  message: z.string,
 })
 
 // Discriminated union - Zod uses 'type' field for O(1) dispatch
@@ -76,23 +76,23 @@ function handleResponse(response: Response) {
 ```typescript
 // API responses
 const apiResponse = z.discriminatedUnion('status', [
-  z.object({ status: z.literal('success'), data: z.unknown() }),
-  z.object({ status: z.literal('error'), error: z.string(), code: z.number() }),
+  z.object({ status: z.literal('success'), data: z.unknown }),
+  z.object({ status: z.literal('error'), error: z.string, code: z.number }),
   z.object({ status: z.literal('loading') }),
 ])
 
 // Event types
 const event = z.discriminatedUnion('type', [
-  z.object({ type: z.literal('click'), x: z.number(), y: z.number() }),
-  z.object({ type: z.literal('keypress'), key: z.string() }),
-  z.object({ type: z.literal('scroll'), delta: z.number() }),
+  z.object({ type: z.literal('click'), x: z.number, y: z.number }),
+  z.object({ type: z.literal('keypress'), key: z.string }),
+  z.object({ type: z.literal('scroll'), delta: z.number }),
 ])
 
 // Database records with polymorphic types
 const notification = z.discriminatedUnion('channel', [
-  z.object({ channel: z.literal('email'), address: z.string().email() }),
-  z.object({ channel: z.literal('sms'), phoneNumber: z.string() }),
-  z.object({ channel: z.literal('push'), deviceToken: z.string() }),
+  z.object({ channel: z.literal('email'), address: z.string.email }),
+  z.object({ channel: z.literal('sms'), phoneNumber: z.string }),
+  z.object({ channel: z.literal('push'), deviceToken: z.string }),
 ])
 ```
 
@@ -102,17 +102,17 @@ const notification = z.discriminatedUnion('channel', [
 const paymentSchema = z.discriminatedUnion('method', [
   z.object({
     method: z.literal('card'),
-    cardNumber: z.string(),
-    expiryDate: z.string(),
+    cardNumber: z.string,
+    expiryDate: z.string,
   }),
   z.object({
     method: z.literal('bank'),
-    accountNumber: z.string(),
-    routingNumber: z.string(),
+    accountNumber: z.string,
+    routingNumber: z.string,
   }),
   z.object({
     method: z.literal('crypto'),
-    walletAddress: z.string(),
+    walletAddress: z.string,
   }),
 ])
 

@@ -15,8 +15,8 @@ Validating large arrays (thousands of items) can become a performance bottleneck
 import { z } from 'zod'
 
 const itemSchema = z.object({
-  id: z.string(),
-  value: z.number(),
+  id: z.string,
+  value: z.number,
 })
 
 const arraySchema = z.array(itemSchema)
@@ -60,9 +60,9 @@ function validateSample<T>(
   sampleSize: number = 100
 ): { valid: boolean; sampleErrors?: z.ZodIssue[] } {
   // Validate random sample
-  const indices = new Set<number>()
+  const indices = new Set<number>
   while (indices.size < Math.min(sampleSize, items.length)) {
-    indices.add(Math.floor(Math.random() * items.length))
+    indices.add(Math.floor(Math.random * items.length))
   }
 
   const errors: z.ZodIssue[] = []

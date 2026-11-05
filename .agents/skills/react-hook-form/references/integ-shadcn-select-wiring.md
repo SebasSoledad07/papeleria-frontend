@@ -45,7 +45,7 @@ function CountrySelect({ control }: { control: Control }) {
         <Select
           value={field.value}
           onValueChange={field.onChange}  // Radix passes value directly
-          onOpenChange={() => field.onBlur()}  // Trigger blur on close
+          onOpenChange={ => field.onBlur}  // Trigger blur on close
         >
           <SelectTrigger>
             <SelectValue placeholder="Select country" />

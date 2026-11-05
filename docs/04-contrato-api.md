@@ -123,7 +123,7 @@ Adm. inicial (D-4): se crea al arrancar si la tabla está vacía, desde `ADMIN_I
 
 Cada ajuste genera movimiento de kárdex (RN-21, RN-20). `cantidad` no-entero → `500` hoy (D-C6).
 
-### 4.8 Catálogo externo — `/api/catalogo` (RF-02, RN-16)
+### 4.8 Catálogo externo — `/api/catalogo` (RN-16)
 
 | Método y ruta | Salida |
 |---|---|

@@ -83,7 +83,7 @@ type B = IsString<number>; // false
 ```typescript
 type ReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
 
-function getUser() {
+function getUser {
   return { id: 1, name: "John" };
 }
 
@@ -116,7 +116,7 @@ type TypeName<T> = T extends string
           : "object";
 
 type T1 = TypeName<string>; // "string"
-type T2 = TypeName<() => void>; // "function"
+type T2 = TypeName< => void>; // "function"
 ```
 
 ### 3. Mapped Types
@@ -154,7 +154,7 @@ type PartialUser = Partial<User>;
 
 ```typescript
 type Getters<T> = {
-  [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K];
+  [K in keyof T as `get${Capitalize<string & K>}`]:  => T[K];
 };
 
 interface Person {
@@ -163,7 +163,7 @@ interface Person {
 }
 
 type PersonGetters = Getters<Person>;
-// Type: { getName: () => string; getAge: () => number; }
+// Type: { getName:  => string; getAge:  => number; }
 ```
 
 **Filtering Properties:**
@@ -292,7 +292,7 @@ class TypedEventEmitter<T extends Record<string, any>> {
   }
 }
 
-const emitter = new TypedEventEmitter<EventMap>();
+const emitter = new TypedEventEmitter<EventMap>;
 
 emitter.on("user:created", (data) => {
   console.log(data.id, data.name); // Type-safe!
@@ -343,7 +343,7 @@ class APIClient<Config extends Record<string, Record<HTTPMethod, any>>> {
   }
 }
 
-const api = new APIClient<EndpointConfig>();
+const api = new APIClient<EndpointConfig>;
 
 // Type-safe API calls
 const users = await api.request("/users", "GET");
@@ -402,17 +402,17 @@ interface User {
   age?: number;
 }
 
-const builder = new Builder<User>();
+const builder = new Builder<User>;
 
 const user = builder
   .set("id", "1")
   .set("name", "John")
   .set("email", "john@example.com")
-  .build(); // OK: all required fields set
+  .build; // OK: all required fields set
 
 // const incomplete = builder
 //   .set("id", "1")
-//   .build();  // Error: missing required fields
+//   .build;  // Error: missing required fields
 ```
 
 ### Pattern 4: Deep Readonly/Partial
@@ -636,15 +636,14 @@ function isString(value: unknown): value is string {
 
 function isArrayOf<T>(
   value: unknown,
-  guard: (item: unknown) => item is T,
-): value is T[] {
+  guard: (item: unknown) => item is T): value is T[] {
   return Array.isArray(value) && value.every(guard);
 }
 
 const data: unknown = ["a", "b", "c"];
 
 if (isArrayOf(data, isString)) {
-  data.forEach((s) => s.toUpperCase()); // Type: string[]
+  data.forEach((s) => s.toUpperCase); // Type: string[]
 }
 ```
 
@@ -660,7 +659,7 @@ function assertIsString(value: unknown): asserts value is string {
 function processValue(value: unknown) {
   assertIsString(value);
   // value is now typed as string
-  console.log(value.toUpperCase());
+  console.log(value.toUpperCase);
 }
 ```
 

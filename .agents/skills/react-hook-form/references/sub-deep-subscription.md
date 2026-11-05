@@ -12,8 +12,8 @@ Subscribe to form values as deep in the component tree as possible, where the da
 **Incorrect (subscription at parent re-renders all children):**
 
 ```typescript
-function CheckoutPage() {
-  const { control, register, handleSubmit } = useForm()
+function CheckoutPage {
+  const { control, register, handleSubmit } = useForm
   const paymentMethod = useWatch({ control, name: 'paymentMethod' })  // Parent subscribes
 
   return (
@@ -32,8 +32,8 @@ function CheckoutPage() {
 **Correct (subscription at leaf component isolates re-renders):**
 
 ```typescript
-function CheckoutPage() {
-  const { control, register, handleSubmit } = useForm()
+function CheckoutPage {
+  const { control, register, handleSubmit } = useForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

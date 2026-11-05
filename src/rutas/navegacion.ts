@@ -7,6 +7,7 @@ import {
   BarChart3Icon,
   ReceiptIcon,
   ShoppingCartIcon,
+  SlidersHorizontalIcon,
   TruckIcon,
   UsersIcon,
   WarehouseIcon,
@@ -77,6 +78,12 @@ export const menu: ElementoMenu[] = [
     etiqueta: "Configuración",
     icono: SettingsIcon,
     roles: ["ADMIN"],
+  },
+  {
+    ruta: "/preferencias",
+    etiqueta: "Preferencias",
+    icono: SlidersHorizontalIcon,
+    roles: ["ADMIN", "CAJERO", "BODEGUERO"],
   },
 ]
 

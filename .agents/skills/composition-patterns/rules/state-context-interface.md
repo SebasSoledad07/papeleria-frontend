@@ -18,9 +18,9 @@ dependency-injectable.
 **Incorrect (UI coupled to specific state implementation):**
 
 ```tsx
-function ComposerInput() {
+function ComposerInput {
   // Tightly coupled to a specific hook
-  const { input, setInput } = useChannelComposerState()
+  const { input, setInput } = useChannelComposerState
   return <TextInput value={input} onChangeText={setInput} />
 }
 ```
@@ -37,7 +37,7 @@ interface ComposerState {
 
 interface ComposerActions {
   update: (updater: (state: ComposerState) => ComposerState) => void
-  submit: () => void
+  submit:  => void
 }
 
 interface ComposerMeta {
@@ -56,7 +56,7 @@ const ComposerContext = createContext<ComposerContextValue | null>(null)
 **UI components consume the interface, not the implementation:**
 
 ```tsx
-function ComposerInput() {
+function ComposerInput {
   const {
     state,
     actions: { update },
@@ -81,7 +81,7 @@ function ComposerInput() {
 function ForwardMessageProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState(initialState)
   const inputRef = useRef(null)
-  const submit = useForwardMessage()
+  const submit = useForwardMessage
 
   return (
     <ComposerContext
@@ -142,7 +142,7 @@ need shared state don't have to be inside the `Composer.Frame`. They just need
 to be within the provider.
 
 ```tsx
-function ForwardMessageDialog() {
+function ForwardMessageDialog {
   return (
     <ForwardMessageProvider>
       <Dialog>
@@ -169,7 +169,7 @@ function ForwardMessageDialog() {
 }
 
 // This button lives OUTSIDE Composer.Frame but can still submit based on its context!
-function ForwardButton() {
+function ForwardButton {
   const {
     actions: { submit },
   } = use(ComposerContext)
@@ -177,7 +177,7 @@ function ForwardButton() {
 }
 
 // This preview lives OUTSIDE Composer.Frame but can read composer's state!
-function MessagePreview() {
+function MessagePreview {
   const { state } = use(ComposerContext)
   return <Preview message={state.input} attachments={state.attachments} />
 }

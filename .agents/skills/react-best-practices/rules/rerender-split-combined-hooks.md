@@ -12,7 +12,7 @@ When a hook contains multiple independent tasks with different dependencies, spl
 **Incorrect (changing `sortOrder` recomputes filtering):**
 
 ```tsx
-const sortedProducts = useMemo(() => {
+const sortedProducts = useMemo( => {
   const filtered = products.filter((p) => p.category === category)
   const sorted = filtered.toSorted((a, b) =>
     sortOrder === "asc" ? a.price - b.price : b.price - a.price
@@ -25,12 +25,12 @@ const sortedProducts = useMemo(() => {
 
 ```tsx
 const filteredProducts = useMemo(
-  () => products.filter((p) => p.category === category),
+   => products.filter((p) => p.category === category),
   [products, category]
 )
 
 const sortedProducts = useMemo(
-  () =>
+   =>
     filteredProducts.toSorted((a, b) =>
       sortOrder === "asc" ? a.price - b.price : b.price - a.price
     ),
@@ -43,7 +43,7 @@ This pattern also applies to `useEffect` when combining unrelated side effects:
 **Incorrect (both effects run when either dependency changes):**
 
 ```tsx
-useEffect(() => {
+useEffect( => {
   analytics.trackPageView(pathname)
   document.title = `${pageTitle} | My App`
 }, [pathname, pageTitle])
@@ -52,11 +52,11 @@ useEffect(() => {
 **Correct (effects run independently):**
 
 ```tsx
-useEffect(() => {
+useEffect( => {
   analytics.trackPageView(pathname)
 }, [pathname])
 
-useEffect(() => {
+useEffect( => {
   document.title = `${pageTitle} | My App`
 }, [pageTitle])
 ```

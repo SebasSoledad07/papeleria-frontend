@@ -12,8 +12,8 @@ FormProvider triggers re-renders on form state updates. Wrap expensive child com
 **Incorrect (children re-render on any form state change):**
 
 ```typescript
-function LargeForm() {
-  const methods = useForm()
+function LargeForm {
+  const methods = useForm
 
   return (
     <FormProvider {...methods}>
@@ -26,8 +26,8 @@ function LargeForm() {
   )
 }
 
-function PersonalInfoSection() {
-  const { register } = useFormContext()
+function PersonalInfoSection {
+  const { register } = useFormContext
   return (
     <div>
       <input {...register('firstName')} />
@@ -40,8 +40,8 @@ function PersonalInfoSection() {
 **Correct (memo prevents unnecessary child re-renders):**
 
 ```typescript
-function LargeForm() {
-  const methods = useForm()
+function LargeForm {
+  const methods = useForm
 
   return (
     <FormProvider {...methods}>
@@ -54,8 +54,8 @@ function LargeForm() {
   )
 }
 
-const PersonalInfoSection = memo(function PersonalInfoSection() {
-  const { register } = useFormContext()
+const PersonalInfoSection = memo(function PersonalInfoSection {
+  const { register } = useFormContext
   return (
     <div>
       <input {...register('firstName')} />
@@ -64,8 +64,8 @@ const PersonalInfoSection = memo(function PersonalInfoSection() {
   )
 })
 
-const AddressSection = memo(function AddressSection() {
-  const { register } = useFormContext()
+const AddressSection = memo(function AddressSection {
+  const { register } = useFormContext
   return (
     <div>
       <input {...register('address.street')} />

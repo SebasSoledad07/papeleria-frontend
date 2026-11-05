@@ -24,10 +24,10 @@ interface User {
 
 // Separate schema
 const userSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string().min(1),
-  email: z.string().email(),
-  age: z.number().int().positive(),
+  id: z.string.uuid,
+  name: z.string.min(1),
+  email: z.string.email,
+  age: z.number.int.positive,
   role: z.enum(['admin', 'user']),  // Added to schema, forgot to add to interface!
 })
 
@@ -45,10 +45,10 @@ import { z } from 'zod'
 
 // Schema is the single source of truth
 const userSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string().min(1),
-  email: z.string().email(),
-  age: z.number().int().positive(),
+  id: z.string.uuid,
+  name: z.string.min(1),
+  email: z.string.email,
+  age: z.number.int.positive,
   role: z.enum(['admin', 'user']),
 })
 
@@ -67,8 +67,8 @@ function createUser(user: User) {
 
 ```typescript
 const userSchema = z.object({
-  name: z.string(),
-  createdAt: z.string().transform(s => new Date(s)),  // String in, Date out
+  name: z.string,
+  createdAt: z.string.transform(s => new Date(s)),  // String in, Date out
 })
 
 // z.infer gives output type (after transforms)
@@ -82,7 +82,7 @@ type UserInput = z.input<typeof userSchema>
 // Use input type for function parameters accepting raw data
 function processUser(input: UserInput) {
   const user = userSchema.parse(input)  // user is User type
-  return user.createdAt.getTime()  // Date methods available
+  return user.createdAt.getTime  // Date methods available
 }
 ```
 
@@ -91,8 +91,8 @@ function processUser(input: UserInput) {
 ```typescript
 // Schema named with Schema suffix
 const UserSchema = z.object({
-  id: z.string(),
-  name: z.string(),
+  id: z.string,
+  name: z.string,
 })
 
 // Type named without suffix

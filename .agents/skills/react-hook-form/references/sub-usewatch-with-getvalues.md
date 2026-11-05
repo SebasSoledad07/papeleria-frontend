@@ -7,16 +7,16 @@ tags: sub, useWatch, getValues, timing, subscription
 
 ## Combine useWatch with getValues for Timing Safety
 
-If `setValue()` is called before useWatch establishes its subscription, the update is missed. Combine useWatch with getValues to guarantee no updates are lost.
+If `setValue` is called before useWatch establishes its subscription, the update is missed. Combine useWatch with getValues to guarantee no updates are lost.
 
 **Incorrect (setValue before subscription misses update):**
 
 ```typescript
-function PrefillableForm() {
-  const { setValue, control } = useForm()
+function PrefillableForm {
+  const { setValue, control } = useForm
   const couponCode = useWatch({ control, name: 'couponCode' })
 
-  useEffect(() => {
+  useEffect( => {
     const savedCoupon = localStorage.getItem('savedCoupon')
     if (savedCoupon) {
       setValue('couponCode', savedCoupon)  // May fire before useWatch subscription
@@ -30,17 +30,17 @@ function PrefillableForm() {
 **Correct (merge subscription with current values):**
 
 ```typescript
-function PrefillableForm() {
-  const { setValue, control, getValues } = useForm()
+function PrefillableForm {
+  const { setValue, control, getValues } = useForm
 
-  const useFormValues = () => ({
+  const useFormValues =  => ({
     ...useWatch({ control }),
-    ...getValues(),  // Fallback ensures no missed values
+    ...getValues,  // Fallback ensures no missed values
   })
 
-  const { couponCode } = useFormValues()
+  const { couponCode } = useFormValues
 
-  useEffect(() => {
+  useEffect( => {
     const savedCoupon = localStorage.getItem('savedCoupon')
     if (savedCoupon) {
       setValue('couponCode', savedCoupon)

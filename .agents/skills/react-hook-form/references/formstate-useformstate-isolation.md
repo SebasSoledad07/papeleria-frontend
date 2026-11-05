@@ -12,8 +12,8 @@ useFormState allows subscribing to form state in child components without causin
 **Incorrect (formState at root re-renders entire form):**
 
 ```typescript
-function ContactForm() {
-  const { register, handleSubmit, formState: { errors, isDirty } } = useForm()
+function ContactForm {
+  const { register, handleSubmit, formState: { errors, isDirty } } = useForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -29,8 +29,8 @@ function ContactForm() {
 **Correct (useFormState isolates subscriptions):**
 
 ```typescript
-function ContactForm() {
-  const { register, handleSubmit, control } = useForm()
+function ContactForm {
+  const { register, handleSubmit, control } = useForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

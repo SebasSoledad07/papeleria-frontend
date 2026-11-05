@@ -35,7 +35,7 @@ import { unauthorized } from '@/lib/errors'
 
 export async function deleteUser(userId: string) {
   // Always check auth inside the action
-  const session = await verifySession()
+  const session = await verifySession
   
   if (!session) {
     throw unauthorized('Must be logged in')
@@ -60,9 +60,9 @@ import { verifySession } from '@/lib/auth'
 import { z } from 'zod'
 
 const updateProfileSchema = z.object({
-  userId: z.string().uuid(),
-  name: z.string().min(1).max(100),
-  email: z.string().email()
+  userId: z.string.uuid,
+  name: z.string.min(1).max(100),
+  email: z.string.email
 })
 
 export async function updateProfile(data: unknown) {
@@ -70,7 +70,7 @@ export async function updateProfile(data: unknown) {
   const validated = updateProfileSchema.parse(data)
   
   // Then authenticate
-  const session = await verifySession()
+  const session = await verifySession
   if (!session) {
     throw new Error('Unauthorized')
   }

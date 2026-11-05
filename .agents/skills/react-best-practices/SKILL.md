@@ -39,7 +39,7 @@ Reference these guidelines when:
 
 - `async-cheap-condition-before-await` - Check cheap sync conditions before awaiting flags or remote values
 - `async-defer-await` - Move await into branches where actually used
-- `async-parallel` - Use Promise.all() for independent operations
+- `async-parallel` - Use Promise.all for independent operations
 - `async-dependencies` - Use better-all for partial dependencies
 - `async-api-routes` - Start promises early, await late in API routes
 - `async-suspense-boundaries` - Use Suspense to stream content
@@ -56,7 +56,7 @@ Reference these guidelines when:
 ### 3. Server-Side Performance (HIGH)
 
 - `server-auth-actions` - Authenticate server actions like API routes
-- `server-cache-react` - Use React.cache() for per-request deduplication
+- `server-cache-react` - Use React.cache for per-request deduplication
 - `server-cache-lru` - Use LRU cache for cross-request caching
 - `server-dedup-props` - Avoid duplicate serialization in RSC props
 - `server-hoist-static-io` - Hoist static I/O (fonts, logos) to module level
@@ -64,7 +64,7 @@ Reference these guidelines when:
 - `server-serialization` - Minimize data passed to client components
 - `server-parallel-fetching` - Restructure components to parallelize fetches
 - `server-parallel-nested-fetching` - Chain nested fetches per item in Promise.all
-- `server-after-nonblocking` - Use after() for non-blocking operations
+- `server-after-nonblocking` - Use after for non-blocking operations
 
 ### 4. Client-Side Data Fetching (MEDIUM-HIGH)
 
@@ -118,7 +118,7 @@ Reference these guidelines when:
 - `js-hoist-regexp` - Hoist RegExp creation outside loops
 - `js-min-max-loop` - Use loop for min/max instead of sort
 - `js-set-map-lookups` - Use Set/Map for O(1) lookups
-- `js-tosorted-immutable` - Use toSorted() for immutability
+- `js-tosorted-immutable` - Use toSorted for immutability
 - `js-flatmap-filter` - Use flatMap to map and filter in one pass
 - `js-request-idle-callback` - Defer non-critical work to browser idle time
 

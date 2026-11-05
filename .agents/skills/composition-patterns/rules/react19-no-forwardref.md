@@ -9,7 +9,7 @@ tags: react19, refs, context, hooks
 
 > **⚠️ React 19+ only.** Skip this if you're on React 18 or earlier.
 
-In React 19, `ref` is now a regular prop (no `forwardRef` wrapper needed), and `use()` replaces `useContext()`.
+In React 19, `ref` is now a regular prop (no `forwardRef` wrapper needed), and `use` replaces `useContext`.
 
 **Incorrect (forwardRef in React 19):**
 
@@ -39,4 +39,4 @@ const value = useContext(MyContext)
 const value = use(MyContext)
 ```
 
-`use()` can also be called conditionally, unlike `useContext()`.
+`use` can also be called conditionally, unlike `useContext`.

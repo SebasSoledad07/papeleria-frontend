@@ -12,28 +12,28 @@ If a side effect is triggered by a specific user action (submit, click, drag), r
 **Incorrect (event modeled as state + effect):**
 
 ```tsx
-function Form() {
+function Form {
   const [submitted, setSubmitted] = useState(false)
   const theme = useContext(ThemeContext)
 
-  useEffect(() => {
+  useEffect( => {
     if (submitted) {
       post('/api/register')
       showToast('Registered', theme)
     }
   }, [submitted, theme])
 
-  return <button onClick={() => setSubmitted(true)}>Submit</button>
+  return <button onClick={ => setSubmitted(true)}>Submit</button>
 }
 ```
 
 **Correct (do it in the handler):**
 
 ```tsx
-function Form() {
+function Form {
   const theme = useContext(ThemeContext)
 
-  function handleSubmit() {
+  function handleSubmit {
     post('/api/register')
     showToast('Registered', theme)
   }

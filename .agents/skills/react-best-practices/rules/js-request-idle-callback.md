@@ -9,7 +9,7 @@ tags: javascript, performance, idle, scheduling, analytics
 
 **Impact: MEDIUM (keeps UI responsive during background tasks)**
 
-Use `requestIdleCallback()` to schedule non-critical work during browser idle periods. This keeps the main thread free for user interactions and animations, reducing jank and improving perceived performance.
+Use `requestIdleCallback` to schedule non-critical work during browser idle periods. This keeps the main thread free for user interactions and animations, reducing jank and improving perceived performance.
 
 **Incorrect (blocks main thread during user interaction):**
 
@@ -33,15 +33,15 @@ function handleSearch(query: string) {
   setResults(results)
 
   // Defer non-critical work to idle periods
-  requestIdleCallback(() => {
+  requestIdleCallback( => {
     analytics.track('search', { query })
   })
 
-  requestIdleCallback(() => {
+  requestIdleCallback( => {
     saveToRecentSearches(query)
   })
 
-  requestIdleCallback(() => {
+  requestIdleCallback( => {
     prefetchTopResults(results.slice(0, 3))
   })
 }
@@ -52,7 +52,7 @@ function handleSearch(query: string) {
 ```typescript
 // Ensure analytics fires within 2 seconds even if browser stays busy
 requestIdleCallback(
-  () => analytics.track('page_view', { path: location.pathname }),
+   => analytics.track('page_view', { path: location.pathname }),
   { timeout: 2000 }
 )
 ```
@@ -65,7 +65,7 @@ function processLargeDataset(items: Item[]) {
 
   function processChunk(deadline: IdleDeadline) {
     // Process items while we have idle time (aim for <50ms chunks)
-    while (index < items.length && deadline.timeRemaining() > 0) {
+    while (index < items.length && deadline.timeRemaining > 0) {
       processItem(items[index])
       index++
     }
@@ -83,9 +83,9 @@ function processLargeDataset(items: Item[]) {
 **With fallback for unsupported browsers:**
 
 ```typescript
-const scheduleIdleWork = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 1))
+const scheduleIdleWork = window.requestIdleCallback ?? ((cb:  => void) => setTimeout(cb, 1))
 
-scheduleIdleWork(() => {
+scheduleIdleWork( => {
   // Non-critical work
 })
 ```

@@ -1,13 +1,13 @@
 ---
-title: Use after() for Non-Blocking Operations
+title: Use after for Non-Blocking Operations
 impact: MEDIUM
 impactDescription: faster response times
 tags: server, async, logging, analytics, side-effects
 ---
 
-## Use after() for Non-Blocking Operations
+## Use after for Non-Blocking Operations
 
-Use Next.js's `after()` to schedule work that should execute after a response is sent. This prevents logging, analytics, and other side effects from blocking the response.
+Use Next.js's `after` to schedule work that should execute after a response is sent. This prevents logging, analytics, and other side effects from blocking the response.
 
 **Incorrect (blocks response):**
 
@@ -41,9 +41,9 @@ export async function POST(request: Request) {
   await updateDatabase(request)
   
   // Log after response is sent
-  after(async () => {
-    const userAgent = (await headers()).get('user-agent') || 'unknown'
-    const sessionCookie = (await cookies()).get('session-id')?.value || 'anonymous'
+  after(async  => {
+    const userAgent = (await headers).get('user-agent') || 'unknown'
+    const sessionCookie = (await cookies).get('session-id')?.value || 'anonymous'
     
     logUserAction({ sessionCookie, userAgent })
   })
@@ -67,7 +67,7 @@ The response is sent immediately while logging happens in the background.
 
 **Important notes:**
 
-- `after()` runs even if the response fails or redirects
+- `after` runs even if the response fails or redirects
 - Works in Server Actions, Route Handlers, and Server Components
 
 Reference: [https://nextjs.org/docs/app/api-reference/functions/after](https://nextjs.org/docs/app/api-reference/functions/after)

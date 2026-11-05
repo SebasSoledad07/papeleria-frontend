@@ -105,7 +105,7 @@ If a plugin only works during build:
 
 ```ts
 {
-  ...rollupPlugin(),
+  ...rollupPlugin,
   enforce: 'post',
   apply: 'build',
 }

@@ -16,16 +16,16 @@ import { useEffect, useEffectEvent } from 'react'
 
 function ChatRoom({ roomId, onConnected }: {
   roomId: string
-  onConnected: () => void
+  onConnected:  => void
 }) {
   const handleConnected = useEffectEvent(onConnected)
 
-  useEffect(() => {
+  useEffect( => {
     const connection = createConnection(roomId)
     connection.on('connected', handleConnected)
-    connection.connect()
+    connection.connect
 
-    return () => connection.disconnect()
+    return  => connection.disconnect
   }, [roomId, handleConnected])
 }
 ```
@@ -39,16 +39,16 @@ import { useEffect, useEffectEvent } from 'react'
 
 function ChatRoom({ roomId, onConnected }: {
   roomId: string
-  onConnected: () => void
+  onConnected:  => void
 }) {
   const handleConnected = useEffectEvent(onConnected)
 
-  useEffect(() => {
+  useEffect( => {
     const connection = createConnection(roomId)
     connection.on('connected', handleConnected)
-    connection.connect()
+    connection.connect
 
-    return () => connection.disconnect()
+    return  => connection.disconnect
   }, [roomId])
 }
 ```

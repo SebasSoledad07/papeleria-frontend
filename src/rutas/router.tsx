@@ -6,6 +6,7 @@ import { Configuracion } from "@/caracteristicas/configuracion/paginas/Configura
 import { Ajustes } from "@/caracteristicas/inventario/paginas/Ajustes"
 import { Reporte } from "@/caracteristicas/reportes/paginas/Reporte"
 import { Reportes } from "@/caracteristicas/reportes/paginas/Reportes"
+import { Preferencias } from "@/caracteristicas/preferencias/paginas/Preferencias"
 import { Caja } from "@/caracteristicas/caja/paginas/Caja"
 import { CierreCaja } from "@/caracteristicas/caja/paginas/CierreCaja"
 import { VentaDetalle } from "@/caracteristicas/caja/paginas/VentaDetalle"
@@ -147,6 +148,14 @@ export const router = createBrowserRouter([
                 <Proveedores />
               </RutaProtegida>
             ),
+          },
+          {
+            path: "preferencias",
+            element: <Preferencias />,
+          },
+          {
+            path: "preferencias",
+            element: <Preferencias />,
           },
           {
             path: "configuracion",

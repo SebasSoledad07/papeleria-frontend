@@ -90,7 +90,7 @@ import { toast } from "sonner"
 toast.success("Changes saved.")
 toast.error("Something went wrong.")
 toast("File deleted.", {
-  action: { label: "Undo", onClick: () => undoDelete() },
+  action: { label: "Undo", onClick:  => undoDelete },
 })
 ```
 

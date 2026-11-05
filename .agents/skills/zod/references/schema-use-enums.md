@@ -7,7 +7,7 @@ tags: schema, enum, literal, union
 
 ## Use Enums for Fixed String Values
 
-When a field should only accept specific values (status, role, type), use `z.enum()` or `z.literal()` instead of `z.string()`. Plain strings accept any value including typos, while enums provide validation, type safety, and IDE autocomplete.
+When a field should only accept specific values (status, role, type), use `z.enum` or `z.literal` instead of `z.string`. Plain strings accept any value including typos, while enums provide validation, type safety, and IDE autocomplete.
 
 **Incorrect (plain string for fixed values):**
 
@@ -15,9 +15,9 @@ When a field should only accept specific values (status, role, type), use `z.enu
 import { z } from 'zod'
 
 const orderSchema = z.object({
-  id: z.string(),
-  status: z.string(),  // Accepts any string
-  priority: z.string(),  // No constraints
+  id: z.string,
+  status: z.string,  // Accepts any string
+  priority: z.string,  // No constraints
 })
 
 type Order = z.infer<typeof orderSchema>
@@ -46,7 +46,7 @@ const OrderStatus = z.enum(['pending', 'processing', 'shipped', 'delivered'])
 const Priority = z.enum(['low', 'medium', 'high'])
 
 const orderSchema = z.object({
-  id: z.string(),
+  id: z.string,
   status: OrderStatus,
   priority: Priority,
 })
@@ -86,12 +86,12 @@ const userSchema = z.object({
 ```typescript
 const successResponse = z.object({
   status: z.literal('success'),
-  data: z.unknown(),
+  data: z.unknown,
 })
 
 const errorResponse = z.object({
   status: z.literal('error'),
-  message: z.string(),
+  message: z.string,
 })
 
 const response = z.discriminatedUnion('status', [

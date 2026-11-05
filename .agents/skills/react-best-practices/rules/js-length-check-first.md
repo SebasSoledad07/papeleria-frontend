@@ -16,7 +16,7 @@ In real-world applications, this optimization is especially valuable when the co
 ```typescript
 function hasChanges(current: string[], original: string[]) {
   // Always sorts and joins, even when lengths differ
-  return current.sort().join() !== original.sort().join()
+  return current.sort.join !== original.sort.join
 }
 ```
 
@@ -31,8 +31,8 @@ function hasChanges(current: string[], original: string[]) {
     return true
   }
   // Only sort when lengths match
-  const currentSorted = current.toSorted()
-  const originalSorted = original.toSorted()
+  const currentSorted = current.toSorted
+  const originalSorted = original.toSorted
   for (let i = 0; i < currentSorted.length; i++) {
     if (currentSorted[i] !== originalSorted[i]) {
       return true

@@ -39,7 +39,7 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
 
 ```ts
 export default defineConfig(async ({ command, mode }) => {
-  const data = await fetchSomething()
+  const data = await fetchSomething
   return { /* config */ }
 })
 ```
@@ -53,7 +53,7 @@ import { defineConfig, loadEnv } from 'vite'
 
 export default defineConfig(({ mode }) => {
   // Load env files from cwd, include all vars (empty prefix)
-  const env = loadEnv(mode, process.cwd(), '')
+  const env = loadEnv(mode, process.cwd, '')
   
   return {
     define: {
@@ -100,7 +100,7 @@ Values must be JSON-serializable or single identifiers. Non-strings auto-wrapped
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue],
 })
 ```
 

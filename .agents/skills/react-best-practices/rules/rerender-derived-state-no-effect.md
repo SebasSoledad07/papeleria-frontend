@@ -12,12 +12,12 @@ If a value can be computed from current props/state, do not store it in state or
 **Incorrect (redundant state and effect):**
 
 ```tsx
-function Form() {
+function Form {
   const [firstName, setFirstName] = useState('First')
   const [lastName, setLastName] = useState('Last')
   const [fullName, setFullName] = useState('')
 
-  useEffect(() => {
+  useEffect( => {
     setFullName(firstName + ' ' + lastName)
   }, [firstName, lastName])
 
@@ -28,7 +28,7 @@ function Form() {
 **Correct (derive during render):**
 
 ```tsx
-function Form() {
+function Form {
   const [firstName, setFirstName] = useState('First')
   const [lastName, setLastName] = useState('Last')
   const fullName = firstName + ' ' + lastName

@@ -24,16 +24,16 @@ function Composer({
 }: Props) {
   return (
     <form>
-      {renderHeader?.()}
+      {renderHeader?.}
       <Input />
       {showAttachments && <Attachments />}
       {renderFooter ? (
-        renderFooter()
+        renderFooter
       ) : (
         <Footer>
           {showFormatting && <Formatting />}
           {showEmojis && <Emojis />}
-          {renderActions?.()}
+          {renderActions?.}
         </Footer>
       )}
     </form>
@@ -58,7 +58,7 @@ function ComposerFrame({ children }: { children: React.ReactNode }) {
   return <form>{children}</form>
 }
 
-function ComposerInput() {
+function ComposerInput {
   const {
     state,
     actions: { update },
@@ -73,7 +73,7 @@ function ComposerInput() {
   )
 }
 
-function ComposerSubmit() {
+function ComposerSubmit {
   const {
     actions: { submit },
   } = use(ComposerContext)

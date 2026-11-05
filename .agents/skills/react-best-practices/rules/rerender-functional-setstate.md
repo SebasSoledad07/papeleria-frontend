@@ -12,7 +12,7 @@ When updating state based on the current state value, use the functional update 
 **Incorrect (requires state as dependency):**
 
 ```tsx
-function TodoList() {
+function TodoList {
   const [items, setItems] = useState(initialItems)
   
   // Callback must depend on items, recreated on every items change
@@ -34,7 +34,7 @@ The first callback is recreated every time `items` changes, which can cause chil
 **Correct (stable callbacks, no stale closures):**
 
 ```tsx
-function TodoList() {
+function TodoList {
   const [items, setItems] = useState(initialItems)
   
   // Stable callback, never recreated

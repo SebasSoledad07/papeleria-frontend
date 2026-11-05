@@ -12,8 +12,8 @@ For simple forms with basic constraints (required, minLength, pattern), browser-
 **Incorrect (JavaScript validates simple constraints):**
 
 ```typescript
-function NewsletterForm() {
-  const { register, handleSubmit, formState: { errors } } = useForm()
+function NewsletterForm {
+  const { register, handleSubmit, formState: { errors } } = useForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -34,7 +34,7 @@ function NewsletterForm() {
 **Correct (browser handles validation natively):**
 
 ```typescript
-function NewsletterForm() {
+function NewsletterForm {
   const { register, handleSubmit } = useForm({
     shouldUseNativeValidation: true,
   })

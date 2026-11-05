@@ -15,9 +15,9 @@ import { UserController } from "./controllers/user.controller";
 import { AuthService } from "./services/auth.service";
 
 class Container {
-  private instances = new Map<string, any>();
+  private instances = new Map<string, any>;
 
-  register<T>(key: string, factory: () => T): void {
+  register<T>(key: string, factory:  => T): void {
     this.instances.set(key, factory);
   }
 
@@ -26,26 +26,26 @@ class Container {
     if (!factory) {
       throw new Error(`No factory registered for ${key}`);
     }
-    return factory();
+    return factory;
   }
 
-  singleton<T>(key: string, factory: () => T): void {
+  singleton<T>(key: string, factory:  => T): void {
     let instance: T;
-    this.instances.set(key, () => {
+    this.instances.set(key,  => {
       if (!instance) {
-        instance = factory();
+        instance = factory;
       }
       return instance;
     });
   }
 }
 
-export const container = new Container();
+export const container = new Container;
 
 // Register dependencies
 container.singleton(
   "db",
-  () =>
+   =>
     new Pool({
       host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT || "5432"),
@@ -55,28 +55,23 @@ container.singleton(
       max: 20,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 2000,
-    }),
-);
+    }));
 
 container.singleton(
   "userRepository",
-  () => new UserRepository(container.resolve("db")),
-);
+   => new UserRepository(container.resolve("db")));
 
 container.singleton(
   "userService",
-  () => new UserService(container.resolve("userRepository")),
-);
+   => new UserService(container.resolve("userRepository")));
 
 container.register(
   "userController",
-  () => new UserController(container.resolve("userService")),
-);
+   => new UserController(container.resolve("userService")));
 
 container.singleton(
   "authService",
-  () => new AuthService(container.resolve("userRepository")),
-);
+   => new AuthService(container.resolve("userRepository")));
 ```
 
 ## Database Patterns
@@ -101,7 +96,7 @@ const poolConfig: PoolConfig = {
 export const pool = new Pool(poolConfig);
 
 // Test connection
-pool.on("connect", () => {
+pool.on("connect",  => {
   console.log("Database connected");
 });
 
@@ -111,8 +106,8 @@ pool.on("error", (err) => {
 });
 
 // Graceful shutdown
-export const closeDatabase = async () => {
-  await pool.end();
+export const closeDatabase = async  => {
+  await pool.end;
   console.log("Database connection closed");
 };
 ```
@@ -123,7 +118,7 @@ export const closeDatabase = async () => {
 // config/mongoose.ts
 import mongoose from "mongoose";
 
-const connectDB = async () => {
+const connectDB = async  => {
   try {
     await mongoose.connect(process.env.MONGODB_URI!, {
       maxPoolSize: 10,
@@ -138,7 +133,7 @@ const connectDB = async () => {
   }
 };
 
-mongoose.connection.on("disconnected", () => {
+mongoose.connection.on("disconnected",  => {
   console.log("MongoDB disconnected");
 });
 
@@ -167,8 +162,7 @@ const userSchema = new Schema<IUser>(
   },
   {
     timestamps: true,
-  },
-);
+  });
 
 // Indexes
 userSchema.index({ email: 1 });
@@ -186,7 +180,7 @@ export class OrderService {
   constructor(private db: Pool) {}
 
   async createOrder(userId: string, items: any[]) {
-    const client = await this.db.connect();
+    const client = await this.db.connect;
 
     try {
       await client.query("BEGIN");
@@ -194,22 +188,19 @@ export class OrderService {
       // Create order
       const orderResult = await client.query(
         "INSERT INTO orders (user_id, total) VALUES ($1, $2) RETURNING id",
-        [userId, calculateTotal(items)],
-      );
+        [userId, calculateTotal(items)]);
       const orderId = orderResult.rows[0].id;
 
       // Create order items
       for (const item of items) {
         await client.query(
           "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES ($1, $2, $3, $4)",
-          [orderId, item.productId, item.quantity, item.price],
-        );
+          [orderId, item.productId, item.quantity, item.price]);
 
         // Update inventory
         await client.query(
           "UPDATE products SET stock = stock - $1 WHERE id = $2",
-          [item.quantity, item.productId],
-        );
+          [item.quantity, item.productId]);
       }
 
       await client.query("COMMIT");
@@ -218,7 +209,7 @@ export class OrderService {
       await client.query("ROLLBACK");
       throw error;
     } finally {
-      client.release();
+      client.release;
     }
   }
 }
@@ -275,8 +266,7 @@ export class AuthService {
     try {
       const payload = jwt.verify(
         refreshToken,
-        process.env.REFRESH_TOKEN_SECRET!,
-      ) as { userId: string };
+        process.env.REFRESH_TOKEN_SECRET!) as { userId: string };
 
       const user = await this.userRepository.findById(payload.userId);
 
@@ -356,12 +346,11 @@ export function Cacheable(ttl: number = 300) {
   return function (
     target: any,
     propertyKey: string,
-    descriptor: PropertyDescriptor,
-  ) {
+    descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
 
     descriptor.value = async function (...args: any[]) {
-      const cache = new CacheService();
+      const cache = new CacheService;
       const cacheKey = `${propertyKey}:${JSON.stringify(args)}`;
 
       const cached = await cache.get(cacheKey);
@@ -391,8 +380,7 @@ export class ApiResponse {
     res: Response,
     data: T,
     message?: string,
-    statusCode = 200,
-  ) {
+    statusCode = 200) {
     return res.status(statusCode).json({
       status: "success",
       message,
@@ -413,8 +401,7 @@ export class ApiResponse {
     data: T[],
     page: number,
     limit: number,
-    total: number,
-  ) {
+    total: number) {
     return res.json({
       status: "success",
       data,

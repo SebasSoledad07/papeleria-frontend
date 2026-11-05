@@ -12,8 +12,8 @@ useFieldArray generates a unique `id` for each field. Using array index as key c
 **Incorrect (index as key causes state corruption):**
 
 ```typescript
-function IngredientsForm() {
-  const { control, register } = useForm()
+function IngredientsForm {
+  const { control, register } = useForm
   const { fields, append, remove } = useFieldArray({ control, name: 'ingredients' })
 
   return (
@@ -21,10 +21,10 @@ function IngredientsForm() {
       {fields.map((field, index) => (
         <div key={index}>  {/* Index key causes re-render issues */}
           <input {...register(`ingredients.${index}.name`)} />
-          <button type="button" onClick={() => remove(index)}>Remove</button>
+          <button type="button" onClick={ => remove(index)}>Remove</button>
         </div>
       ))}
-      <button type="button" onClick={() => append({ name: '' })}>Add</button>
+      <button type="button" onClick={ => append({ name: '' })}>Add</button>
     </div>
   )
 }
@@ -33,8 +33,8 @@ function IngredientsForm() {
 **Correct (field.id ensures stable identity):**
 
 ```typescript
-function IngredientsForm() {
-  const { control, register } = useForm()
+function IngredientsForm {
+  const { control, register } = useForm
   const { fields, append, remove } = useFieldArray({ control, name: 'ingredients' })
 
   return (
@@ -42,10 +42,10 @@ function IngredientsForm() {
       {fields.map((field, index) => (
         <div key={field.id}>  {/* Stable identity across operations */}
           <input {...register(`ingredients.${index}.name`)} />
-          <button type="button" onClick={() => remove(index)}>Remove</button>
+          <button type="button" onClick={ => remove(index)}>Remove</button>
         </div>
       ))}
-      <button type="button" onClick={() => append({ name: '' })}>Add</button>
+      <button type="button" onClick={ => append({ name: '' })}>Add</button>
     </div>
   )
 }

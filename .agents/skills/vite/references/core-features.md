@@ -11,10 +11,10 @@ Import multiple modules matching a pattern:
 
 ```ts
 const modules = import.meta.glob('./dir/*.ts')
-// { './dir/foo.ts': () => import('./dir/foo.ts'), ... }
+// { './dir/foo.ts':  => import('./dir/foo.ts'), ... }
 
 for (const path in modules) {
-  modules[path]().then((mod) => {
+  modules[path].then((mod) => {
     console.log(path, mod)
   })
 }
@@ -87,7 +87,7 @@ import notInlined from './large.png?no-inline'  // Force separate file
 
 ```ts
 import Worker from './worker.ts?worker'
-const worker = new Worker()
+const worker = new Worker
 
 // Or inline:
 import InlineWorker from './worker.ts?worker&inline'
@@ -192,7 +192,7 @@ if (import.meta.hot) {
     // Cleanup before module is replaced
   })
   
-  import.meta.hot.invalidate()  // Force full reload
+  import.meta.hot.invalidate  // Force full reload
 }
 ```
 

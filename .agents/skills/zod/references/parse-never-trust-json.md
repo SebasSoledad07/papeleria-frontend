@@ -7,7 +7,7 @@ tags: parse, json, security, type-safety
 
 ## Never Trust JSON.parse Output
 
-`JSON.parse()` returns `any` (or `unknown` in strict mode), providing no type guarantees. Always validate JSON output with Zod before using it, even if you control the JSON source. This catches corruption, version mismatches, and ensures type safety.
+`JSON.parse` returns `any` (or `unknown` in strict mode), providing no type guarantees. Always validate JSON output with Zod before using it, even if you control the JSON source. This catches corruption, version mismatches, and ensures type safety.
 
 **Incorrect (trusting JSON.parse):**
 
@@ -21,8 +21,8 @@ console.log(config.database.host)  // TypeError: Cannot read property 'host' of 
 
 // API response - also unvalidated
 const response = await fetch('/api/user')
-const user = await response.json()  // any type
-console.log(user.name.toUpperCase())  // Crash if name is null/undefined
+const user = await response.json  // any type
+console.log(user.name.toUpperCase)  // Crash if name is null/undefined
 ```
 
 **Correct (validate after JSON.parse):**
@@ -32,13 +32,13 @@ import { z } from 'zod'
 
 const configSchema = z.object({
   database: z.object({
-    host: z.string(),
-    port: z.number(),
-    name: z.string(),
+    host: z.string,
+    port: z.number,
+    name: z.string,
   }),
   api: z.object({
-    key: z.string(),
-    timeout: z.number().default(5000),
+    key: z.string,
+    timeout: z.number.default(5000),
   }),
 })
 
@@ -49,13 +49,13 @@ const config = configSchema.parse(rawConfig)
 
 // API response validation
 const userSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  email: z.string().email(),
+  id: z.string,
+  name: z.string,
+  email: z.string.email,
 })
 
 const response = await fetch('/api/user')
-const rawUser = await response.json()
+const rawUser = await response.json
 const user = userSchema.parse(rawUser)
 // user is fully typed and validated
 ```
@@ -89,11 +89,11 @@ const config = parseJSON(configSchema, fs.readFileSync('config.json', 'utf-8'))
 
 ```typescript
 const cartSchema = z.array(z.object({
-  productId: z.string(),
-  quantity: z.number().int().positive(),
+  productId: z.string,
+  quantity: z.number.int.positive,
 }))
 
-function getCart() {
+function getCart {
   const raw = localStorage.getItem('cart')
   if (!raw) return []
 

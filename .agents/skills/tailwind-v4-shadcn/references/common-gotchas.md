@@ -64,7 +64,7 @@
 
 ---
 
-### 3. Double `hsl()` Wrapping
+### 3. Double `hsl` Wrapping
 
 ❌ **WRONG:**
 ```css
@@ -79,12 +79,12 @@
 ```css
 @layer base {
   body {
-    background-color: var(--background);  /* Already has hsl() */
+    background-color: var(--background);  /* Already has hsl */
   }
 }
 ```
 
-**Why:** Variables already contain `hsl()`, double-wrapping creates `hsl(hsl(...))`.
+**Why:** Variables already contain `hsl`, double-wrapping creates `hsl(hsl(...))`.
 
 ---
 
@@ -190,7 +190,7 @@ export default defineConfig({
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()]  // v4 way
+  plugins: [react, tailwindcss]  // v4 way
 })
 ```
 
@@ -259,7 +259,7 @@ import { Button } from '@/components/ui/button'
 
 ## Component Gotchas
 
-### 11. Missing `cn()` Utility
+### 11. Missing `cn` Utility
 
 ❌ **WRONG:**
 ```tsx
@@ -272,7 +272,7 @@ import { cn } from '@/lib/utils'
 <div className={cn("base", isActive && "active")} />
 ```
 
-**Why:** `cn()` properly merges and deduplicates Tailwind classes.
+**Why:** `cn` properly merges and deduplicates Tailwind classes.
 
 ---
 
@@ -448,7 +448,7 @@ Colors look good but fail WCAG
 | Symptom | Likely Cause |
 |---------|-------------|
 | `bg-primary` doesn't work | Missing `@theme inline` mapping |
-| Colors all black/white | Double `hsl()` wrapping |
+| Colors all black/white | Double `hsl` wrapping |
 | Dark mode not switching | Missing ThemeProvider |
 | Build fails | `tailwind.config.ts` exists with theme config |
 | Text invisible | Wrong contrast colors |
@@ -461,7 +461,7 @@ Colors look good but fail WCAG
 Before deploying:
 - [ ] No `tailwind.config.ts` file (or it's empty)
 - [ ] `components.json` has `"config": ""`
-- [ ] All colors have `hsl()` wrapper in `:root`
+- [ ] All colors have `hsl` wrapper in `:root`
 - [ ] `@theme inline` maps all variables
 - [ ] `@layer base` doesn't wrap `:root`
 - [ ] Theme provider wraps app

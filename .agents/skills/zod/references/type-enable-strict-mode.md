@@ -24,8 +24,8 @@ Zod requires TypeScript's strict mode to work correctly. Without it, `undefined`
 import { z } from 'zod'
 
 const userSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
+  name: z.string,
+  email: z.string.email,
 })
 
 type User = z.infer<typeof userSchema>
@@ -33,7 +33,7 @@ type User = z.infer<typeof userSchema>
 
 function processUser(user: User) {
   // No error even if user.name could be undefined
-  console.log(user.name.toUpperCase())  // Potential runtime crash
+  console.log(user.name.toUpperCase)  // Potential runtime crash
 }
 
 // TypeScript allows calling with undefined
@@ -55,8 +55,8 @@ processUser(undefined as any)  // No warning
 import { z } from 'zod'
 
 const userSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
+  name: z.string,
+  email: z.string.email,
 })
 
 type User = z.infer<typeof userSchema>
@@ -64,7 +64,7 @@ type User = z.infer<typeof userSchema>
 
 function processUser(user: User) {
   // TypeScript knows name is always string
-  console.log(user.name.toUpperCase())  // Safe
+  console.log(user.name.toUpperCase)  // Safe
 }
 
 // TypeScript catches potential undefined
@@ -91,13 +91,13 @@ processUser(undefined as any)  // Error with strict null checks
 
 ```typescript
 // Without strictNullChecks
-const schema = z.string().optional()
+const schema = z.string.optional
 type MaybeString = z.infer<typeof schema>
 // Should be: string | undefined
 // Without strict: just string (undefined is implicit)
 
 // Without noImplicitAny
-const schema = z.object({ name: z.string() })
+const schema = z.object({ name: z.string })
 schema.parse(data)  // data could be 'any', bypassing validation
 ```
 
@@ -109,7 +109,7 @@ schema.parse(data)  // data could be 'any', bypassing validation
 
 // 1. Add null checks
 if (user.name !== undefined) {
-  console.log(user.name.toUpperCase())
+  console.log(user.name.toUpperCase)
 }
 
 // 2. Add explicit types

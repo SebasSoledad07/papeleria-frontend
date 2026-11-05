@@ -31,14 +31,14 @@ import { userSchema, orderSchema, analyticsSchema, reportsSchema } from '@/schem
 // Only import what's immediately needed
 import { userSchema } from '@/schemas/user'
 
-async function loadAnalyticsSchema() {
+async function loadAnalyticsSchema {
   const { analyticsSchema } = await import('@/schemas/analytics')
   return analyticsSchema
 }
 
 // Use when needed
 async function handleAnalyticsData(data: unknown) {
-  const schema = await loadAnalyticsSchema()
+  const schema = await loadAnalyticsSchema
   return schema.safeParse(data)
 }
 ```
@@ -52,10 +52,10 @@ async function handleAnalyticsData(data: unknown) {
 import { useEffect, useState } from 'react'
 import type { z } from 'zod'
 
-export default function ReportsPage() {
+export default function ReportsPage {
   const [schema, setSchema] = useState<z.ZodType | null>(null)
 
-  useEffect(() => {
+  useEffect( => {
     // Load schema only when this route is accessed
     import('@/schemas/reports').then(({ reportsSchema }) => {
       setSchema(reportsSchema)
@@ -81,9 +81,9 @@ export const reportsSchema = z.object({
 // app/admin/reports/page.tsx
 import { lazy, Suspense } from 'react'
 
-const ReportsForm = lazy(() => import('./ReportsForm'))
+const ReportsForm = lazy( => import('./ReportsForm'))
 
-export default function ReportsPage() {
+export default function ReportsPage {
   return (
     <Suspense fallback={<Loading />}>
       <ReportsForm />
@@ -94,7 +94,7 @@ export default function ReportsPage() {
 // ReportsForm.tsx - schema imported with component
 import { reportsSchema } from '@/schemas/reports'
 
-export default function ReportsForm() {
+export default function ReportsForm {
   // Schema available when component loads
 }
 ```
@@ -104,19 +104,19 @@ export default function ReportsForm() {
 ```typescript
 // schemas/registry.ts
 const schemaLoaders = {
-  user: () => import('./user').then(m => m.userSchema),
-  order: () => import('./order').then(m => m.orderSchema),
-  analytics: () => import('./analytics').then(m => m.analyticsSchema),
-  reports: () => import('./reports').then(m => m.reportsSchema),
+  user:  => import('./user').then(m => m.userSchema),
+  order:  => import('./order').then(m => m.orderSchema),
+  analytics:  => import('./analytics').then(m => m.analyticsSchema),
+  reports:  => import('./reports').then(m => m.reportsSchema),
 } as const
 
 type SchemaName = keyof typeof schemaLoaders
 
-const schemaCache = new Map<SchemaName, z.ZodType>()
+const schemaCache = new Map<SchemaName, z.ZodType>
 
 export async function getSchema(name: SchemaName) {
   if (!schemaCache.has(name)) {
-    const schema = await schemaLoaders[name]()
+    const schema = await schemaLoaders[name]
     schemaCache.set(name, schema)
   }
   return schemaCache.get(name)!

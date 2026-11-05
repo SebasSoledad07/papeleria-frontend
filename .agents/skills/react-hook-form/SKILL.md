@@ -47,7 +47,7 @@ Reference these guidelines when:
 - `sub-watch-specific-fields` - Watch specific fields instead of entire form
 - `sub-usewatch-with-getvalues` - Combine useWatch with getValues for timing safety
 - `sub-deep-subscription` - Subscribe deep in component tree where data is needed
-- `sub-avoid-watch-in-render` - Avoid calling watch() in render for one-time reads
+- `sub-avoid-watch-in-render` - Avoid calling watch in render for one-time reads
 - `sub-usewatch-default-value` - Provide defaultValue to useWatch for initial render
 - `sub-useformcontext-sparingly` - Use useFormContext sparingly for deep nesting
 

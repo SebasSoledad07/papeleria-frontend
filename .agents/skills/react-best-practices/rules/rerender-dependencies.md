@@ -12,7 +12,7 @@ Specify primitive dependencies instead of objects to minimize effect re-runs.
 **Incorrect (re-runs on any user field change):**
 
 ```tsx
-useEffect(() => {
+useEffect( => {
   console.log(user.id)
 }, [user])
 ```
@@ -20,7 +20,7 @@ useEffect(() => {
 **Correct (re-runs only when id changes):**
 
 ```tsx
-useEffect(() => {
+useEffect( => {
   console.log(user.id)
 }, [user.id])
 ```
@@ -29,17 +29,17 @@ useEffect(() => {
 
 ```tsx
 // Incorrect: runs on width=767, 766, 765...
-useEffect(() => {
+useEffect( => {
   if (width < 768) {
-    enableMobileMode()
+    enableMobileMode
   }
 }, [width])
 
 // Correct: runs only on boolean transition
 const isMobile = width < 768
-useEffect(() => {
+useEffect( => {
   if (isMobile) {
-    enableMobileMode()
+    enableMobileMode
   }
 }, [isMobile])
 ```

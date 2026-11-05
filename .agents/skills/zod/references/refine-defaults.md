@@ -1,13 +1,13 @@
 ---
-title: Use default() for Optional Fields with Defaults
+title: Use default for Optional Fields with Defaults
 impact: MEDIUM
-impactDescription: Manual default handling spreads logic across codebase; .default() centralizes defaults in schema
+impactDescription: Manual default handling spreads logic across codebase; .default centralizes defaults in schema
 tags: refine, default, optional, configuration
 ---
 
-## Use default() for Optional Fields with Defaults
+## Use default for Optional Fields with Defaults
 
-When a field is optional but should have a default value when missing, use `.default()` instead of handling defaults in business logic. This keeps default values centralized in the schema and ensures consistent behavior.
+When a field is optional but should have a default value when missing, use `.default` instead of handling defaults in business logic. This keeps default values centralized in the schema and ensures consistent behavior.
 
 **Incorrect (defaults spread across codebase):**
 
@@ -15,9 +15,9 @@ When a field is optional but should have a default value when missing, use `.def
 import { z } from 'zod'
 
 const configSchema = z.object({
-  timeout: z.number().optional(),
-  retries: z.number().optional(),
-  debug: z.boolean().optional(),
+  timeout: z.number.optional,
+  retries: z.number.optional,
+  debug: z.boolean.optional,
 })
 
 type Config = z.infer<typeof configSchema>
@@ -47,9 +47,9 @@ function createOtherClient(config: Config) {
 import { z } from 'zod'
 
 const configSchema = z.object({
-  timeout: z.number().default(5000),
-  retries: z.number().default(3),
-  debug: z.boolean().default(false),
+  timeout: z.number.default(5000),
+  retries: z.number.default(3),
+  debug: z.boolean.default(false),
 })
 
 type Config = z.infer<typeof configSchema>
@@ -75,7 +75,7 @@ configSchema.parse({ timeout: 10000 })
 
 ```typescript
 const schema = z.object({
-  name: z.string(),
+  name: z.string,
   role: z.enum(['admin', 'user']).default('user'),
 })
 
@@ -93,13 +93,13 @@ type SchemaOutput = z.output<typeof schema>
 ```typescript
 // Static default
 const schema1 = z.object({
-  id: z.string().default('temp-id'),
+  id: z.string.default('temp-id'),
 })
 
 // Factory function for dynamic defaults
 const schema2 = z.object({
-  id: z.string().default(() => crypto.randomUUID()),
-  createdAt: z.date().default(() => new Date()),
+  id: z.string.default( => crypto.randomUUID),
+  createdAt: z.date.default( => new Date),
 })
 
 // Each parse creates new values
@@ -110,16 +110,16 @@ schema2.parse({})  // { id: 'def-456...', createdAt: 2024-01-15... }
 **Combining with optional/nullable:**
 
 ```typescript
-// .optional().default() - if undefined, use default
-z.string().optional().default('fallback')
+// .optional.default - if undefined, use default
+z.string.optional.default('fallback')
 
-// .nullable().default() - null stays null, only undefined gets default
-z.string().nullable().default('fallback')
+// .nullable.default - null stays null, only undefined gets default
+z.string.nullable.default('fallback')
 // null -> null
 // undefined -> 'fallback'
 
-// .nullish().default() - both null and undefined get default
-z.string().nullish().default('fallback')
+// .nullish.default - both null and undefined get default
+z.string.nullish.default('fallback')
 // null -> 'fallback'
 // undefined -> 'fallback'
 ```

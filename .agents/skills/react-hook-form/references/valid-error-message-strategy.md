@@ -7,13 +7,13 @@ tags: valid, errors, optional-chaining, nested-fields
 
 ## Access Errors via Optional Chaining or Lodash Get
 
-Error objects can have deeply nested paths for nested fields. Use optional chaining or lodash `get()` to safely access error messages without runtime errors.
+Error objects can have deeply nested paths for nested fields. Use optional chaining or lodash `get` to safely access error messages without runtime errors.
 
 **Incorrect (direct access throws on undefined):**
 
 ```typescript
-function AddressForm() {
-  const { register, formState: { errors } } = useForm()
+function AddressForm {
+  const { register, formState: { errors } } = useForm
 
   return (
     <form>
@@ -30,8 +30,8 @@ function AddressForm() {
 **Correct (optional chaining for safe access):**
 
 ```typescript
-function AddressForm() {
-  const { register, formState: { errors } } = useForm()
+function AddressForm {
+  const { register, formState: { errors } } = useForm
 
   return (
     <form>
@@ -50,8 +50,8 @@ function AddressForm() {
 ```typescript
 import { get } from 'lodash'
 
-function AddressForm() {
-  const { register, formState: { errors } } = useForm()
+function AddressForm {
+  const { register, formState: { errors } } = useForm
 
   return (
     <form>

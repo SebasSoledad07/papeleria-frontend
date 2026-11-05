@@ -32,7 +32,7 @@ Después se instalan las dependencias de abajo. **No se fijan versiones en este 
 | `react-hook-form`, `zod`, `@hookform/resolvers` | Formularios y validación | 1 |
 | `tailwindcss`, `@tailwindcss/vite` | Estilos (v4; se configura en CSS con `@theme`) | 0 |
 | `clsx`, `tailwind-merge`, `class-variance-authority`, `lucide-react` | Utilidades que usa shadcn/ui | 0 |
-| `barcode-detector` | Lectura de códigos con la cámara (RF-10) | 2 |
+| `barcode-detector` | Lectura de códigos con la cámara  | 2 |
 | `@tanstack/react-table` | Tabla genérica de reportes y listados | 2 |
 | `recharts` | Gráficas del panel y reportes | 5 |
 

@@ -14,8 +14,8 @@ React Hook Form DevTools can cause performance issues, especially with FormProvi
 ```typescript
 import { DevTool } from '@hookform/devtools'
 
-function ProfileForm() {
-  const { control, register, handleSubmit } = useForm()
+function ProfileForm {
+  const { control, register, handleSubmit } = useForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -31,8 +31,8 @@ function ProfileForm() {
 ```typescript
 import { DevTool } from '@hookform/devtools'
 
-function ProfileForm() {
-  const { control, register, handleSubmit } = useForm()
+function ProfileForm {
+  const { control, register, handleSubmit } = useForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -46,12 +46,12 @@ function ProfileForm() {
 **Alternative (dynamic import to avoid bundle impact):**
 
 ```typescript
-const DevTool = lazy(() =>
+const DevTool = lazy( =>
   import('@hookform/devtools').then((mod) => ({ default: mod.DevTool }))
 )
 
-function ProfileForm() {
-  const { control, register, handleSubmit } = useForm()
+function ProfileForm {
+  const { control, register, handleSubmit } = useForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

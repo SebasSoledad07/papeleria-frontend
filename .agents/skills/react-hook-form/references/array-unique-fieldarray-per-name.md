@@ -12,8 +12,8 @@ Each field name should have only one useFieldArray instance. Multiple instances 
 **Incorrect (multiple instances for same field):**
 
 ```typescript
-function OrderForm() {
-  const { control } = useForm()
+function OrderForm {
+  const { control } = useForm
 
   return (
     <div>
@@ -37,8 +37,8 @@ function ItemsSummary({ control }: { control: Control }) {
 **Correct (single instance, pass fields down or use useWatch):**
 
 ```typescript
-function OrderForm() {
-  const { control } = useForm()
+function OrderForm {
+  const { control } = useForm
   const { fields, append, remove } = useFieldArray({ control, name: 'items' })
 
   return (

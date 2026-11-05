@@ -12,8 +12,8 @@ useFormContext eliminates prop drilling by accessing form methods via context, b
 **Incorrect (useFormContext for shallow nesting):**
 
 ```typescript
-function ContactForm() {
-  const methods = useForm()
+function ContactForm {
+  const methods = useForm
 
   return (
     <FormProvider {...methods}>
@@ -25,8 +25,8 @@ function ContactForm() {
   )
 }
 
-function NameInput() {
-  const { register } = useFormContext()  // Implicit dependency
+function NameInput {
+  const { register } = useFormContext  // Implicit dependency
   return <input {...register('name')} />
 }
 ```
@@ -34,8 +34,8 @@ function NameInput() {
 **Correct (explicit props for shallow nesting):**
 
 ```typescript
-function ContactForm() {
-  const { register, handleSubmit } = useForm()
+function ContactForm {
+  const { register, handleSubmit } = useForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

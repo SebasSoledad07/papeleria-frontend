@@ -7,13 +7,13 @@ tags: array, useFieldArray, append, default-values
 
 ## Provide Complete Default Objects for Field Array Operations
 
-When using `append()`, `prepend()`, `insert()`, or `update()`, always provide complete field objects with all required properties. Empty or partial objects cause validation and data inconsistencies.
+When using `append`, `prepend`, `insert`, or `update`, always provide complete field objects with all required properties. Empty or partial objects cause validation and data inconsistencies.
 
 **Incorrect (empty object causes undefined fields):**
 
 ```typescript
-function TasksForm() {
-  const { control, register } = useForm<{ tasks: Task[] }>()
+function TasksForm {
+  const { control, register } = useForm<{ tasks: Task[] }>
   const { fields, append } = useFieldArray({ control, name: 'tasks' })
 
   return (
@@ -24,7 +24,7 @@ function TasksForm() {
           <input {...register(`tasks.${index}.priority`)} />  {/* undefined initially */}
         </div>
       ))}
-      <button type="button" onClick={() => append({})}>Add Task</button>  {/* Empty object */}
+      <button type="button" onClick={ => append({})}>Add Task</button>  {/* Empty object */}
     </div>
   )
 }
@@ -33,11 +33,11 @@ function TasksForm() {
 **Correct (complete object with all fields):**
 
 ```typescript
-function TasksForm() {
-  const { control, register } = useForm<{ tasks: Task[] }>()
+function TasksForm {
+  const { control, register } = useForm<{ tasks: Task[] }>
   const { fields, append } = useFieldArray({ control, name: 'tasks' })
 
-  const addTask = () => {
+  const addTask =  => {
     append({
       title: '',
       priority: 'medium',

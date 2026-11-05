@@ -32,9 +32,9 @@ import { z } from 'zod'
 
 // Methods are attached to schema objects - hard to tree-shake
 const userSchema = z.object({
-  name: z.string().min(1).max(100),
-  email: z.string().email(),
-  age: z.number().int().positive(),
+  name: z.string.min(1).max(100),
+  email: z.string.email,
+  age: z.number.int.positive,
 })
 
 const result = userSchema.safeParse(data)
@@ -47,9 +47,9 @@ import * as z from '@zod/mini'
 
 // Functions are imported individually - tree-shakeable
 const userSchema = z.object({
-  name: z.pipe(z.string(), z.minLength(1), z.maxLength(100)),
-  email: z.pipe(z.string(), z.email()),
-  age: z.pipe(z.number(), z.int(), z.positive()),
+  name: z.pipe(z.string, z.minLength(1), z.maxLength(100)),
+  email: z.pipe(z.string, z.email),
+  age: z.pipe(z.number, z.int, z.positive),
 })
 
 const result = z.safeParse(userSchema, data)
@@ -59,16 +59,16 @@ const result = z.safeParse(userSchema, data)
 
 ```typescript
 // Standard Zod
-z.string().min(5).max(100).email()
-z.number().int().positive()
-z.array(z.string()).min(1)
+z.string.min(5).max(100).email
+z.number.int.positive
+z.array(z.string).min(1)
 schema.parse(data)
 schema.safeParse(data)
 
 // Zod Mini
-z.pipe(z.string(), z.minLength(5), z.maxLength(100), z.email())
-z.pipe(z.number(), z.int(), z.positive())
-z.pipe(z.array(z.string()), z.minLength(1))
+z.pipe(z.string, z.minLength(5), z.maxLength(100), z.email)
+z.pipe(z.number, z.int, z.positive)
+z.pipe(z.array(z.string), z.minLength(1))
 z.parse(schema, data)
 z.safeParse(schema, data)
 ```

@@ -13,8 +13,8 @@ For operations with partial dependencies, use `better-all` to maximize paralleli
 
 ```typescript
 const [user, config] = await Promise.all([
-  fetchUser(),
-  fetchConfig()
+  fetchUser,
+  fetchConfig
 ])
 const profile = await fetchProfile(user.id)
 ```
@@ -25,9 +25,9 @@ const profile = await fetchProfile(user.id)
 import { all } from 'better-all'
 
 const { user, config, profile } = await all({
-  async user() { return fetchUser() },
-  async config() { return fetchConfig() },
-  async profile() {
+  async user { return fetchUser },
+  async config { return fetchConfig },
+  async profile {
     return fetchProfile((await this.$.user).id)
   }
 })
@@ -35,15 +35,15 @@ const { user, config, profile } = await all({
 
 **Alternative without extra dependencies:**
 
-We can also create all the promises first, and do `Promise.all()` at the end.
+We can also create all the promises first, and do `Promise.all` at the end.
 
 ```typescript
-const userPromise = fetchUser()
+const userPromise = fetchUser
 const profilePromise = userPromise.then(user => fetchProfile(user.id))
 
 const [user, config, profile] = await Promise.all([
   userPromise,
-  fetchConfig(),
+  fetchConfig,
   profilePromise
 ])
 ```

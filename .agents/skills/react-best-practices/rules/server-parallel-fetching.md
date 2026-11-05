@@ -12,8 +12,8 @@ React Server Components execute sequentially within a tree. Restructure with com
 **Incorrect (Sidebar waits for Page's fetch to complete):**
 
 ```tsx
-export default async function Page() {
-  const header = await fetchHeader()
+export default async function Page {
+  const header = await fetchHeader
   return (
     <div>
       <div>{header}</div>
@@ -22,8 +22,8 @@ export default async function Page() {
   )
 }
 
-async function Sidebar() {
-  const items = await fetchSidebarItems()
+async function Sidebar {
+  const items = await fetchSidebarItems
   return <nav>{items.map(renderItem)}</nav>
 }
 ```
@@ -31,17 +31,17 @@ async function Sidebar() {
 **Correct (both fetch simultaneously):**
 
 ```tsx
-async function Header() {
-  const data = await fetchHeader()
+async function Header {
+  const data = await fetchHeader
   return <div>{data}</div>
 }
 
-async function Sidebar() {
-  const items = await fetchSidebarItems()
+async function Sidebar {
+  const items = await fetchSidebarItems
   return <nav>{items.map(renderItem)}</nav>
 }
 
-export default function Page() {
+export default function Page {
   return (
     <div>
       <Header />
@@ -54,13 +54,13 @@ export default function Page() {
 **Alternative with children prop:**
 
 ```tsx
-async function Header() {
-  const data = await fetchHeader()
+async function Header {
+  const data = await fetchHeader
   return <div>{data}</div>
 }
 
-async function Sidebar() {
-  const items = await fetchSidebarItems()
+async function Sidebar {
+  const items = await fetchSidebarItems
   return <nav>{items.map(renderItem)}</nav>
 }
 
@@ -73,7 +73,7 @@ function Layout({ children }: { children: ReactNode }) {
   )
 }
 
-export default function Page() {
+export default function Page {
   return (
     <Layout>
       <Sidebar />

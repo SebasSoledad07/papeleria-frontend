@@ -12,7 +12,7 @@ Many browsers don't have hardware acceleration for CSS3 animations on SVG elemen
 **Incorrect (animating SVG directly - no hardware acceleration):**
 
 ```tsx
-function LoadingSpinner() {
+function LoadingSpinner {
   return (
     <svg 
       className="animate-spin"
@@ -29,7 +29,7 @@ function LoadingSpinner() {
 **Correct (animating wrapper div - hardware accelerated):**
 
 ```tsx
-function LoadingSpinner() {
+function LoadingSpinner {
   return (
     <div className="animate-spin">
       <svg 

@@ -16,10 +16,10 @@ import { z } from 'zod'
 
 // Every field optional - almost anything passes
 const userSchema = z.object({
-  id: z.string().optional(),
-  name: z.string().optional(),
-  email: z.string().optional(),
-  role: z.string().optional(),
+  id: z.string.optional,
+  name: z.string.optional,
+  email: z.string.optional,
+  role: z.string.optional,
 })
 
 type User = z.infer<typeof userSchema>
@@ -45,12 +45,12 @@ import { z } from 'zod'
 
 // Required fields are required, optional fields are intentional
 const userSchema = z.object({
-  id: z.string().uuid(),  // Required
-  name: z.string().min(1),  // Required, non-empty
-  email: z.string().email(),  // Required
+  id: z.string.uuid,  // Required
+  name: z.string.min(1),  // Required, non-empty
+  email: z.string.email,  // Required
   role: z.enum(['admin', 'user', 'guest']),  // Required
-  nickname: z.string().optional(),  // Intentionally optional
-  bio: z.string().nullable(),  // Can be explicitly null
+  nickname: z.string.optional,  // Intentionally optional
+  bio: z.string.nullable,  // Can be explicitly null
 })
 
 type User = z.infer<typeof userSchema>
@@ -69,18 +69,18 @@ function greetUser(user: User) {
 }
 ```
 
-**Use `.partial()` for update schemas:**
+**Use `.partial` for update schemas:**
 
 ```typescript
 // Base schema with required fields
 const userSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string().min(1),
-  email: z.string().email(),
+  id: z.string.uuid,
+  name: z.string.min(1),
+  email: z.string.email,
 })
 
 // All fields optional for PATCH updates
-const updateUserSchema = userSchema.partial()
+const updateUserSchema = userSchema.partial
 
 // Only specific fields optional
 const createUserSchema = userSchema.partial({ id: true })

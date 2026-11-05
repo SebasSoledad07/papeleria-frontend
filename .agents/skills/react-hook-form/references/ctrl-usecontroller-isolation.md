@@ -12,8 +12,8 @@ useController creates a controlled input that only re-renders when its specific 
 **Incorrect (inline Controller causes parent re-renders):**
 
 ```typescript
-function PaymentForm() {
-  const { control, handleSubmit } = useForm()
+function PaymentForm {
+  const { control, handleSubmit } = useForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -39,8 +39,8 @@ function PaymentForm() {
 **Correct (useController in dedicated component isolates re-renders):**
 
 ```typescript
-function PaymentForm() {
-  const { control, handleSubmit } = useForm()
+function PaymentForm {
+  const { control, handleSubmit } = useForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

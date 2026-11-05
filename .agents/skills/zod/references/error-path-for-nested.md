@@ -16,15 +16,15 @@ import { z } from 'zod'
 
 const orderSchema = z.object({
   customer: z.object({
-    name: z.string().min(1, 'Name required'),
+    name: z.string.min(1, 'Name required'),
     address: z.object({
-      street: z.string().min(1, 'Street required'),
-      city: z.string().min(1, 'City required'),
+      street: z.string.min(1, 'Street required'),
+      city: z.string.min(1, 'City required'),
     }),
   }),
   items: z.array(z.object({
-    productId: z.string(),
-    quantity: z.number().positive('Quantity must be positive'),
+    productId: z.string,
+    quantity: z.number.positive('Quantity must be positive'),
   })),
 })
 
@@ -49,15 +49,15 @@ import { z } from 'zod'
 
 const orderSchema = z.object({
   customer: z.object({
-    name: z.string().min(1, 'Name required'),
+    name: z.string.min(1, 'Name required'),
     address: z.object({
-      street: z.string().min(1, 'Street required'),
-      city: z.string().min(1, 'City required'),
+      street: z.string.min(1, 'Street required'),
+      city: z.string.min(1, 'City required'),
     }),
   }),
   items: z.array(z.object({
-    productId: z.string(),
-    quantity: z.number().positive('Quantity must be positive'),
+    productId: z.string,
+    quantity: z.number.positive('Quantity must be positive'),
   })),
 })
 
@@ -82,7 +82,7 @@ if (!result.success) {
 
 ```typescript
 function mapErrorsToFields(error: z.ZodError) {
-  const fieldErrors: Map<string, string[]> = new Map()
+  const fieldErrors: Map<string, string[]> = new Map
 
   for (const issue of error.issues) {
     const fieldPath = issue.path.join('.')
@@ -102,7 +102,7 @@ errors.get('items.0.quantity')  // ['Quantity must be positive']
 **For array items, get index from path:**
 
 ```typescript
-const itemsWithErrors: Set<number> = new Set()
+const itemsWithErrors: Set<number> = new Set
 
 result.error.issues.forEach(issue => {
   if (issue.path[0] === 'items' && typeof issue.path[1] === 'number') {
@@ -113,10 +113,10 @@ result.error.issues.forEach(issue => {
 // Highlight items at indices: Set { 0 }
 ```
 
-**Using path with format():**
+**Using path with format:**
 
 ```typescript
-const formatted = result.error.format()
+const formatted = result.error.format
 
 // Access errors at any path level
 formatted.customer?.address?.city?._errors  // ['City required']

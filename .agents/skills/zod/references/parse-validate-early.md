@@ -16,7 +16,7 @@ import { z } from 'zod'
 
 // No validation at API boundary
 export async function POST(req: NextRequest) {
-  const body = await req.json()
+  const body = await req.json
   // Raw unknown data passed through
   return await processOrder(body)
 }
@@ -41,15 +41,15 @@ async function calculateTotals(data: unknown) {
 import { z } from 'zod'
 
 const orderSchema = z.object({
-  customerId: z.string().uuid(),
+  customerId: z.string.uuid,
   items: z.array(z.object({
-    productId: z.string(),
-    quantity: z.number().int().positive(),
+    productId: z.string,
+    quantity: z.number.int.positive,
   })).min(1),
   shippingAddress: z.object({
-    street: z.string(),
-    city: z.string(),
-    country: z.string(),
+    street: z.string,
+    city: z.string,
+    country: z.string,
   }),
 })
 
@@ -57,7 +57,7 @@ type Order = z.infer<typeof orderSchema>
 
 // Validate immediately at boundary
 export async function POST(req: NextRequest) {
-  const body = await req.json()
+  const body = await req.json
 
   const result = orderSchema.safeParse(body)
   if (!result.success) {
@@ -92,7 +92,7 @@ async function calculateTotals(order: Order) {
 ```typescript
 // API endpoints
 export async function POST(req: NextRequest) {
-  const data = await req.json()
+  const data = await req.json
   const validated = requestSchema.safeParse(data)
   // ...
 }
@@ -109,7 +109,7 @@ const config = configSchema.parse(JSON.parse(process.env.CONFIG!))
 
 // External API responses
 const response = await fetch('/api/users')
-const data = await response.json()
+const data = await response.json
 const users = usersResponseSchema.parse(data)
 ```
 

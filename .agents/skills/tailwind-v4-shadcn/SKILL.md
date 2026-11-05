@@ -10,7 +10,7 @@ metadata:
     - "@theme inline"
     - dark mode
     - CSS variables
-    - hsl() wrapper
+    - hsl wrapper
     - components.json
     - React theming
     - theme switching
@@ -85,7 +85,7 @@ Say: **"I'm setting up Tailwind v4 + shadcn/ui - check the tailwind-v4-shadcn sk
 2. **Duplicate @layer base blocks** (shadcn init adds its own)
 3. **Wrong template selection** (vanilla TS vs React)
 4. **Missing post-init cleanup** (incompatible CSS rules)
-5. **Wrong plugin syntax** (using @import or require() instead of @plugin directive)
+5. **Wrong plugin syntax** (using @import or require instead of @plugin directive)
 
 All of these are handled automatically when the skill is active.
 
@@ -116,7 +116,7 @@ import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react, tailwindcss],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
@@ -156,7 +156,7 @@ This pattern is **mandatory** - skipping steps will break your theme.
 @import "tailwindcss";
 
 :root {
-  --background: hsl(0 0% 100%);      /* ← hsl() wrapper required */
+  --background: hsl(0 0% 100%);      /* ← hsl wrapper required */
   --foreground: hsl(222.2 84% 4.9%);
   --primary: hsl(221.2 83.2% 53.3%);
   /* ... all light mode colors */
@@ -172,7 +172,7 @@ This pattern is **mandatory** - skipping steps will break your theme.
 
 **Critical Rules:**
 - ✅ Define at root level (NOT inside `@layer base`)
-- ✅ Use `hsl()` wrapper on all color values
+- ✅ Use `hsl` wrapper on all color values
 - ✅ Use `.dark` for dark mode (NOT `.dark { @theme { } }`)
 
 ### Step 2: Map Variables to Tailwind Utilities
@@ -195,7 +195,7 @@ This pattern is **mandatory** - skipping steps will break your theme.
 ```css
 @layer base {
   body {
-    background-color: var(--background);  /* NO hsl() here */
+    background-color: var(--background);  /* NO hsl here */
     color: var(--foreground);
   }
 }
@@ -236,8 +236,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <App />
     </ThemeProvider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>)
 ```
 
 ### 3. Add Theme Toggle
@@ -254,7 +253,7 @@ See `reference/dark-mode.md` for ModeToggle component code.
 
 ### ✅ Always Do:
 
-1. **Wrap color values with `hsl()` in `:root` and `.dark`**
+1. **Wrap color values with `hsl` in `:root` and `.dark`**
    ```css
    --background: hsl(0 0% 100%);  /* ✅ Correct */
    ```
@@ -275,7 +274,7 @@ See `reference/dark-mode.md` for ModeToggle component code.
 
 5. **Use `@tailwindcss/vite` plugin (NOT PostCSS)**
 
-6. **Use `cn()` for conditional classes**
+6. **Use `cn` for conditional classes**
    ```typescript
    import { cn } from "@/lib/utils"
    <div className={cn("base", isActive && "active")} />
@@ -362,7 +361,7 @@ Always use semantic names for colors:
 | Symptom | Cause | Fix |
 |---------|-------|-----|
 | `bg-primary` doesn't work | Missing `@theme inline` mapping | Add `@theme inline` block |
-| Colors all black/white | Double `hsl()` wrapping | Use `var(--color)` not `hsl(var(--color))` |
+| Colors all black/white | Double `hsl` wrapping | Use `var(--color)` not `hsl(var(--color))` |
 | Dark mode not switching | Missing ThemeProvider | Wrap app in `<ThemeProvider>` |
 | Build fails | `tailwind.config.ts` exists | Delete the file |
 | Text invisible | Wrong contrast colors | Check color definitions in `:root`/`.dark` |
@@ -380,7 +379,7 @@ All templates are available in the `templates/` directory:
 - **vite.config.ts** - Vite + Tailwind plugin setup
 - **tsconfig.app.json** - TypeScript with path aliases
 - **theme-provider.tsx** - Dark mode provider with localStorage
-- **utils.ts** - `cn()` utility for class merging
+- **utils.ts** - `cn` utility for class merging
 
 Copy these files to your project and customize as needed.
 
@@ -390,13 +389,13 @@ Copy these files to your project and customize as needed.
 
 - [ ] Vite + React + TypeScript project created
 - [ ] `@tailwindcss/vite` installed (NOT postcss)
-- [ ] `vite.config.ts` uses `tailwindcss()` plugin
+- [ ] `vite.config.ts` uses `tailwindcss` plugin
 - [ ] `tsconfig.json` has path aliases configured
 - [ ] `components.json` exists with `"config": ""`
 - [ ] NO `tailwind.config.ts` file exists
 - [ ] `src/index.css` follows v4 pattern:
   - [ ] `:root` and `.dark` at root level (not in @layer)
-  - [ ] Colors wrapped with `hsl()`
+  - [ ] Colors wrapped with `hsl`
   - [ ] `@theme inline` maps all variables
   - [ ] `@layer base` uses unwrapped variables
 - [ ] Theme provider installed and wrapping app
@@ -411,7 +410,7 @@ Load `references/advanced-usage.md` for advanced patterns including:
 
 - **Custom Colors**: Add semantic colors beyond default palette
 - **v3 Migration**: See `references/migration-guide.md` for complete guide
-- **Component Best Practices**: Semantic tokens, cn() utility, composition patterns
+- **Component Best Practices**: Semantic tokens, cn utility, composition patterns
 
 **Quick Example:**
 ```css

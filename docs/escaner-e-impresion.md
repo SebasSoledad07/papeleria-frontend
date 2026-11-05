@@ -1,18 +1,18 @@
 # Escáner, cámara e impresión
 
-Cubre RF-04, RF-09 a RF-13 y RF-26.
+Cubre ,  y .
 
 ## Tres formas de leer un código
 
 | Forma | Requerimiento | Dónde se usa | Requiere |
 |---|---|---|---|
-| Lector USB o Bluetooth | RF-09 | Caja, compras, ajustes, conteo, nuevo producto | Nada especial |
-| Cámara del celular en vivo | RF-10 | Cualquier pantalla con `CampoCodigo` | **HTTPS** (o `localhost`) y permiso de cámara |
-| Foto enviada al servidor | RF-11 | Respaldo si la cámara falla | Conexión con el backend |
+| Lector USB o Bluetooth |  | Caja, compras, ajustes, conteo, nuevo producto | Nada especial |
+| Cámara del celular en vivo |  | Cualquier pantalla con `CampoCodigo` | **HTTPS** (o `localhost`) y permiso de cámara |
+| Foto enviada al servidor |  | Respaldo si la cámara falla | Conexión con el backend |
 
-Formatos que deben leerse (RF-12): **EAN-13, EAN-8, UPC-A, UPC-E, Code 128 y Code 39**. La normalización (UPC-A de 12 dígitos → EAN-13, RN-14) la hace el backend: el frontend envía el código tal como se leyó.
+Formatos que deben leerse : **EAN-13, EAN-8, UPC-A, UPC-E, Code 128 y Code 39**. La normalización (UPC-A de 12 dígitos → EAN-13, RN-14) la hace el backend: el frontend envía el código tal como se leyó.
 
-## Lector USB o Bluetooth (RF-09)
+## Lector USB o Bluetooth 
 
 El lector funciona como un teclado: «escribe» el código y termina con Enter. Debe estar configurado con la distribución de teclado en español y el sufijo Enter.
 
@@ -36,7 +36,7 @@ Detalles a cuidar:
 - Una lectura muy rápida (varios códigos seguidos) no debe perderse: las entregas se encolan y se procesan en orden.
 - En las pantallas de formulario, el campo de escaneo es independiente del resto de campos; escanear no debe escribir dentro de «Nombre» o «Precio».
 
-## Cámara en vivo (RF-10)
+## Cámara en vivo 
 
 Se usa la librería **`barcode-detector`**, que implementa la API estándar `BarcodeDetector` y usa ZXing compilado a WebAssembly cuando el navegador no la trae. (Reemplaza a `html5-qrcode`, sin mantenimiento desde 2023.)
 
@@ -56,26 +56,26 @@ Comprueba la API exacta (nombres de importación, forma de cargar el archivo `.w
 2. Muestra el video en un `<video>` con `playsInline` y `muted` (necesario en iOS).
 3. Cada **150 a 250 ms** llama a `detector.detect(video)`. No se analiza cada fotograma: gasta batería y calienta el celular.
 4. Al detectar un código:
-   - **Resaltado** (RF-13): se dibuja el contorno del código sobre el video (con `cornerPoints` o `boundingBox`) y el borde del visor parpadea en verde.
-   - **Sonido** (RF-13): bip corto (ver abajo).
+   - **Resaltado** : se dibuja el contorno del código sobre el video (con `cornerPoints` o `boundingBox`) y el borde del visor parpadea en verde.
+   - **Sonido** : bip corto (ver abajo).
    - Se entrega el valor a `onCodigo`.
    - **Antirrebote:** el mismo código no se vuelve a entregar durante ~2 segundos, para que un producto no se sume diez veces mientras se mantiene frente a la cámara.
 5. En la caja y en las pantallas de lectura continua, la cámara **sigue abierta** después de cada lectura. En «Nuevo producto» se cierra tras la primera lectura.
-6. Al desmontarse, detiene todas las pistas del `MediaStream` (`track.stop()`); si no, la luz de la cámara queda encendida.
+6. Al desmontarse, detiene todas las pistas del `MediaStream` (`track.stop`); si no, la luz de la cámara queda encendida.
 
 ### Casos que hay que manejar
 
 | Situación | Qué hace la pantalla |
 |---|---|
-| Permiso denegado | Explica cómo permitirlo y ofrece usar la foto (RF-11) |
+| Permiso denegado | Explica cómo permitirlo y ofrece usar la foto  |
 | Sin HTTPS | Mensaje claro: «La cámara solo funciona en una conexión segura». |
 | Sin cámara | Ofrece la foto |
 | iOS Safari | Probar a fondo (ver abajo); si falla un formato, la foto es el respaldo |
 | Poca luz | Botón de linterna si el dispositivo la soporta (`track.applyConstraints({ advanced: [{ torch: true }] })`) |
 
-**Pruebas obligatorias antes de dar la fase 2 por terminada:** leer los seis formatos de RF-12 con Chrome de Android y con Safari de iPhone, con productos reales de la papelería. Si `barcode-detector` falla con algún formato, `html5-qrcode` sigue siendo un respaldo funcional.
+**Pruebas obligatorias antes de dar la fase 2 por terminada:** leer los seis formatos de  con Chrome de Android y con Safari de iPhone, con productos reales de la papelería. Si `barcode-detector` falla con algún formato, `html5-qrcode` sigue siendo un respaldo funcional.
 
-## Foto al servidor (RF-11)
+## Foto al servidor 
 
 ```html
 <input type="file" accept="image/*" capture="environment" />
@@ -87,11 +87,11 @@ Se envía a `POST /api/codigos/decodificar` como `multipart/form-data`. El servi
 
 Se genera con la **Web Audio API** (un oscilador de ~880 Hz durante ~80 ms), sin archivos de audio. Para errores («producto no registrado»), un tono más grave y más largo. Los navegadores solo permiten audio después de una interacción del usuario: el `AudioContext` se crea o se reanuda en el primer clic o tecla. Se respeta la preferencia «Sonido de lectura».
 
-## Impresión de la tirilla (RF-26, D-5)
+## Impresión de la tirilla (D-5)
 
 El backend entrega los datos (`GET /api/ventas/{id}/tirilla`) y el frontend dibuja la tirilla en HTML. Se imprime con el diálogo del navegador y el driver de la impresora térmica; **no se usa ESC/POS** en la versión 1.
 
-### Contenido (RF-26, RN-12)
+### Contenido (RN-12)
 
 1. Razón social, NIT, dirección y teléfono del negocio.
 2. Leyenda **«Comprobante de venta — no es factura electrónica»**.
@@ -120,15 +120,15 @@ Dinero siempre con `formato.ts` (`$ 12.500`).
 
 - El ancho (58 u 80 mm) viene de la preferencia del equipo; el `@page` se ajusta al ancho elegido.
 - El área imprimible real depende de la impresora; los anchos de arriba son aproximados y se afinan con una impresora real.
-- La impresión se lanza desde un clic o una tecla (algunos navegadores bloquean `window.print()` sin gesto del usuario).
-- Después de `window.print()`, se limpia la zona de impresión (evento `afterprint`).
+- La impresión se lanza desde un clic o una tecla (algunos navegadores bloquean `window.print` sin gesto del usuario).
+- Después de `window.print`, se limpia la zona de impresión (evento `afterprint`).
 - **Reimprimir:** desde el detalle de la venta, con los mismos datos del servidor.
 
 ### Impresión sin diálogo (opcional)
 
 Con Chrome se puede iniciar el navegador de la caja con el parámetro `--kiosk-printing` para que imprima directamente en la impresora predeterminada, sin ventana de confirmación. Configúralo en el acceso directo del computador de la caja y verifica el comportamiento con la versión de Chrome instalada.
 
-## Etiquetas de código de barras (RF-04)
+## Etiquetas de código de barras 
 
 - El backend genera la imagen de cada etiqueta (`GET /api/productos/{id}/etiqueta`): código de barras con ZXing, nombre y precio. El frontend no dibuja códigos de barras.
 - `HojaEtiquetas` coloca las imágenes en una cuadrícula con `@page` del tamaño del papel de etiquetas (configurable) y repite según `copias`.

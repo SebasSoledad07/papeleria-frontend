@@ -94,10 +94,10 @@ module.exports = {
 ### Dark Mode Toggle (React)
 
 ```tsx
-function ThemeToggle() {
+function ThemeToggle {
   const [darkMode, setDarkMode] = useState(false);
 
-  useEffect(() => {
+  useEffect( => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
@@ -107,7 +107,7 @@ function ThemeToggle() {
 
   return (
     <button
-      onClick={() => setDarkMode(!darkMode)}
+      onClick={ => setDarkMode(!darkMode)}
       className="p-2 rounded-lg bg-gray-200 dark:bg-gray-800"
     >
       {darkMode ? '🌙' : '☀️'}

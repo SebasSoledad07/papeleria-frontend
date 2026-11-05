@@ -33,7 +33,7 @@ type ThemeProviderState = {
 
 const initialState: ThemeProviderState = {
   theme: 'system',
-  setTheme: () => null,
+  setTheme:  => null,
 }
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
@@ -44,7 +44,7 @@ export function ThemeProvider({
   storageKey = 'vite-ui-theme',
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(() => {
+  const [theme, setTheme] = useState<Theme>( => {
     try {
       return (localStorage.getItem(storageKey) as Theme) || defaultTheme
     } catch (e) {
@@ -52,7 +52,7 @@ export function ThemeProvider({
     }
   })
 
-  useEffect(() => {
+  useEffect( => {
     const root = window.document.documentElement
     root.classList.remove('light', 'dark')
 
@@ -85,7 +85,7 @@ export function ThemeProvider({
   )
 }
 
-export const useTheme = () => {
+export const useTheme =  => {
   const context = useContext(ThemeProviderContext)
   if (context === undefined)
     throw new Error('useTheme must be used within a ThemeProvider')
@@ -104,8 +104,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <App />
     </ThemeProvider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>)
 ```
 
 ---
@@ -130,8 +129,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useTheme } from "@/components/theme-provider"
 
-export function ModeToggle() {
-  const { setTheme } = useTheme()
+export function ModeToggle {
+  const { setTheme } = useTheme
 
   return (
     <DropdownMenu>
@@ -143,13 +142,13 @@ export function ModeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuItem onClick={ => setTheme("light")}>
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem onClick={ => setTheme("dark")}>
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem onClick={ => setTheme("system")}>
           System
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -165,7 +164,7 @@ export function ModeToggle() {
 ### Theme Flow
 
 ```
-User selects theme → setTheme() called
+User selects theme → setTheme called
   ↓
 Save to localStorage
   ↓

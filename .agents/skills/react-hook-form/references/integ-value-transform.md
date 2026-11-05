@@ -12,8 +12,8 @@ Native inputs return strings. When your form needs numbers, dates, or other type
 **Incorrect (valueAsNumber has edge cases):**
 
 ```typescript
-function QuantityInput() {
-  const { register } = useForm()
+function QuantityInput {
+  const { register } = useForm
 
   return (
     <input
@@ -52,7 +52,7 @@ function QuantityInput({ control }: { control: Control }) {
 
 ```typescript
 const schema = z.object({
-  quantity: z.string().transform((val) => (val === '' ? null : parseInt(val, 10))),
+  quantity: z.string.transform((val) => (val === '' ? null : parseInt(val, 10))),
 })
 ```
 

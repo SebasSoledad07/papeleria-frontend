@@ -9,13 +9,13 @@ tags: server, rsc, serialization, props, client-components
 
 **Impact: LOW (reduces network payload by avoiding duplicate serialization)**
 
-RSC→client serialization deduplicates by object reference, not value. Same reference = serialized once; new reference = serialized again. Do transformations (`.toSorted()`, `.filter()`, `.map()`) in client, not server.
+RSC→client serialization deduplicates by object reference, not value. Same reference = serialized once; new reference = serialized again. Do transformations (`.toSorted`, `.filter`, `.map`) in client, not server.
 
 **Incorrect (duplicates array):**
 
 ```tsx
 // RSC: sends 6 strings (2 arrays × 3 items)
-<ClientList usernames={usernames} usernamesOrdered={usernames.toSorted()} />
+<ClientList usernames={usernames} usernamesOrdered={usernames.toSorted} />
 ```
 
 **Correct (sends 3 strings):**
@@ -26,7 +26,7 @@ RSC→client serialization deduplicates by object reference, not value. Same ref
 
 // Client: transform there
 'use client'
-const sorted = useMemo(() => [...usernames].sort(), [usernames])
+const sorted = useMemo( => [...usernames].sort, [usernames])
 ```
 
 **Nested deduplication behavior:**
@@ -38,16 +38,16 @@ Deduplication works recursively. Impact varies by data type:
 
 ```tsx
 // string[] - duplicates everything
-usernames={['a','b']} sorted={usernames.toSorted()} // sends 4 strings
+usernames={['a','b']} sorted={usernames.toSorted} // sends 4 strings
 
 // object[] - duplicates array structure only
-users={[{id:1},{id:2}]} sorted={users.toSorted()} // sends 2 arrays + 2 unique objects (not 4)
+users={[{id:1},{id:2}]} sorted={users.toSorted} // sends 2 arrays + 2 unique objects (not 4)
 ```
 
 **Operations breaking deduplication (create new references):**
 
-- Arrays: `.toSorted()`, `.filter()`, `.map()`, `.slice()`, `[...arr]`
-- Objects: `{...obj}`, `Object.assign()`, `structuredClone()`, `JSON.parse(JSON.stringify())`
+- Arrays: `.toSorted`, `.filter`, `.map`, `.slice`, `[...arr]`
+- Objects: `{...obj}`, `Object.assign`, `structuredClone`, `JSON.parse(JSON.stringify)`
 
 **More examples:**
 

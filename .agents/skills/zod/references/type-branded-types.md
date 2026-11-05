@@ -7,15 +7,15 @@ tags: type, brand, domain, nominal
 
 ## Use Branded Types for Domain Safety
 
-Plain strings and numbers are interchangeable in TypeScript's structural type system—a `userId` can be passed where an `orderId` is expected. Zod's `.brand()` creates nominal types that prevent mixing up semantically different values.
+Plain strings and numbers are interchangeable in TypeScript's structural type system—a `userId` can be passed where an `orderId` is expected. Zod's `.brand` creates nominal types that prevent mixing up semantically different values.
 
 **Incorrect (plain IDs are interchangeable):**
 
 ```typescript
 import { z } from 'zod'
 
-const userIdSchema = z.string().uuid()
-const orderIdSchema = z.string().uuid()
+const userIdSchema = z.string.uuid
+const orderIdSchema = z.string.uuid
 
 type UserId = z.infer<typeof userIdSchema>  // string
 type OrderId = z.infer<typeof orderIdSchema>  // string - same type!
@@ -34,8 +34,8 @@ getOrder(userId)  // No error! TypeScript allows this bug
 ```typescript
 import { z } from 'zod'
 
-const userIdSchema = z.string().uuid().brand<'UserId'>()
-const orderIdSchema = z.string().uuid().brand<'OrderId'>()
+const userIdSchema = z.string.uuid.brand<'UserId'>
+const orderIdSchema = z.string.uuid.brand<'OrderId'>
 
 type UserId = z.infer<typeof userIdSchema>
 // string & { __brand: 'UserId' }
@@ -58,30 +58,30 @@ getOrder(orderId)  // Works correctly
 
 ```typescript
 // IDs for different entities
-const UserId = z.string().uuid().brand<'UserId'>()
-const ProductId = z.string().uuid().brand<'ProductId'>()
-const OrderId = z.string().uuid().brand<'OrderId'>()
+const UserId = z.string.uuid.brand<'UserId'>
+const ProductId = z.string.uuid.brand<'ProductId'>
+const OrderId = z.string.uuid.brand<'OrderId'>
 
 // Email (validated and branded)
-const Email = z.string().email().brand<'Email'>()
+const Email = z.string.email.brand<'Email'>
 
 // Positive numbers
-const PositiveInt = z.number().int().positive().brand<'PositiveInt'>()
+const PositiveInt = z.number.int.positive.brand<'PositiveInt'>
 
 // Money amounts (in cents)
-const Cents = z.number().int().nonnegative().brand<'Cents'>()
+const Cents = z.number.int.nonnegative.brand<'Cents'>
 
 // Slugs
-const Slug = z.string().regex(/^[a-z0-9-]+$/).brand<'Slug'>()
+const Slug = z.string.regex(/^[a-z0-9-]+$/).brand<'Slug'>
 ```
 
 **Using with object schemas:**
 
 ```typescript
 const User = z.object({
-  id: z.string().uuid().brand<'UserId'>(),
-  email: z.string().email().brand<'Email'>(),
-  referredBy: z.string().uuid().brand<'UserId'>().optional(),
+  id: z.string.uuid.brand<'UserId'>,
+  email: z.string.email.brand<'Email'>,
+  referredBy: z.string.uuid.brand<'UserId'>.optional,
 })
 
 type User = z.infer<typeof User>

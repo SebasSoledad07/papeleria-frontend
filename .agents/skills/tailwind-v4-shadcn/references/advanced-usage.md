@@ -65,7 +65,7 @@ For complete v3 → v4 migration steps, see `references/migration-guide.md`.
 
 ---
 
-### 2. Use `cn()` for Conditional Styling
+### 2. Use `cn` for Conditional Styling
 
 **Import:**
 ```tsx
@@ -81,7 +81,7 @@ import { cn } from "@/lib/utils"
 )} />
 ```
 
-**What `cn()` does**: Merges Tailwind classes intelligently (later classes override earlier ones).
+**What `cn` does**: Merges Tailwind classes intelligently (later classes override earlier ones).
 
 ---
 
@@ -135,7 +135,7 @@ Usage: `className="rounded-[var(--radius-lg)]"`
 
 ### Component Variants Pattern
 
-Use `cva()` from `class-variance-authority` for complex variants:
+Use `cva` from `class-variance-authority` for complex variants:
 
 ```tsx
 import { cva } from "class-variance-authority"

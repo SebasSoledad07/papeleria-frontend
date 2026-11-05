@@ -19,16 +19,16 @@ function Composer({
   renderFooter,
   renderActions,
 }: {
-  renderHeader?: () => React.ReactNode
-  renderFooter?: () => React.ReactNode
-  renderActions?: () => React.ReactNode
+  renderHeader?:  => React.ReactNode
+  renderFooter?:  => React.ReactNode
+  renderActions?:  => React.ReactNode
 }) {
   return (
     <form>
-      {renderHeader?.()}
+      {renderHeader?.}
       <Input />
-      {renderFooter ? renderFooter() : <DefaultFooter />}
-      {renderActions?.()}
+      {renderFooter ? renderFooter : <DefaultFooter />}
+      {renderActions?.}
     </form>
   )
 }
@@ -36,14 +36,14 @@ function Composer({
 // Usage is awkward and inflexible
 return (
   <Composer
-    renderHeader={() => <CustomHeader />}
-    renderFooter={() => (
+    renderHeader={ => <CustomHeader />}
+    renderFooter={ => (
       <>
         <Formatting />
         <Emojis />
       </>
     )}
-    renderActions={() => <SubmitButton />}
+    renderActions={ => <SubmitButton />}
   />
 )
 ```

@@ -7,13 +7,13 @@ tags: valid, resolver, inline-validation, schema
 
 ## Prefer Resolver Over Inline Validation for Complex Rules
 
-Inline validation rules in `register()` are convenient for simple cases, but resolvers (Zod, Yup) provide better type safety, centralized logic, and cross-field validation capabilities.
+Inline validation rules in `register` are convenient for simple cases, but resolvers (Zod, Yup) provide better type safety, centralized logic, and cross-field validation capabilities.
 
 **Incorrect (complex inline validation scattered across inputs):**
 
 ```typescript
-function CheckoutForm() {
-  const { register, handleSubmit, watch } = useForm()
+function CheckoutForm {
+  const { register, handleSubmit, watch } = useForm
   const billingAddressSame = watch('billingAddressSame')
 
   return (
@@ -35,9 +35,9 @@ function CheckoutForm() {
 
 ```typescript
 const checkoutSchema = z.object({
-  email: z.string().email('Invalid email'),
-  billingAddressSame: z.boolean(),
-  billingStreet: z.string().optional(),
+  email: z.string.email('Invalid email'),
+  billingAddressSame: z.boolean,
+  billingStreet: z.string.optional,
 }).refine(
   (data) => data.billingAddressSame || data.billingStreet,
   { message: 'Street required', path: ['billingStreet'] }
@@ -45,7 +45,7 @@ const checkoutSchema = z.object({
 
 type CheckoutFormData = z.infer<typeof checkoutSchema>
 
-function CheckoutForm() {
+function CheckoutForm {
   const { register, handleSubmit } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
   })

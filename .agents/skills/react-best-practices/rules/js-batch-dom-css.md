@@ -7,7 +7,7 @@ tags: javascript, dom, css, performance, reflow, layout-thrashing
 
 ## Avoid Layout Thrashing
 
-Avoid interleaving style writes with layout reads. When you read a layout property (like `offsetWidth`, `getBoundingClientRect()`, or `getComputedStyle()`) between style changes, the browser is forced to trigger a synchronous reflow.
+Avoid interleaving style writes with layout reads. When you read a layout property (like `offsetWidth`, `getBoundingClientRect`, or `getComputedStyle`) between style changes, the browser is forced to trigger a synchronous reflow.
 
 **This is OK (browser batches style changes):**
 ```typescript
@@ -40,7 +40,7 @@ function updateElementStyles(element: HTMLElement) {
   element.style.border = '1px solid black'
   
   // Read after all writes are done (single reflow)
-  const { width, height } = element.getBoundingClientRect()
+  const { width, height } = element.getBoundingClientRect
 }
 ```
 
@@ -48,7 +48,7 @@ function updateElementStyles(element: HTMLElement) {
 ```typescript
 function avoidThrashing(element: HTMLElement) {
   // Read phase - all layout queries first
-  const rect1 = element.getBoundingClientRect()
+  const rect1 = element.getBoundingClientRect
   const offsetWidth = element.offsetWidth
   const offsetHeight = element.offsetHeight
   
@@ -71,7 +71,7 @@ function avoidThrashing(element: HTMLElement) {
 function updateElementStyles(element: HTMLElement) {
   element.classList.add('highlighted-box')
   
-  const { width, height } = element.getBoundingClientRect()
+  const { width, height } = element.getBoundingClientRect
 }
 ```
 
@@ -81,7 +81,7 @@ function updateElementStyles(element: HTMLElement) {
 function Box({ isHighlighted }: { isHighlighted: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   
-  useEffect(() => {
+  useEffect( => {
     if (ref.current && isHighlighted) {
       ref.current.style.width = '100px'
       const width = ref.current.offsetWidth // Forces layout
