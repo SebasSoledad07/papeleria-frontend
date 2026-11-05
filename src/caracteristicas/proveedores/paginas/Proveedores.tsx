@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { PlusIcon } from "lucide-react"
+import { PlusIcon, TruckIcon } from "lucide-react"
 import type { Proveedor } from "@/api/tipos"
 import { AvisoError } from "@/componentes/comunes/AvisoError"
 import { PaginaTitulo } from "@/componentes/comunes/PaginaTitulo"
@@ -41,14 +41,27 @@ export function Proveedores() {
       {inactivar.isError ? <AvisoError error={inactivar.error} /> : null}
       {proveedores.isError ? (
         <AvisoError error={proveedores.error} />
+      ) : proveedores.data.length === 0 ? (
+        <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed bg-card/40 p-10 text-center">
+          <div className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
+            <TruckIcon className="size-5" aria-hidden />
+          </div>
+          <p className="max-w-sm text-sm text-muted-foreground">
+            Aún no hay proveedores registrados.
+          </p>
+          <Button variant="outline" size="sm" onClick={() => setCreando(true)}>
+            <PlusIcon className="size-3.5" aria-hidden />
+            Nuevo proveedor
+          </Button>
+        </div>
       ) : (
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Razón social</TableHead>
+              <TableHead>Proveedor</TableHead>
               <TableHead>NIT</TableHead>
-              <TableHead>Teléfono</TableHead>
-              <TableHead>Dirección</TableHead>
+              <TableHead className="hidden md:table-cell">Teléfono</TableHead>
+              <TableHead className="hidden lg:table-cell">Dirección</TableHead>
               <TableHead>Estado</TableHead>
               <TableHead className="text-right">Acciones</TableHead>
             </TableRow>
@@ -56,21 +69,32 @@ export function Proveedores() {
           <TableBody>
             {proveedores.data.map((proveedor) => (
               <TableRow key={proveedor.id}>
-                <TableCell className="font-medium">
-                  {proveedor.razonSocial}
+                <TableCell>
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground">
+                      <TruckIcon className="size-4" aria-hidden />
+                    </div>
+                    <span className="font-medium">{proveedor.razonSocial}</span>
+                  </div>
                 </TableCell>
-                <TableCell>{proveedor.nit}</TableCell>
-                <TableCell>{proveedor.telefono ?? "—"}</TableCell>
-                <TableCell>{proveedor.direccion ?? "—"}</TableCell>
+                <TableCell className="font-mono text-xs text-muted-foreground">
+                  {proveedor.nit}
+                </TableCell>
+                <TableCell className="hidden md:table-cell">
+                  {proveedor.telefono ?? "—"}
+                </TableCell>
+                <TableCell className="hidden max-w-56 truncate lg:table-cell">
+                  {proveedor.direccion ?? "—"}
+                </TableCell>
                 <TableCell>
                   {proveedor.activo ? (
-                    <Badge variant="secondary">Activo</Badge>
+                    <Badge variant="success">Activo</Badge>
                   ) : (
                     <Badge variant="outline">Inactivo</Badge>
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="flex justify-end gap-1">
+                  <div className="flex flex-wrap justify-end gap-1">
                     <Button
                       variant="outline"
                       size="sm"

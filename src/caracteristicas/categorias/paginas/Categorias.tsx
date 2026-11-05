@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { PlusIcon } from "lucide-react"
+import { PlusIcon, TagsIcon } from "lucide-react"
 import type { Categoria } from "@/api/tipos"
 import { AvisoError } from "@/componentes/comunes/AvisoError"
 import { PaginaTitulo } from "@/componentes/comunes/PaginaTitulo"
@@ -45,6 +45,19 @@ export function Categorias() {
       {inactivar.isError ? <AvisoError error={inactivar.error} /> : null}
       {categorias.isError ? (
         <AvisoError error={categorias.error} />
+      ) : categorias.data.length === 0 ? (
+        <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed bg-card/40 p-10 text-center">
+          <div className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
+            <TagsIcon className="size-5" aria-hidden />
+          </div>
+          <p className="max-w-sm text-sm text-muted-foreground">
+            Aún no hay categorías. Crea la primera para organizar el catálogo.
+          </p>
+          <Button variant="outline" size="sm" onClick={() => setCreando(true)}>
+            <PlusIcon className="size-3.5" aria-hidden />
+            Nueva categoría
+          </Button>
+        </div>
       ) : (
         <Table>
           <TableHeader>
@@ -57,16 +70,23 @@ export function Categorias() {
           <TableBody>
             {categorias.data.map((categoria) => (
               <TableRow key={categoria.id}>
-                <TableCell className="font-medium">{categoria.nombre}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground">
+                      <TagsIcon className="size-4" aria-hidden />
+                    </div>
+                    <span className="font-medium">{categoria.nombre}</span>
+                  </div>
+                </TableCell>
                 <TableCell>
                   {categoria.activo ? (
-                    <Badge variant="secondary">Activa</Badge>
+                    <Badge variant="success">Activa</Badge>
                   ) : (
                     <Badge variant="outline">Inactiva</Badge>
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="flex justify-end gap-1">
+                  <div className="flex flex-wrap justify-end gap-1">
                     <Button
                       variant="outline"
                       size="sm"

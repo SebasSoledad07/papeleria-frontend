@@ -3,11 +3,13 @@ import { LoaderCircleIcon } from "lucide-react"
 export function PantallaCarga() {
   return (
     <div
-      className="flex min-h-dvh items-center justify-center"
+      className="flex min-h-[50vh] items-center justify-center"
       role="status"
       aria-live="polite"
     >
-      <LoaderCircleIcon className="size-6 animate-spin text-muted-foreground" />
+      <div className="flex size-11 items-center justify-center rounded-full border border-border bg-card">
+        <LoaderCircleIcon className="size-5 animate-spin text-primary" />
+      </div>
       <span className="sr-only">Cargando…</span>
     </div>
   )

@@ -1,4 +1,4 @@
-import { CameraIcon } from "lucide-react"
+import { CameraIcon, ScanLineIcon } from "lucide-react"
 import { useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 import { ProblemaApi } from "@/api/errores"
@@ -110,7 +110,13 @@ export function NuevoProducto() {
         descripcion="Escanea el código de barras para autocompletar los datos. Si no está registrado, se consulta el catálogo externo."
       />
 
-      <div className="space-y-3">
+      <section className="space-y-4 rounded-xl border bg-card/60 p-4 sm:p-5">
+        <div className="flex items-center gap-2 text-sm font-medium">
+          <span className="flex size-8 items-center justify-center rounded-md bg-primary/10 text-primary">
+            <ScanLineIcon className="size-4" aria-hidden />
+          </span>
+          Escanear producto
+        </div>
         <CampoCodigo
           marcador="Escanea o escribe el código de barras…"
           onCodigo={manejarCodigo}
@@ -147,7 +153,7 @@ export function NuevoProducto() {
         {noRegistrado && sugerencia.isError ? (
           <AvisoError error={sugerencia.error} />
         ) : null}
-      </div>
+      </section>
 
       {dialogo ? (
         <ProductoDialogo {...dialogo} onCerrar={cerrar} />

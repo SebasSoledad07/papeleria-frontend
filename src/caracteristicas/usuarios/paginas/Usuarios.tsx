@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { PlusIcon } from "lucide-react"
+import { PlusIcon, UsersIcon } from "lucide-react"
 import type { VariantProps } from "class-variance-authority"
 import type { Usuario } from "@/api/tipos"
 import { AvisoError } from "@/componentes/comunes/AvisoError"
@@ -63,12 +63,24 @@ export function Usuarios() {
       {editar.isError ? <AvisoError error={editar.error} /> : null}
       {usuarios.isError ? (
         <AvisoError error={usuarios.error} />
+      ) : usuarios.data.length === 0 ? (
+        <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed bg-card/40 p-10 text-center">
+          <div className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
+            <UsersIcon className="size-5" aria-hidden />
+          </div>
+          <p className="max-w-sm text-sm text-muted-foreground">
+            Aún no hay usuarios registrados.
+          </p>
+          <Button variant="outline" size="sm" onClick={() => setCreando(true)}>
+            <PlusIcon className="size-3.5" aria-hidden />
+            Nuevo usuario
+          </Button>
+        </div>
       ) : (
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Usuario</TableHead>
-              <TableHead>Nombre</TableHead>
               <TableHead>Rol</TableHead>
               <TableHead>Estado</TableHead>
               <TableHead className="text-right">Acciones</TableHead>
@@ -77,10 +89,19 @@ export function Usuarios() {
           <TableBody>
             {usuarios.data.map((usuario) => (
               <TableRow key={usuario.id}>
-                <TableCell className="font-mono text-xs font-medium">
-                  {usuario.usuario}
+                <TableCell>
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                      {usuario.nombre.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <div className="font-medium">{usuario.nombre}</div>
+                      <div className="font-mono text-xs text-muted-foreground">
+                        {usuario.usuario}
+                      </div>
+                    </div>
+                  </div>
                 </TableCell>
-                <TableCell>{usuario.nombre}</TableCell>
                 <TableCell>
                   <Badge variant={varianteRol[usuario.rol]}>
                     {etiquetasRol[usuario.rol] ?? usuario.rol}
@@ -88,13 +109,13 @@ export function Usuarios() {
                 </TableCell>
                 <TableCell>
                   {usuario.activo ? (
-                    <Badge variant="secondary">Activo</Badge>
+                    <Badge variant="success">Activo</Badge>
                   ) : (
                     <Badge variant="outline">Inactivo</Badge>
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="flex justify-end gap-1">
+                  <div className="flex flex-wrap justify-end gap-1">
                     <Button
                       variant="outline"
                       size="sm"

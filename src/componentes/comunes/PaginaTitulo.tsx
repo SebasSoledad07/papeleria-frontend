@@ -8,11 +8,11 @@ interface Props {
 
 export function PaginaTitulo({ titulo, descripcion, acciones }: Props) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4">
-      <header className="space-y-1">
-        <h1 className="font-heading text-2xl font-semibold">{titulo}</h1>
+    <div className="flex flex-wrap items-end justify-between gap-4">
+      <header className="space-y-1.5">
+        <h1 className="text-3xl font-semibold tracking-tight">{titulo}</h1>
         {descripcion ? (
-          <p className="text-sm text-muted-foreground">{descripcion}</p>
+          <p className="max-w-2xl text-sm text-muted-foreground">{descripcion}</p>
         ) : null}
       </header>
       {acciones}

@@ -1,117 +1,91 @@
-# Frontend — Sistema de Inventario y Ventas para Papelería
+# Frontend — Inventario y Ventas para Papelería
 
-SPA para la caja, el inventario y los reportes de una papelería en Colombia. **Solo el cliente:** la API es el backend hermano `../inventario-papeleria` (Spring Boot 4 + PostgreSQL; su arranque y sus reglas están en `../inventario-papeleria/AGENTS.md`). Moneda **COP en enteros**, interfaz en **español de Colombia**.
+SPA de caja, inventario y reportes para una papelería en Colombia. **Solo el cliente:** la API es el backend hermano `../inventario-papeleria` (Spring Boot 4 + PostgreSQL; reglas y arranque en su `AGENTS.md`). Moneda **COP en enteros**, interfaz en **español de Colombia**.
 
-Instalado hoy: React 19 · TypeScript ~6.0 · Vite 8 · Tailwind v4 + shadcn (Base UI) · React Router 7 · TanStack Query 5 · React Hook Form + Zod · `barcode-detector` · recharts.
+Stack: React 19 · TypeScript ~6.0 · Vite 8 · Tailwind v4 + shadcn (**Base UI**, no Radix) · React Router 7 · TanStack Query 5 · React Hook Form + Zod · `barcode-detector` · recharts · vitest 5 + Testing Library + jsdom + MSW.
 
 ## Comandos
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # tsc -b + vite build → dist/   (el typecheck corre aquí)
-npm run lint     # eslint (.agents ignorado)
+npm run dev      # http://localhost:5173 (proxy /api → :8080)
+npm run build    # tsc -b + vite build → dist/  (el typecheck corre aquí)
+npm run lint     # eslint (.agents y dist ignorados)
 npm test         # vitest run (jsdom + MSW)
-npx tsc -b       # typecheck en modo estricto
+npx tsc -b       # typecheck estricto
+npx vitest run src/lib/formato.test.ts   # una sola prueba/archivo
 ```
 
-**Faltan** `test:e2e` (Playwright, Fase 4) y `api:tipos` (openapi-typescript). El backend **ya expone `/v3/api-docs`** (springdoc 3.1.1, Swagger UI público en `/swagger-ui.html`), pero el frontend todavía no tiene el script ni la dependencia `openapi-typescript` en `package.json`. El stack de pruebas ya está: vitest 5 + @testing-library + jsdom + MSW, con setup en `src/pruebas/` (`preparacion.ts` registra jest-dom, limpia y levanta el `servidor`; `mocks/handlers.ts` y `mocks/servidor.ts`). Node ≥ 22.12. `vite.config.ts` define el bloque `test` (usa `/// <reference types="vitest/config" />`).
+No hay CI, Prettier, pre-commit, `test:e2e` ni `api:tipos`. Node ≥ 22.12. `.gitignore` ignora `.env.example` (existe en disco, no en Git).
 
-## Estado verificado
+## Estado actual (verificado)
 
-- **Base Fase 0, pantallas Fase 1 y Fase 2 completa (frente a CRUD).** `src/` tiene `api/` (`cliente.ts`, `errores.ts`, `tipos.ts`), `lib/formato.ts`, `escaner/` (`CampoCodigo`, `CamaraEscaner`, `FotoEscaner`, `bip` y `codigos` —`esCodigoDeBarras`, `generarCodigoInterno`—, barril en `index.ts`), `rutas/` (`router.tsx`, `RutaProtegida.tsx`, `navegacion.ts`), `componentes/` (ui + comunes: ErrorBoundary, SinConexion, Campo, CampoDinero, PaginaTitulo, AvisoError, PantallaCarga) y `caracteristicas/`: autenticación (login), usuarios, categorías, proveedores, productos (listado/búsqueda/filtros + CRUD completo con escaneo), configuración, panel (`Panel.tsx`, solo tarjetas de acceso — **no** es el dashboard de reportes de Fase 5) y errores (`NoEncontrado.tsx`, `SinPermiso.tsx`). Rutas: `/login`, `/` (Panel), `/productos`, `/productos/nuevo`, `/usuarios`, `/categorias`, `/proveedores`, `/configuracion`, `/404`. Las pantallas de administración exigen rol `ADMIN`; `/productos` es para todos los roles y `/productos/nuevo` exige `ADMIN|BODEGUERO`. `src/components/ui/` se renombró a `src/componentes/ui/` y el override de ESLint apunta ahí + `src/rutas/`. `tsconfig.app.json` ganó `paths: { "@/*": ["./src/*"] }` (sin `baseUrl`, deprecado en TS 6). La sesión se lee con `useSesion()` → `GET /api/auth/sesion` (clave TanStack `["usuario"]`).
-- **Permisos por rol (comodidad, no seguridad).** `navegacion.ts` exporta `menu` (con `roles` por ítem) y `menuPorRol(rol)`; `App.tsx` filtra el menú con este; `RutaProtegida` acepta `roles?: Rol[]` y, si el rol no está, renderiza `SinPermiso` («No tienes permiso»). Un `403` del backend se sigue mostrando como «No tienes permiso», sin tratarlo como falla.
-- `npm run lint` y `npx tsc -b` **pasan**: ambos tsconfigs tienen `"strict": true`, ESLint ignora `.agents/` y `dist`, y `react-refresh/only-export-components` está desactivado en `src/componentes/ui/` (los componentes de shadcn exportan helpers como `buttonVariants`) y en `src/rutas/` (exportan el router/constantes).
-- `vite.config.ts` reenvía `/api` → `http://localhost:8080` (documentado en `docs/integracion-api.md`) y existe `public/_redirects` (`/*  /index.html  200`), que `npm run build` copia a `dist/`.
-- El tema Tailwind/shadcn (`@import "tailwindcss"` + `@theme inline` + `:root`/`.dark`) vive en **`src/App.css`**, importado por **`src/main.tsx`** (junto con `src/index.css`, que solo importa `tailwindcss`). **Ojo:** el paquete `shadcn` en `dependencies` es un placeholder vacío; no vuelvas a poner `@import "shadcn/tailwind.css"` (rompe `npm run build`).
-- shadcn está en estilo **`base-nova`**: componentes sobre **Base UI** (`@base-ui/react`), **no Radix** (los docs dicen Radix). `cn` sale del paquete `cn`, reexportado por `src/lib/utils.ts`.
-- `components.json` está alineado con el código: `aliases.components: "@\/componentes"`, `aliases.ui: "@\/componentes/ui"`; el alias `@/*` queda en `tsconfig.app.json` y `vite.config.ts`.
-- `.gitignore` ignora también `.env.example` (no llega a Git). No hay CI, Prettier ni pre-commit; git: `main` sin remoto.
+- Frontend: fases 0, 1 y 2 **completas**; la 3 es la siguiente. `npm test` = 9 archivos / 46 pruebas; `npm run lint` y `npx tsc -b` pasan. Hecho: login/logout/sesión, menú y permisos por rol, usuarios, categorías, proveedores, configuración, panel, escáner (`src/escaner/`), productos (listado/búsqueda/filtros + CRUD con escaneo, sugerencia de catálogo y reactivación). **No hay aún pantallas de inventario, caja/ventas, clientes ni reportes.**
+- Backend (`../inventario-papeleria`): fases 1 a 5 **completas** (inventario, caja/ventas, clientes, reportes y panel). No hay bloqueo para empezar Fase 3; los endpoints ya existen (ver «El contrato hoy»). Fase 6 (DIAN) fuera de v1.
+- **D-4 sigue bloqueada**: `SesionDto` es solo `{nombre, rol}`, sin flag de primer inicio; no lo inventes. **D-7** (presentaciones por caja) se omite en v1. **D-9**: ocultar costos/campos por rol en inventario.
+- Decisiones pendientes en backend: D-1, D-2, D-4, D-5, D-6 (D-3 resuelta → RN-46). D-7, D-9, D-10 son del frontend y **no están registradas** en `../inventario-papeleria/docs/08-decisiones-pendientes.md`.
+- Backend de prueba: `./mvnw spring-boot:run` en `../inventario-papeleria`; PostgreSQL en :5435 vía su `docker-compose.yml`; API en :8080. Requiere Docker Desktop y JDK 21 (el `java` del sistema es 1.8).
+
+## Arquitectura y convenciones
+
+- `src/` → `api/` (`cliente.ts`, `errores.ts`, `tipos.ts`), `lib/formato.ts`, `escaner/`, `rutas/`, `componentes/` (`ui/` shadcn + `comunes/`), `caracteristicas/<feature>/` con `paginas/`, `componentes/`, `hooks/`.
+- Organización **por característica**, no por tipo. Varias exponen un `index.ts` de barril, pero el código actual suele importar por ruta directa (p. ej. `App.tsx` → `autenticacion/hooks/useSesion`); `productos` no tiene barril. Lo compartido vive en `componentes/` o `lib/`.
+- Estado del servidor con TanStack Query; formularios con RHF + Zod; estado de interfaz con `useState`. Todas las mutaciones con `retry: false`.
+- Código, archivos de pantalla y textos en **español**; `PascalCase` componentes, `camelCase` hooks/funciones. Un componente por archivo.
+- Commits pequeños citando la regla: `feat(caja): ... (RN-32)`.
+- `vite.config.ts` define alias `@/*` → `./src` y el bloque `test` (setup `src/pruebas/preparacion.ts`).
+- El tema Tailwind/shadcn (`@import "tailwindcss"` + `@theme inline` + `:root`/`.dark`) vive en **`src/App.css`**, importado por `src/main.tsx`; `src/index.css` solo importa `tailwindcss`.
+- Diseño **«Papel y tinta»**: fondo cálido y acento terracota en `App.css`; títulos `Fraunces`, interfaz `Geist` y códigos `Geist Mono`, todas vía `@fontsource-variable` (locales, sin CDN). No volver al gris neutro ni usar fuentes remotas.
+- `components.json`: aliases `@/componentes` y `@/componentes/ui`. El paquete `shadcn` de `dependencies` es un placeholder vacío; **no** añadas `@import "shadcn/tailwind.css"` (rompe el build).
 
 ## El contrato hoy
 
-`docs/04-contrato-api.md` es un **borrador propuesto** (escrito desde los controllers, sección «Decisiones abiertas» D-C1 a D-C7). No está confirmado: hasta que las decisiones se resuelvan, la fuente de verdad sigue siendo el código del backend. Los enlaces `../../docs/*` de `docs/*.md` apuntan a una carpeta que no existe: el material real es `../inventario-papeleria/docs/`.
+La fuente de verdad son los controllers: `../inventario-papeleria/src/main/java/com/soledad/inventariopapeleria/**/api/*Controller.java`. `docs/04-contrato-api.md` es un borrador incompleto y desactualizado.
 
-- La verdad de los endpoints son los controllers: `../inventario-papeleria/src/main/java/com/soledad/inventariopapeleria/**/api/*Controller.java`. Rutas reales, **casi todas en singular** (pero `/api/codigos` es plural). Hoy existen: `/api/auth/login|logout|sesion`; `/api/usuario` (+ `PUT /{id}/clave`); `/api/configuracion`; `/api/categoria`; `/api/proveedor`; `/api/producto` — CRUD completo: `POST`, `GET` (solo activos, ordenados por nombre), `GET /codigo/{codigo}`, `GET /buscar?q=`, `PUT /{id}` (editar), `PUT /{id}/precio` (registra historial al cambiar), `DELETE /{id}` (inactiva), `PUT /{id}/activar`; `/api/catalogo/codigo/{codigo}`; `/api/codigos/decodificar` (multipart) y `GET /api/codigos/{codigo}/etiqueta` (PNG); `/api/inventario` (`POST /{id}/ajuste-positivo|ajuste-negativo`, `GET /productos/{id}/kardex`, `POST /conteo-fisico`) y `/api/inventario/compras` (`POST` + `GET /{id}`; sin listado). **Ventas/caja (Fase 4) y reportes/panel (Fase 5) todavía no tienen controller** (Fase 4: solo dominio en `venta/`; Fase 5: no existe `reporte`).
-- Matriz de `SecurityConfig` (cambió con el commit `3c29e8f` del backend): POST/PUT/DELETE de `/api/producto/**` y `/api/proveedor/**` → **ADMIN \| BODEGUERO**; `/api/inventario/**` completo → **ADMIN \| BODEGUERO**; POST/PUT/DELETE de `/api/categoria/**`, `/api/usuario/**` y `/api/configuracion/**` → **solo ADMIN**; lecturas GET de producto/proveedor/categoría → cualquier rol autenticado. La sección 5 de `docs/04-contrato-api.md` **no refleja esto**.
-- `docs/integracion-api.md` ejemplifica plurales (`/api/productos`), `GET /api/auth/me` y un flujo CSRF con `GET /api/auth/csrf`; el backend hoy expone `GET /api/auth/sesion` y `SecurityConfig` tiene CSRF **deshabilitado**. Si el doc y el código discrepan: **para, no improvises, pregunta**.
-- **Ya hay springdoc** en el backend (dependencia `springdoc-openapi-starter-webmvc-ui` 3.1.1): spec en `/v3/api-docs`, Swagger UI en `/swagger-ui.html`, ambos públicos en `SecurityConfig`. Lo único que falta para `api:tipos` es del lado frontend: el script y `openapi-typescript`.
-- `../inventario-papeleria/docs/08-decisiones-pendientes.md` tiene **solo D-1 a D-6**; los docs de este repo citan D-7, D-9 y D-10 que aún no están registradas.
+- Rutas reales **casi todas en singular**, salvo `/api/codigos`. Existen: `/api/auth/login|logout|sesion`; `/api/usuario` (+ `PUT /{id}`, `DELETE /{id}`, `PUT /{id}/clave`); `/api/configuracion` (`GET`, `PUT`); `/api/categoria`; `/api/proveedor`; `/api/producto` (CRUD: `POST`, `GET`, `GET /codigo/{codigo}`, `GET /buscar?q=`, `PUT /{id}`, `PUT /{id}/precio`, `DELETE /{id}`, `PUT /{id}/activar`); `/api/catalogo/codigo/{codigo}`; `/api/codigos/decodificar` (multipart) y `GET /api/codigos/{codigo}/etiqueta` (PNG); `/api/inventario` (ajustes positivo/negativo, kárdex `GET /productos/{id}/kardex`, conteo físico `POST /conteo-fisico`); `/api/inventario/compras` (`POST`, `GET /{id}`); `/api/cliente` (`POST`, `GET /{id}`); `/api/caja` (`POST /abrir`, `GET /abierta`, `GET /{id}`, `POST /{id}/cerrar`); `/api/venta` (`POST` confirmar, `GET /{id}`, `GET` buscar con filtros, `POST /{id}/anular`, `GET /{id}/tirilla` HTML); `/api/reporte/*` (stock-bajo, agotados, por-agotarse, pedido-proveedor, ventas-periodo, productos-mas-vendidos, productos-sin-movimiento, utilidad-*, valor-inventario, cierres-caja, panel, `GET /exportar?reporte=&formato=&desde=&hasta=`).
+- **No existe `POST /api/ventas/calcular` ni vista previa de totales**: el servidor calcula al confirmar (`POST /api/venta`) y devuelve los totales en `VentaDto`. Localmente solo se puede mostrar el subtotal `precioVenta × cantidad` (RN-04); no calcules IVA, descuento prorrateado, total ni cambio.
+- Permisos (`SecurityConfig`): `/api/inventario/**`, `/api/producto/**` y `/api/proveedor/**` (escritura) → **ADMIN | BODEGUERO**; `/api/categoria/**`, `/api/usuario/**`, `/api/configuracion/**`, `/api/auditoria/**` → **solo ADMIN**; `/api/caja/**`, `/api/venta/**`, `/api/cliente/**` → **ADMIN | CAJERO**; reportes de utilidad y valor de inventario → **solo ADMIN**; el resto de reportes → cualquier autenticado. Lecturas GET de producto/proveedor/categoría → cualquier rol autenticado.
+- `docs/integracion-api.md` está desfasado (plurales, `/api/auth/me`, CSRF). El backend usa `GET /api/auth/sesion` y tiene **CSRF deshabilitado**. Si doc y código discrepan: **para y pregunta**; no improvises.
+- No existe `GET` del historial de precios (solo se escribe con `PUT /{id}/precio`).
+- `../inventario-papeleria/docs/08-decisiones-pendientes.md` solo tiene D-1 a D-6; este repo cita D-7, D-9 y D-10 (no registradas).
 
-## Estado del proyecto (qué falta)
+## Documentación útil
 
-**El frontend va en Fase 2 completa (frente a CRUD); el backend ya la superó.** Las Fases 0 y 1 están hechas, la Fase 2 queda completa (escaner + listado/búsqueda/CRUD de productos); las Fases 3 a 6 no han empezado en el cliente. Tabla de `docs/plan-frontend.md`:
+| Si vas a... | Lee |
+|---|---|
+| Reglas de negocio (RN-xx) | `../inventario-papeleria/docs/02-reglas-de-negocio.md` |
+| Llamar a la API | `docs/integracion-api.md` + controllers |
+| Carpetas, componentes, estado | `docs/arquitectura.md` |
+| Construir una pantalla | `docs/pantallas-y-flujos.md` |
+| Escáner, cámara, tirilla, etiquetas | `docs/escaner-e-impresion.md` |
+| Librerías y entorno | `docs/dependencias-y-entorno.md` |
+| Fase actual | `docs/plan-frontend.md` |
 
-| Fase | Frontend | Backend (controllers hoy) |
-|---|---|---|
-| 0 Preparación | ✅ salvo `api:tipos` | — |
-| 1 Acceso, usuarios, configuración | ✅ salvo D-4 (bloqueado) | ✅ |
-| 2 Catálogo y escaneo | ✅ escaner + listado/búsqueda + CRUD completo | ✅ CRUD completo: `producto`, `catalogo`, `codigos` |
-| 3 Inventario | ⬜ | ✅ `inventario` + `CompraController` (compras, ajustes, kárdex, conteo físico) |
-| 4 Caja y ventas | ⬜ | ◐ solo dominio `venta/`, sin controller |
-| 5 Reportes y panel | ⬜ | ✖ no existe `reporte` |
-| 6 Producción | ⬜ | — |
-
-- **Fase 0 (✅ salvo `api:tipos`)**: `npm test` en verde (8 archivos / 44 pruebas): `lib/formato`, `api/errores`, `rutas/navegacion`, `rutas/RutaProtegida`, `escaner/CampoCodigo` (+ `generarCodigoInterno` RN-15), `caracteristicas/productos/paginas/Productos`, `.../productos/componentes/ProductoDialogo` y `.../productos/paginas/NuevoProducto` (MSW simula la sesión y el catálogo). `api:tipos` ya no está bloqueado por el backend (springdoc activo): solo falta `package.json` (script + `openapi-typescript`).
-- **Fase 1 (✅ salvo D-4)**: login, usuarios, categorías, proveedores, configuración, menú por rol y permisos por pantalla, todo probado. **D-4 (cambio de clave obligatorio al primer inicio) bloqueado**: `SesionDto` es solo `{nombre, rol}`, sin flag; no lo inventes.
-- **Fase 2 (✅ frente a CRUD)**: escaner reutilizable (`src/escaner/`: `CampoCodigo` + `esCodigoDeBarras`, `generarCodigoInterno` (RF-03/RN-15), `bip`, `CamaraEscaner`, `FotoEscaner` → `POST /api/codigos/decodificar`), `/productos` (listar/buscar con debounce, filtros categoría/proveedor/stock, costo solo `ADMIN`) y **CRUD completo**: `ProductoDialogo` (crear/editar con confirmación de cambio de precio «antes → después» RF-05/RN-07 y aviso RN-06; costo oculto según rol D-9; reactivar si `!activo`), página `/productos/nuevo` (escaneo → si el código existe —activo o no— abre edición RN-13/RN-17; si no, sugerencia `GET /api/catalogo/codigo/{codigo}` con prefill RN-16), `Nuevo producto` + editar/inactivar en `/productos` (solo `ADMIN|BODEGUERO`; inactivar con confirmación `DELETE /{id}`; `PUT /{id}/activar`). Api: `EntradaProducto` nuevo, hooks `useSugerencia/useCrearProducto/useEditarProducto/useInactivarProducto/useActivarProducto`, mocks MSW con almacén mutable `catalogoProductos` + `reiniciarCatalogo()`. Único vacío del backend: **no existe GET del historial de precios** (solo se escribe con `PUT /{id}/precio`). `CampoDinero` (solo dígitos, COP). Nota: el frontend usa local `generarCodigoInterno()` (sugerencia en pantalla); si el campo va vacío el backend lo genera. **D-7** (presentaciones por caja) se omite en v1. Completar `docs/04-contrato-api.md`: **le faltan** el CRUD de producto (`PUT /{id}`, `DELETE /{id}`, `PUT /{id}/activar`), `/api/codigos/decodificar`, `GET /api/codigos/{codigo}/etiqueta`, `/api/inventario/compras`, `GET /api/inventario/productos/{id}/kardex` y `POST /api/inventario/conteo-fisico`; su sección «Pendientes» aún los da por inexistentes y su sección 5 (permisos) está desactualizada.
-- **Fase 3 (inventario) tiene el backend listo**, pero el frontend aún no empieza. Ojo con **D-9** (ocultar costos según rol) y con la matriz: escribir producto/proveedor y todo `/api/inventario/**` es `ADMIN`+`BODEGUERO` (un `CAJERO` no entra aunque el menú lo deje ver).
-
-Prueba contra el backend real: `./mvnw spring-boot:run` en `../inventario-papeleria`, PostgreSQL en :5435 vía su `docker-compose.yml`; la API queda en :8080. Requiere Docker Desktop iniciado y JDK 21 (el `java` del sistema es 1.8).
-
-## Cómo trabajar (léelo antes de programar)
-
-1. **Lee solo la documentación que necesitas:**
-
-   | Si vas a... | Lee |
-   |---|---|
-   | Entender reglas de negocio (RN-xx) | `../inventario-papeleria/docs/02-reglas-de-negocio.md` |
-   | Llamar a la API o manejar errores | `docs/integracion-api.md` + los controllers (ver «El contrato hoy») |
-   | Crear carpetas, componentes, estado | `docs/arquitectura.md` |
-   | Construir o cambiar una pantalla | `docs/pantallas-y-flujos.md` |
-   | Escáner, cámara, tirilla, etiquetas | `docs/escaner-e-impresion.md` |
-   | Añadir librerías o configurar | `docs/dependencias-y-entorno.md` |
-   | Saber qué fase toca | `docs/plan-frontend.md` |
-   | Algo no definido | `../inventario-papeleria/docs/08-decisiones-pendientes.md` (solo D-1 a D-6) |
-
-2. **El contrato manda.** No inventes endpoints, campos ni códigos de error. Sin contrato escrito, la fuente son los controllers; si falta algo, **para y pregunta** antes de seguir.
-3. **Los tipos de la API son generados:** `src/api/esquema.d.ts` (cuando exista) no se edita a mano.
-4. **Trabaja por fases** (`docs/plan-frontend.md`). No adelantes pantallas de una fase posterior.
-5. **Cita la regla** que implementas: comentario `// RN-32` o nombre de prueba.
-6. **Si falta una regla, pregunta.** No inventes comportamiento de negocio.
+Los enlaces `../../docs/*` dentro de `docs/*.md` apuntan a una carpeta inexistente; el material real está en `../inventario-papeleria/docs/`.
 
 ## Reglas inviolables
 
-- **El servidor es la fuente de verdad.** Nunca calcules IVA, descuentos prorrateados, total final, cambio ni stock disponible como dato definitivo. Para una venta, usa `POST /api/ventas/calcular`. Lo único que se calcula en local es el subtotal sin descuentos (`precioVenta × cantidad`, exacto porque el precio incluye IVA, RN-04).
-- **El dinero se formatea en un solo lugar:** `src/lib/formato.ts` → `$ 12.500`, sin decimales (RN-03). Ningún otro archivo usa `toLocaleString` ni concatena `$`. El dinero viaja y se guarda como **número entero**; nunca como texto formateado.
-- **Nada de `float` para dinero** y nada de `parseFloat` sobre texto con puntos de miles. Los campos de dinero usan `CampoDinero` (solo dígitos).
-- **La caja se opera con teclado y lector** (RNF-05). El foco vuelve al campo de escaneo después de cada acción. Ningún flujo de la caja puede exigir el mouse.
-- **Una venta nunca se reintenta sola.** Las mutaciones tienen `retry: false`. El botón de cobrar se deshabilita mientras la petición está en curso. Cada intento de cobro lleva su `Idempotency-Key` (RF-23/RF-25).
-- **Si se pierde la conexión, no se confirman ventas** y se muestra un aviso visible.
-- **Autenticación por cookie de sesión.** Todas las llamadas con `credentials: 'include'`. El token CSRF vive solo en memoria. **Prohibido** guardar tokens, claves o datos personales en `localStorage`, `sessionStorage` o cookies de JavaScript. Excepciones permitidas: `localStorage` para preferencias de interfaz (ancho de tirilla, sonido) y `sessionStorage` para el borrador del carrito (solo ids y cantidades).
-- **Los permisos se aplican en pantalla por comodidad, no por seguridad.** Se oculta lo que el rol no puede hacer, pero el backend decide. Un `403` se muestra como «No tienes permiso», sin tratarlo como falla.
-- **Los errores de la API se traducen con `mensajeDeError` (`src/api/errores.ts`).** Hoy usa el `mensaje` del backend (`ErrorRespuesta`); el backend **aún no envía `codigo`** (D-C1 abierto). Cuando lo haga, la regla es decidir por `codigo`, no por el texto; `aProblemaApi` ya guarda `codigo` si viene.
-- **Fechas y horas** se muestran en `America/Bogota`, formato colombiano (RN-39).
-- **Comprobante no fiscal:** la tirilla de la versión 1 dice «Comprobante de venta — no es factura electrónica».
-
-## Convenciones
-
-- Código, nombres de archivos de pantallas y textos de interfaz en **español**; nombres técnicos de React (`use...`, `Provider`) se mantienen.
-- Un componente por archivo; `PascalCase` para componentes, `camelCase` para funciones y hooks.
-- Organización **por característica** (`caracteristicas/caja`, `caracteristicas/productos`...), no por tipo de archivo. Una característica no importa de otra, salvo por su `index.ts`; lo compartido va en `componentes/` o `lib/` (dependencias entre carpetas: tabla de `docs/arquitectura.md`).
-- Estado del servidor con TanStack Query; formularios con React Hook Form + Zod; estado de interfaz con `useState`. El carrito es un reducer puro y probado.
-- Accesibilidad básica: etiquetas en campos, foco visible, botones con texto, contraste suficiente. Objetivos táctiles amplios en pantallas de celular.
-- Commits pequeños que mencionen la regla o requerimiento: `feat(caja): suma una unidad si el producto ya está en el carrito (RN-32)`.
+- **El servidor es la fuente de verdad:** no calcules IVA, descuentos, total final, cambio ni stock como dato definitivo. No hay endpoint de cálculo previo; los totales oficiales llegan en la respuesta de `POST /api/venta`. Lo único local es el subtotal sin descuentos (`precioVenta × cantidad`, RN-04).
+- **Dinero:** entero, nunca `float` ni `parseFloat` sobre puntos de miles. Campo de dinero = `CampoDinero` (solo dígitos). Se formatea **solo** en `src/lib/formato.ts` → `$ 12.500` (RN-03); ningún otro archivo usa `toLocaleString` ni concatena `$`.
+- **Caja con teclado y lector** (RNF-05): el foco vuelve al campo de escaneo; ningún flujo exige mouse.
+- **Ventas:** nunca reintento automático; botón de cobrar deshabilitado en curso. El backend **no acepta `Idempotency-Key`** (no implementado); por eso no reintentar. Sin conexión no se confirman ventas y se avisa.
+- **Sesión por cookie:** todas las llamadas usan `credentials: 'include'` (`cliente.ts` ya lo hace). Prohibido guardar tokens, claves o datos personales en `localStorage`/`sessionStorage`/cookies JS. Excepciones: preferencias de interfaz y borrador del carrito (solo ids y cantidades).
+- **Permisos en pantalla son comodidad, no seguridad:** el backend decide. Un `403` se muestra como «No tienes permiso», no como falla.
+- **Errores:** traducir con `mensajeDeError` (`src/api/errores.ts`). El backend aún no envía `codigo` (D-C1); cuando lo haga, decidir por `codigo`, no por texto.
+- **Fechas/horas** en `America/Bogota`, formato colombiano (RN-39).
+- Tirilla v1: «Comprobante de venta — no es factura electrónica».
 
 ## Trampas
 
-- El entrenamiento del modelo suele asumir versiones anteriores. **Consulta la documentación de la versión instalada** de React Router, TanStack Query, Tailwind v4 (configuración en CSS con `@theme`, no `tailwind.config.js`), shadcn/ui y `barcode-detector` antes de escribir su API de memoria.
-- TypeScript ~6.0 con `verbatimModuleSyntax` y `erasableSyntaxOnly`: usa `import type` y **no** `enum` ni parámetros con propiedades (el `tsc -b` los rechaza).
-- Los componentes de `src/componentes/ui/` los genera shadcn/ui: se pueden editar, pero no se reescriben desde cero.
-- `src/api/tipos.ts` es un **esbozo a mano** (no generado), pero su `Producto` ya **espeja** `ProductoDto` del backend (`{id, codigoBarras, nombre, marca, categoriaId, categoriaNombre, proveedorId, proveedorNombre, unidad, tarifaIva, precioVenta, costo, stock, stockMinimo, activo}`). `precioVenta`/`costo` son `BigDecimal` en el backend y viajan como número entero; `tarifaIva` sale `"19"|"5"|"0"|"EXCLUIDO"` y `unidad` ∈ `UNIDAD|PAQUETE|RESMA|CAJA|PLIEGO|METRO|SERVICIO`. Al añadir tipos nuevos, contrástalos con los DTO reales (`../inventario-papeleria/**/api/*Dto.java`).
-- La cámara solo funciona con **HTTPS** (o `localhost`). El lector USB funciona siempre.
-- Los navegadores bloquean `window.print()` sin gesto del usuario en algunos casos: la impresión se lanza desde un clic o una tecla.
+- TypeScript ~6.0 con `verbatimModuleSyntax` y `erasableSyntaxOnly`: usa `import type`, **no** `enum` ni parameter properties (los rechaza `tsc -b`). `strict`, `noUnusedLocals`, `noUnusedParameters` activos.
+- No escribas APIs de React Router 7, TanStack Query 5, Tailwind v4 (config en CSS `@theme`, sin `tailwind.config.js`), shadcn/Base UI ni `barcode-detector` de memoria: verifica la versión instalada.
+- `src/componentes/ui/` lo genera shadcn: editable, no reescribir.
+- `src/api/tipos.ts` es manual (no generado). `Producto` espeja `ProductoDto`: `precioVenta`/`costo` llegan como entero; `tarifaIva` ∈ `"19"|"5"|"0"|"EXCLUIDO"`; `unidad` ∈ `UNIDAD|PAQUETE|RESMA|CAJA|PLIEGO|METRO|SERVICIO`. Contrástalos con los `*Dto.java` reales.
+- Los reportes (`/api/reporte/*`) devuelven `List<Map<String,Object>>` / `Map<String,Object>` con claves de columna (snake_case); no hay DTO tipado. Define los tipos del frontend a partir de las respuestas reales y verifica nombres de columnas contra el SQL del `ReporteService`.
+- Pruebas: MSW corre con `onUnhandledRequest: "error"`; si tocas un endpoint nuevo, añade su handler en `src/pruebas/mocks/handlers.ts`. El catálogo mock es mutable (`reiniciarCatalogo()`); llama `cleanup`/`resetHandlers` ya están en el setup.
+- La cámara solo funciona con **HTTPS** o `localhost`; el lector USB siempre.
+- `window.print()` requiere gesto del usuario en varios navegadores: imprimir desde clic o tecla.
 
-## Fuera de alcance de la versión 1
+## Fuera de alcance v1
 
-Venta sin conexión, facturación electrónica, tienda en línea, varias sedes, modo oscuro, internacionalización a otros idiomas.
+Venta sin conexión, facturación electrónica, tienda en línea, varias sedes, modo oscuro, i18n.

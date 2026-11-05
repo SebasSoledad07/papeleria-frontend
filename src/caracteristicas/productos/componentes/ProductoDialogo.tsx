@@ -196,8 +196,8 @@ export function ProductoDialogo({ producto, aviso, porDefecto, onCerrar }: Props
 
   return (
     <Dialog open onOpenChange={(abierto) => !abierto && onCerrar()}>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
+      <DialogContent className="max-h-[calc(100dvh-2rem)] gap-0! overflow-hidden! p-0! sm:max-w-xl">
+        <DialogHeader className="px-5 pt-5 pb-3">
           <div className="flex items-center gap-2">
             <DialogTitle>
               {producto ? "Editar producto" : "Nuevo producto"}
@@ -214,25 +214,29 @@ export function ProductoDialogo({ producto, aviso, porDefecto, onCerrar }: Props
         </DialogHeader>
 
         {aviso ? (
-          <p
-            role="note"
-            className="rounded-lg border border-border bg-muted p-3 text-sm"
-          >
-            {aviso}
-          </p>
+          <div className="px-5 pt-3">
+            <p
+              role="note"
+              className="rounded-lg border border-border bg-muted p-3 text-sm"
+            >
+              {aviso}
+            </p>
+          </div>
         ) : null}
 
         {confirmarPrecio ? (
-          <div className="space-y-4">
-            <p>Vas a cambiar el precio de venta:</p>
-            <p className="font-medium">
-              {formatearDinero(producto!.precioVenta)} →{" "}
-              {formatearDinero(Number(confirmarPrecio.precioVenta))}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              El cambio queda registrado en el historial de precios (RN-07).
-            </p>
-            <DialogFooter>
+          <div className="flex min-h-0 flex-1 flex-col">
+            <div className="space-y-4 overflow-y-auto px-5 py-4">
+              <p>Vas a cambiar el precio de venta:</p>
+              <p className="font-medium">
+                {formatearDinero(producto!.precioVenta)} →{" "}
+                {formatearDinero(Number(confirmarPrecio.precioVenta))}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                El cambio queda registrado en el historial de precios (RN-07).
+              </p>
+            </div>
+            <DialogFooter className="mx-5 mb-4">
               <Button
                 type="button"
                 variant="outline"
@@ -253,8 +257,12 @@ export function ProductoDialogo({ producto, aviso, porDefecto, onCerrar }: Props
             </DialogFooter>
           </div>
         ) : (
-          <form onSubmit={handleSubmit(alEnviar)} noValidate>
-            <div className="grid gap-4 sm:grid-cols-2">
+          <form
+            onSubmit={handleSubmit(alEnviar)}
+            noValidate
+            className="flex min-h-0 flex-1 flex-col"
+          >
+            <div className="grid min-h-0 flex-1 gap-3 overflow-y-auto px-5 py-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
                 <Campo
                   etiqueta="Código de barras"
@@ -295,11 +303,18 @@ export function ProductoDialogo({ producto, aviso, porDefecto, onCerrar }: Props
                   />
                 </Campo>
               </div>
-              <div className="sm:col-span-2">
-                <Campo etiqueta="Marca" htmlPara="marca" error={errors.marca?.message}>
-                  <Input id="marca" autoComplete="off" {...register("marca")} />
-                </Campo>
-              </div>
+              <Campo etiqueta="Marca" htmlPara="marca" error={errors.marca?.message}>
+                <Input id="marca" autoComplete="off" {...register("marca")} />
+              </Campo>
+              <Campo etiqueta="Unidad" htmlPara="unidad" error={errors.unidad?.message}>
+                <select id="unidad" className={claseSelect} {...register("unidad")}>
+                  {UNIDADES.map((unidad) => (
+                    <option key={unidad.valor} value={unidad.valor}>
+                      {unidad.etiqueta}
+                    </option>
+                  ))}
+                </select>
+              </Campo>
               <Campo etiqueta="Categoría" htmlPara="categoriaId" error={errors.categoriaId?.message}>
                 <select
                   id="categoriaId"
@@ -334,33 +349,22 @@ export function ProductoDialogo({ producto, aviso, porDefecto, onCerrar }: Props
                     ))}
                 </select>
               </Campo>
-              <Campo etiqueta="Unidad" htmlPara="unidad" error={errors.unidad?.message}>
-                <select id="unidad" className={claseSelect} {...register("unidad")}>
-                  {UNIDADES.map((unidad) => (
-                    <option key={unidad.valor} value={unidad.valor}>
-                      {unidad.etiqueta}
+              <Campo etiqueta="Tarifa de IVA" htmlPara="tarifaIva" error={errors.tarifaIva?.message}>
+                <select
+                  id="tarifaIva"
+                  className={claseSelect}
+                  {...register("tarifaIva")}
+                >
+                  {TARIFAS.map((tarifa) => (
+                    <option key={tarifa.valor} value={tarifa.valor}>
+                      {tarifa.etiqueta}
                     </option>
                   ))}
                 </select>
+                <p className="text-xs text-muted-foreground">
+                  Valídala con el contador (RN-10).
+                </p>
               </Campo>
-              <div className="sm:col-span-2">
-                <Campo etiqueta="Tarifa de IVA" htmlPara="tarifaIva" error={errors.tarifaIva?.message}>
-                  <select
-                    id="tarifaIva"
-                    className={claseSelect}
-                    {...register("tarifaIva")}
-                  >
-                    {TARIFAS.map((tarifa) => (
-                      <option key={tarifa.valor} value={tarifa.valor}>
-                        {tarifa.etiqueta}
-                      </option>
-                    ))}
-                  </select>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Valídala con el contador (RN-10).
-                  </p>
-                </Campo>
-              </div>
               <Campo
                 etiqueta="Precio de venta (IVA incluido)"
                 htmlPara="precioVenta"
@@ -427,13 +431,13 @@ export function ProductoDialogo({ producto, aviso, porDefecto, onCerrar }: Props
                   El precio de venta es menor o igual al costo. Revisa el margen (RN-06).
                 </p>
               ) : null}
+              {mutacion.isError ? (
+                <p className="text-sm text-destructive sm:col-span-2" role="alert">
+                  {mensajeDeError(mutacion.error)}
+                </p>
+              ) : null}
             </div>
-            {mutacion.isError ? (
-              <p className="mt-3 text-sm text-destructive" role="alert">
-                {mensajeDeError(mutacion.error)}
-              </p>
-            ) : null}
-            <DialogFooter className="mt-4">
+            <DialogFooter className="mx-5 mb-4">
               {producto && !producto.activo ? (
                 <Button
                   type="button"

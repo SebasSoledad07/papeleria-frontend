@@ -1,13 +1,20 @@
 import { useState } from "react"
-import { LoaderCircleIcon } from "lucide-react"
+import { LoaderCircleIcon, SettingsIcon } from "lucide-react"
 import type { Configuracion } from "@/api/tipos"
 import { AvisoError } from "@/componentes/comunes/AvisoError"
+import { Campo } from "@/componentes/comunes/Campo"
 import { PaginaTitulo } from "@/componentes/comunes/PaginaTitulo"
 import { PantallaCarga } from "@/componentes/comunes/PantallaCarga"
 import { Button } from "@/componentes/ui/button"
-import { Card, CardContent } from "@/componentes/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/componentes/ui/card"
 import { Input } from "@/componentes/ui/input"
-import { Label } from "@/componentes/ui/label"
 import { useConfiguracion } from "@/caracteristicas/configuracion/hooks/useConfiguracion"
 import { useGuardarConfiguracion } from "@/caracteristicas/configuracion/hooks/useGuardarConfiguracion"
 
@@ -33,39 +40,51 @@ function ConfiguracionForma({ configuracion }: { configuracion: Configuracion[] 
         evento.preventDefault()
         guardar.mutate(valores)
       }}
-      className="max-w-xl"
+      className="max-w-2xl space-y-4"
     >
       <Card>
-        <CardContent className="grid gap-5 py-4">
+        <CardHeader className="border-b">
+          <div className="flex items-center gap-2">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-accent text-accent-foreground">
+              <SettingsIcon className="size-4" aria-hidden />
+            </div>
+            <CardTitle>Datos del negocio</CardTitle>
+          </div>
+          <CardDescription>
+            Esta información aparece en comprobantes y reportes.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-5 py-5">
           {configuracion.map((item) => (
-            <div key={item.clave} className="grid gap-1.5">
-              <Label htmlFor={item.clave}>{item.descripcion}</Label>
+            <Campo key={item.clave} etiqueta={item.descripcion} htmlPara={item.clave}>
               <Input
                 id={item.clave}
                 value={valores[item.clave] ?? ""}
                 onChange={(evento) => cambiaValor(item.clave, evento.target.value)}
                 autoComplete="off"
               />
-            </div>
+            </Campo>
           ))}
         </CardContent>
+        <CardFooter className="justify-between gap-3 border-t">
+          {guardar.isSuccess ? (
+            <p className="text-sm font-medium text-success" role="status">
+              Cambios guardados.
+            </p>
+          ) : (
+            <p className="text-xs text-muted-foreground">
+              Los cambios se aplican al guardar.
+            </p>
+          )}
+          <Button type="submit" disabled={!hayCambios || guardar.isPending}>
+            {guardar.isPending ? (
+              <LoaderCircleIcon className="size-4 animate-spin" aria-hidden />
+            ) : null}
+            Guardar cambios
+          </Button>
+        </CardFooter>
       </Card>
       {guardar.isError ? <AvisoError error={guardar.error} /> : null}
-      {guardar.isSuccess ? (
-        <p className="mt-3 text-sm text-foreground" role="status">
-          Cambios guardados.
-        </p>
-      ) : null}
-      <Button
-        className="mt-4"
-        disabled={!hayCambios || guardar.isPending}
-        type="submit"
-      >
-        {guardar.isPending ? (
-          <LoaderCircleIcon className="size-4 animate-spin" aria-hidden />
-        ) : null}
-        Guardar cambios
-      </Button>
     </form>
   )
 }

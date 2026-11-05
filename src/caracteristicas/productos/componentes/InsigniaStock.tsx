@@ -11,7 +11,7 @@ export function InsigniaStock({ stock, stockMinimo }: Props) {
     return <Badge variant="destructive">Agotado</Badge>
   }
   if (stockMinimo != null && stockMinimo > 0 && stock <= stockMinimo) {
-    return <Badge variant="outline">Stock bajo</Badge>
+    return <Badge variant="warning">Stock bajo</Badge>
   }
-  return <Badge variant="secondary">Disponible</Badge>
+  return <Badge variant="success">Disponible</Badge>
 }

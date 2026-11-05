@@ -7,13 +7,6 @@ import { mensajeDeError } from "@/api/errores"
 import { useIniciarSesion } from "@/caracteristicas/autenticacion/hooks/useLogin"
 import { Campo } from "@/componentes/comunes/Campo"
 import { Button } from "@/componentes/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/componentes/ui/card"
 import { Input } from "@/componentes/ui/input"
 
 const esquema = z.object({
@@ -47,21 +40,87 @@ export function Login() {
   }
 
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-muted/40 p-4">
-      <Card className="w-full max-w-sm">
-        <CardHeader className="items-center text-center">
-          <div className="mb-1 flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <StoreIcon className="size-5" />
+    <div className="grid min-h-dvh lg:grid-cols-[1.05fr_1fr]">
+      <section className="relative hidden overflow-hidden bg-primary p-10 text-primary-foreground lg:flex lg:flex-col lg:justify-between">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.12]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, currentColor 1px, transparent 1px)",
+            backgroundSize: "20px 20px",
+          }}
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute -right-24 -bottom-28 size-96 rotate-12 rounded-[2rem] border border-primary-foreground/15"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute -right-10 -bottom-10 size-64 -rotate-6 rounded-[2rem] border border-primary-foreground/15"
+          aria-hidden
+        />
+
+        <div className="relative flex items-center gap-3">
+          <div className="flex size-10 items-center justify-center rounded-lg border border-primary-foreground/25 bg-primary-foreground/10">
+            <StoreIcon className="size-5" aria-hidden />
           </div>
-          <CardTitle className="text-xl">Papelería</CardTitle>
-          <CardDescription>Inicia sesión para continuar</CardDescription>
-        </CardHeader>
-        <CardContent>
+          <div>
+            <p className="font-heading text-lg leading-tight font-semibold">
+              Papelería
+            </p>
+            <p className="text-[0.65rem] tracking-[0.14em] uppercase opacity-70">
+              Inventario y ventas
+            </p>
+          </div>
+        </div>
+
+        <div className="relative max-w-md space-y-4">
+          <p className="text-xs font-medium tracking-[0.14em] uppercase opacity-70">
+            Punto de venta
+          </p>
+          <h1 className="text-4xl leading-tight font-semibold">
+            Tu papelería, en orden.
+          </h1>
+          <p className="text-sm leading-relaxed opacity-80">
+            Controla inventario, precios y ventas desde un solo lugar, con la
+            agilidad que necesita la caja.
+          </p>
+        </div>
+
+        <p className="relative text-xs opacity-60">
+          Comprobante de venta — no es factura electrónica
+        </p>
+      </section>
+
+      <section className="flex items-center justify-center p-6 sm:p-10">
+        <div className="w-full max-w-sm">
+          <div className="mb-8 flex items-center gap-3 lg:hidden">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <StoreIcon className="size-5" aria-hidden />
+            </div>
+            <div>
+              <p className="font-heading text-lg leading-tight font-semibold">
+                Papelería
+              </p>
+              <p className="text-[0.65rem] tracking-[0.14em] text-muted-foreground uppercase">
+                Inventario y ventas
+              </p>
+            </div>
+          </div>
+
+          <header className="mb-6 space-y-1.5">
+            <h1 className="text-2xl font-semibold">Inicia sesión</h1>
+            <p className="text-sm text-muted-foreground">
+              Ingresa con tu usuario para continuar.
+            </p>
+          </header>
+
           <form onSubmit={handleSubmit(entrar)} className="grid gap-4" noValidate>
             <Campo etiqueta="Usuario" htmlPara="usuario" error={errors.usuario?.message}>
               <Input
                 id="usuario"
                 autoComplete="username"
+                autoFocus
                 {...register("usuario")}
               />
             </Campo>
@@ -74,19 +133,22 @@ export function Login() {
               />
             </Campo>
             {iniciarSesion.isError ? (
-              <p className="text-sm text-destructive" role="alert">
+              <p
+                className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive"
+                role="alert"
+              >
                 {mensajeDeError(iniciarSesion.error)}
               </p>
             ) : null}
-            <Button type="submit" disabled={iniciarSesion.isPending}>
+            <Button type="submit" size="lg" disabled={iniciarSesion.isPending}>
               {iniciarSesion.isPending ? (
                 <LoaderCircleIcon className="size-4 animate-spin" aria-hidden />
               ) : null}
               Entrar
             </Button>
           </form>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
     </div>
   )
 }
