@@ -176,3 +176,95 @@ export interface LineaConteo {
 export interface ConteoFisicoResultado {
   ajustesAplicados: number
 }
+
+// Caja (RF-19, RF-29, RN-30 a RN-42).
+export interface Caja {
+  id: number
+  usuarioId: number
+  usuarioNombre: string
+  estado: string
+  baseEfectivo: number
+  apertura: string
+  cierre: string | null
+  efectivoContado: number | null
+  diferencia: number | null
+}
+
+export interface EntradaCaja {
+  baseEfectivo: number
+}
+
+export interface CierreCaja {
+  efectivoContado: number
+}
+
+// Cliente (RF-24, RN-36).
+export interface Cliente {
+  id: number
+  tipoDocumento: string
+  numeroDocumento: string
+  nombre: string
+  telefono: string | null
+}
+
+export interface EntradaCliente {
+  tipoDocumento: string
+  numeroDocumento: string
+  nombre: string
+  telefono?: string
+}
+
+// Venta (RF-20 a RF-28).
+export interface DetalleVenta {
+  id: number
+  productoId: number
+  productoNombre: string
+  cantidad: number
+  precioUnitario: number
+  base: number
+  iva: number
+  descuento: number
+  totalLinea: number
+}
+
+export interface Pago {
+  id: number
+  medio: string
+  valor: number
+}
+
+export interface Venta {
+  id: number
+  consecutivo: number
+  cajaId: number
+  usuarioId: number
+  usuarioNombre: string
+  clienteId: number | null
+  clienteNombre: string | null
+  fecha: string
+  estado: string
+  subtotal: number
+  descuentoTotal: number
+  ivaTotal: number
+  total: number
+  cambio: number
+  motivoAnulacion: string | null
+  descuentoAutorizadoPor: number | null
+  detalle: DetalleVenta[]
+  pagos: Pago[]
+}
+
+export interface ItemVenta {
+  productoId: number
+  cantidad: number
+  descuento?: number
+}
+
+export interface EntradaVenta {
+  cajaId?: number
+  clienteId?: number
+  descuentoTotal?: number
+  descuentoAutorizadoPor?: number
+  items: ItemVenta[]
+  pagos: { medio: string; valor: number }[]
+}

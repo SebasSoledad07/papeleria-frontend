@@ -4,6 +4,12 @@ import { Login } from "@/caracteristicas/autenticacion/paginas/Login"
 import { Categorias } from "@/caracteristicas/categorias/paginas/Categorias"
 import { Configuracion } from "@/caracteristicas/configuracion/paginas/Configuracion"
 import { Ajustes } from "@/caracteristicas/inventario/paginas/Ajustes"
+import { Reporte } from "@/caracteristicas/reportes/paginas/Reporte"
+import { Reportes } from "@/caracteristicas/reportes/paginas/Reportes"
+import { Caja } from "@/caracteristicas/caja/paginas/Caja"
+import { CierreCaja } from "@/caracteristicas/caja/paginas/CierreCaja"
+import { VentaDetalle } from "@/caracteristicas/caja/paginas/VentaDetalle"
+import { Ventas } from "@/caracteristicas/caja/paginas/Ventas"
 import { Compras } from "@/caracteristicas/inventario/paginas/Compras"
 import { Conteo } from "@/caracteristicas/inventario/paginas/Conteo"
 import { Kardex } from "@/caracteristicas/inventario/paginas/Kardex"
@@ -67,6 +73,54 @@ export const router = createBrowserRouter([
             element: (
               <RutaProtegida roles={["ADMIN", "BODEGUERO"]}>
                 <Conteo />
+              </RutaProtegida>
+            ),
+          },
+          {
+            path: "caja",
+            element: (
+              <RutaProtegida roles={["ADMIN", "CAJERO"]}>
+                <Caja />
+              </RutaProtegida>
+            ),
+          },
+          {
+            path: "caja/cierre",
+            element: (
+              <RutaProtegida roles={["ADMIN", "CAJERO"]}>
+                <CierreCaja />
+              </RutaProtegida>
+            ),
+          },
+          {
+            path: "ventas",
+            element: (
+              <RutaProtegida roles={["ADMIN", "CAJERO"]}>
+                <Ventas />
+              </RutaProtegida>
+            ),
+          },
+          {
+            path: "ventas/:id",
+            element: (
+              <RutaProtegida roles={["ADMIN", "CAJERO"]}>
+                <VentaDetalle />
+              </RutaProtegida>
+            ),
+          },
+          {
+            path: "reportes",
+            element: (
+              <RutaProtegida roles={["ADMIN", "BODEGUERO"]}>
+                <Reportes />
+              </RutaProtegida>
+            ),
+          },
+          {
+            path: "reportes/:nombre",
+            element: (
+              <RutaProtegida roles={["ADMIN", "BODEGUERO"]}>
+                <Reporte />
               </RutaProtegida>
             ),
           },

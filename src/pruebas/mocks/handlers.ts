@@ -238,4 +238,170 @@ export const handlers = [
     }
     return HttpResponse.json({ ajustesAplicados: ajustes })
   }),
+  http.get("/api/caja/abierta", () =>
+    HttpResponse.json({
+      id: 1,
+      usuarioId: 1,
+      usuarioNombre: "Administrador",
+      estado: "ABIERTA",
+      baseEfectivo: 100000,
+      apertura: new Date().toISOString(),
+      cierre: null,
+      efectivoContado: null,
+      diferencia: null,
+    }),
+  ),
+  http.post("/api/caja/abrir", async ({ request }) => {
+    const body = (await request.json()) as { baseEfectivo: number }
+    return HttpResponse.json({
+      id: 1,
+      usuarioId: 1,
+      usuarioNombre: "Administrador",
+      estado: "ABIERTA",
+      baseEfectivo: body.baseEfectivo,
+      apertura: new Date().toISOString(),
+      cierre: null,
+      efectivoContado: null,
+      diferencia: null,
+    })
+  }),
+  http.post("/api/caja/:id/cerrar", async ({ request }) => {
+    const body = (await request.json()) as { efectivoContado: number }
+    return HttpResponse.json({
+      id: 1,
+      usuarioId: 1,
+      usuarioNombre: "Administrador",
+      estado: "CERRADA",
+      baseEfectivo: 100000,
+      apertura: new Date().toISOString(),
+      cierre: new Date().toISOString(),
+      efectivoContado: body.efectivoContado,
+      diferencia: 0,
+    })
+  }),
+  http.get("/api/venta", () => HttpResponse.json([])),
+  http.get("/api/venta/:id", ({ params }) =>
+    HttpResponse.json({
+      id: Number(params.id),
+      consecutivo: 1,
+      cajaId: 1,
+      usuarioId: 1,
+      usuarioNombre: "Administrador",
+      clienteId: null,
+      clienteNombre: null,
+      fecha: new Date().toISOString(),
+      estado: "CONFIRMADA",
+      subtotal: 1000,
+      descuentoTotal: 0,
+      ivaTotal: 190,
+      total: 1000,
+      cambio: 0,
+      motivoAnulacion: null,
+      descuentoAutorizadoPor: null,
+      detalle: [],
+      pagos: [],
+    }),
+  ),
+  http.post("/api/venta", async ({ request }) => {
+    const body = (await request.json()) as {
+      items: { productoId: number; cantidad: number }[]
+    }
+    return HttpResponse.json({
+      id: Date.now(),
+      consecutivo: 1,
+      cajaId: 1,
+      usuarioId: 1,
+      usuarioNombre: "Administrador",
+      clienteId: null,
+      clienteNombre: null,
+      fecha: new Date().toISOString(),
+      estado: "CONFIRMADA",
+      subtotal: 1000,
+      descuentoTotal: 0,
+      ivaTotal: 190,
+      total: 1000,
+      cambio: 0,
+      motivoAnulacion: null,
+      descuentoAutorizadoPor: null,
+      detalle: body.items.map((i, idx) => ({
+        id: idx + 1,
+        productoId: i.productoId,
+        productoNombre: "Producto",
+        cantidad: i.cantidad,
+        precioUnitario: 1000,
+        base: 810,
+        iva: 190,
+        descuento: 0,
+        totalLinea: 1000,
+      })),
+      pagos: [],
+    })
+  }),
+  http.post("/api/venta/:id/anular", async ({ params, request }) => {
+    const body = (await request.json()) as { motivo: string }
+    return HttpResponse.json({
+      id: Number(params.id),
+      consecutivo: 1,
+      cajaId: 1,
+      usuarioId: 1,
+      usuarioNombre: "Administrador",
+      clienteId: null,
+      clienteNombre: null,
+      fecha: new Date().toISOString(),
+      estado: "ANULADA",
+      subtotal: 1000,
+      descuentoTotal: 0,
+      ivaTotal: 190,
+      total: 1000,
+      cambio: 0,
+      motivoAnulacion: body.motivo,
+      descuentoAutorizadoPor: null,
+      detalle: [],
+      pagos: [],
+    })
+  }),
+  http.get("/api/venta/:id/tirilla", () =>
+    new HttpResponse("<html><body>Tirilla</body></html>", {
+      headers: { "Content-Type": "text/html" },
+    }),
+  ),
+  http.post("/api/cliente", async ({ request }) => {
+    const body = (await request.json()) as {
+      tipoDocumento: string
+      numeroDocumento: string
+      nombre: string
+      telefono?: string
+    }
+    return HttpResponse.json({
+      id: Date.now(),
+      tipoDocumento: body.tipoDocumento,
+      numeroDocumento: body.numeroDocumento,
+      nombre: body.nombre,
+      telefono: body.telefono ?? null,
+    })
+  }),
+  http.get("/api/cliente/:id", ({ params }) =>
+    HttpResponse.json({
+      id: Number(params.id),
+      tipoDocumento: "CC",
+      numeroDocumento: "123",
+      nombre: "Cliente",
+      telefono: null,
+    }),
+  ),
+  http.get("/api/reporte/panel", () =>
+    HttpResponse.json({
+      ventasHoy: { total: 1000, numero: 2 },
+      stock: [
+        { estado: "AGOTADO", cantidad: 1 },
+        { estado: "NORMAL", cantidad: 5 },
+      ],
+    }),
+  ),
+  http.get("/api/reporte/:nombre", () => HttpResponse.json([])),
+  http.get("/api/reporte/exportar", () =>
+    new HttpResponse(new Blob(["data"]), {
+      headers: { "Content-Type": "application/octet-stream" },
+    }),
+  ),
 ]

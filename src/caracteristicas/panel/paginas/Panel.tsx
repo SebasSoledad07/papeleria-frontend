@@ -9,6 +9,8 @@ import {
   UsersIcon,
 } from "lucide-react"
 import type { Rol } from "@/api/tipos"
+import { useQuery } from "@tanstack/react-query"
+import { apiGet } from "@/api/cliente"
 import { useSesion } from "@/caracteristicas/autenticacion"
 import { PaginaTitulo } from "@/componentes/comunes/PaginaTitulo"
 import { buttonVariants } from "@/componentes/ui/button"
@@ -19,6 +21,7 @@ import {
   CardTitle,
 } from "@/componentes/ui/card"
 import { cn } from "@/lib/utils"
+import { formatearDinero } from "@/lib/formato"
 
 interface Acceso {
   ruta: string
@@ -78,6 +81,11 @@ export function Panel() {
   const rol = sesion.data?.rol
   const visibles = accesos.filter((acceso) => rol && acceso.roles.includes(rol))
 
+  const panel = useQuery({
+    queryKey: ["panel"],
+    queryFn: () => apiGet<Record<string, unknown>>("/api/reporte/panel"),
+  })
+
   return (
     <div className="space-y-8">
       <PaginaTitulo
@@ -122,6 +130,28 @@ export function Panel() {
           </div>
         </div>
       </section>
+
+      {panel.data ? (
+        <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="rounded-xl border bg-card p-4">
+            <p className="text-xs text-muted-foreground">Ventas hoy</p>
+            <p className="text-xl font-semibold">
+              {formatearDinero(Number((panel.data.ventasHoy as Record<string, unknown>)?.total ?? 0))}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {String((panel.data.ventasHoy as Record<string, unknown>)?.numero ?? 0)} ventas
+            </p>
+          </div>
+          {(panel.data.stock as { estado: string; cantidad: number }[] | undefined)?.map(
+            (s) => (
+              <div key={s.estado} className="rounded-xl border bg-card p-4">
+                <p className="text-xs text-muted-foreground">{s.estado}</p>
+                <p className="text-xl font-semibold">{s.cantidad}</p>
+              </div>
+            ),
+          )}
+        </section>
+      ) : null}
 
       {visibles.length > 0 ? (
         <section className="space-y-3">
