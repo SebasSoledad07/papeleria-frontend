@@ -177,4 +177,65 @@ export const handlers = [
     catalogoProductos[catalogoProductos.indexOf(encontrado)] = activo
     return HttpResponse.json(activo)
   }),
+  http.get("/api/inventario/productos/:id/kardex", () =>
+    HttpResponse.json([]),
+  ),
+  http.post("/api/inventario/compras", async ({ request }) => {
+    const entrada = (await request.json()) as {
+      proveedorId: number
+      numeroFactura: string
+      observacion?: string
+      detalle: { productoId: number; cantidad: number; costoUnitario: number }[]
+    }
+    const detalle = entrada.detalle.map((d) => {
+      const producto = catalogoProductos.find((p) => p.id === d.productoId)
+      if (producto) {
+        producto.stock += d.cantidad
+      }
+      return {
+        productoId: d.productoId,
+        codigoBarras: producto?.codigoBarras ?? "",
+        productoNombre: producto?.nombre ?? "",
+        cantidad: d.cantidad,
+        costoUnitario: d.costoUnitario,
+      }
+    })
+    return HttpResponse.json({
+      id: Date.now(),
+      proveedorId: entrada.proveedorId,
+      proveedorRazonSocial: "Proveedor",
+      numeroFactura: entrada.numeroFactura,
+      fecha: new Date().toISOString(),
+      observacion: entrada.observacion ?? null,
+      detalle,
+    })
+  }),
+  http.post("/api/inventario/:id/ajuste-positivo", async ({ params, request }) => {
+    const id = Number(params.id)
+    const body = (await request.json()) as { cantidad: number; motivo: string }
+    const producto = catalogoProductos.find((p) => p.id === id)
+    if (producto) producto.stock += body.cantidad
+    return new HttpResponse(null, { status: 204 })
+  }),
+  http.post("/api/inventario/:id/ajuste-negativo", async ({ params, request }) => {
+    const id = Number(params.id)
+    const body = (await request.json()) as { cantidad: number; motivo: string }
+    const producto = catalogoProductos.find((p) => p.id === id)
+    if (producto) producto.stock -= body.cantidad
+    return new HttpResponse(null, { status: 204 })
+  }),
+  http.post("/api/inventario/conteo-fisico", async ({ request }) => {
+    const body = (await request.json()) as {
+      lineas: { productoId: number; cantidadContada: number }[]
+    }
+    let ajustes = 0
+    for (const linea of body.lineas) {
+      const producto = catalogoProductos.find((p) => p.id === linea.productoId)
+      if (producto && producto.stock !== linea.cantidadContada) {
+        producto.stock = linea.cantidadContada
+        ajustes += 1
+      }
+    }
+    return HttpResponse.json({ ajustesAplicados: ajustes })
+  }),
 ]

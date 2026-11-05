@@ -6,6 +6,7 @@ import {
   TagsIcon,
   TruckIcon,
   UsersIcon,
+  WarehouseIcon,
 } from "lucide-react"
 import type { Rol } from "@/api/tipos"
 
@@ -30,6 +31,12 @@ export const menu: ElementoMenu[] = [
     etiqueta: "Productos",
     icono: PackageIcon,
     roles: ["ADMIN", "CAJERO", "BODEGUERO"],
+  },
+  {
+    ruta: "/inventario/compras",
+    etiqueta: "Inventario",
+    icono: WarehouseIcon,
+    roles: ["ADMIN", "BODEGUERO"],
   },
   { ruta: "/usuarios", etiqueta: "Usuarios", icono: UsersIcon, roles: ["ADMIN"] },
   {

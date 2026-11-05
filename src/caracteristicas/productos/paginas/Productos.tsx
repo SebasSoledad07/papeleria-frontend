@@ -261,6 +261,12 @@ export function Productos() {
                 {puedeEditar ? (
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-1">
+                      <Link
+                        to={`/productos/${producto.id}/kardex`}
+                        className={buttonVariants({ variant: "outline", size: "sm" })}
+                      >
+                        Kárdex
+                      </Link>
                       <Button
                         variant="outline"
                         size="sm"

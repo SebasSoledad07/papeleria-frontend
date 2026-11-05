@@ -119,3 +119,60 @@ export interface LecturaCodigo {
   codigo: string
   formato: string
 }
+
+// Movimiento del kárdex de un producto (RF-17).
+export interface MovimientoKardex {
+  id: number
+  productoId: number
+  tipo: string
+  cantidad: number
+  stockResultante: number
+  referencia: string | null
+  motivo: string | null
+  usuarioId: number | null
+  usuarioNombre: string | null
+  fecha: string
+}
+
+// Línea de una entrada de mercancía (RF-14).
+export interface DetalleCompra {
+  productoId: number
+  codigoBarras: string
+  productoNombre: string
+  cantidad: number
+  costoUnitario: number
+}
+
+// Entrada de mercancía (RF-14, RN-23).
+export interface Compra {
+  id: number
+  proveedorId: number
+  proveedorRazonSocial: string
+  numeroFactura: string
+  fecha: string
+  observacion: string | null
+  detalle: DetalleCompra[]
+}
+
+export interface EntradaDetalleCompra {
+  productoId: number
+  cantidad: number
+  costoUnitario: number
+}
+
+export interface EntradaCompra {
+  proveedorId: number
+  numeroFactura: string
+  observacion?: string
+  detalle: EntradaDetalleCompra[]
+}
+
+// Línea del conteo físico (RF-18, RN-46).
+export interface LineaConteo {
+  productoId: number
+  cantidadContada: number
+}
+
+export interface ConteoFisicoResultado {
+  ajustesAplicados: number
+}

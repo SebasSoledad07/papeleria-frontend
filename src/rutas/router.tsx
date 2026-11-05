@@ -3,6 +3,10 @@ import App from "@/App"
 import { Login } from "@/caracteristicas/autenticacion/paginas/Login"
 import { Categorias } from "@/caracteristicas/categorias/paginas/Categorias"
 import { Configuracion } from "@/caracteristicas/configuracion/paginas/Configuracion"
+import { Ajustes } from "@/caracteristicas/inventario/paginas/Ajustes"
+import { Compras } from "@/caracteristicas/inventario/paginas/Compras"
+import { Conteo } from "@/caracteristicas/inventario/paginas/Conteo"
+import { Kardex } from "@/caracteristicas/inventario/paginas/Kardex"
 import { NoEncontrado } from "@/caracteristicas/errores/paginas/NoEncontrado"
 import { Panel } from "@/caracteristicas/panel/paginas/Panel"
 import { NuevoProducto } from "@/caracteristicas/productos/paginas/NuevoProducto"
@@ -31,6 +35,38 @@ export const router = createBrowserRouter([
             element: (
               <RutaProtegida roles={["ADMIN", "BODEGUERO"]}>
                 <NuevoProducto />
+              </RutaProtegida>
+            ),
+          },
+          {
+            path: "productos/:id/kardex",
+            element: (
+              <RutaProtegida roles={["ADMIN", "BODEGUERO"]}>
+                <Kardex />
+              </RutaProtegida>
+            ),
+          },
+          {
+            path: "inventario/compras",
+            element: (
+              <RutaProtegida roles={["ADMIN", "BODEGUERO"]}>
+                <Compras />
+              </RutaProtegida>
+            ),
+          },
+          {
+            path: "inventario/ajustes",
+            element: (
+              <RutaProtegida roles={["ADMIN", "BODEGUERO"]}>
+                <Ajustes />
+              </RutaProtegida>
+            ),
+          },
+          {
+            path: "inventario/conteo",
+            element: (
+              <RutaProtegida roles={["ADMIN", "BODEGUERO"]}>
+                <Conteo />
               </RutaProtegida>
             ),
           },

@@ -11,9 +11,9 @@ describe("menuPorRol", () => {
     expect(rutas).toEqual(["/", "/productos"])
   })
 
-  it("el bodeguero ve el panel y productos", () => {
+  it("el bodeguero ve el panel, productos e inventario", () => {
     const rutas = menuPorRol("BODEGUERO").map((item) => item.ruta)
-    expect(rutas).toEqual(["/", "/productos"])
+    expect(rutas).toEqual(["/", "/productos", "/inventario/compras"])
   })
 
   it("sin rol no muestra nada", () => {

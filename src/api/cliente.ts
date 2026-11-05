@@ -29,7 +29,9 @@ export async function peticionApi<T>(
   }
   if (!respuesta.ok) throw await aProblemaApi(respuesta)
   if (respuesta.status === 204) return undefined as T
-  return (await respuesta.json()) as T
+  const texto = await respuesta.text()
+  if (texto.trim() === "") return undefined as T
+  return JSON.parse(texto) as T
 }
 
 export function apiGet<T>(ruta: string): Promise<T> {
